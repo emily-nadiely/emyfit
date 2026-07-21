@@ -1,22 +1,15 @@
-# EmyFit PWA v1
+# EmyFit Pro v2
 
-## Recursos
-- PWA instalável e offline após primeira abertura
-- Treinos A–D com aparelhos
-- Registro de carga, repetições, cardio e dor
-- Histórico e métricas
-- Assistente de substituição limitado a regras cadastradas
-- Perfil e backup local
+Versão redesenhada do PWA com:
+- interface profissional;
+- login e recuperação de senha via Supabase;
+- onboarding completo;
+- gerador de treino baseado em regras;
+- biblioteca visual com SVGs animados;
+- sessão com carga, reps, RIR e cronômetro;
+- substituição inteligente de aparelhos;
+- relatórios de peso, volume, dor e histórico;
+- sincronização local + nuvem;
+- função opcional de IA no backend.
 
-## Como testar
-Na pasta do projeto, rode:
-
-python -m http.server 8000
-
-Abra http://localhost:8000
-
-## Como instalar no celular
-Hospede a pasta em HTTPS (Netlify, Vercel ou GitHub Pages), abra o endereço no Chrome e use “Adicionar à tela inicial”.
-
-## Limites
-Não há IA generativa real nesta versão. Para isso é necessário backend, banco de dados, autenticação e API de IA. Antes de uso público, a biblioteca e as regras devem ser formalmente revisadas por profissional de Educação Física.
+Leia `CONFIGURAR_NUVEM.md`.
