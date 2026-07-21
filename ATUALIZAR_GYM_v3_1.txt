@@ -1,0 +1,19 @@
+GYM PREMIUM v3.1 — ATUALIZAÇÃO
+
+CORREÇÕES
+- Ilustrações incorporadas diretamente no app.js: não dependem mais da pasta assets/exercises para abrir.
+- Cardio: todos os aparelhos ficam visíveis e podem ser escolhidos durante o treino.
+- Nome do aplicativo alterado para GYM.
+- Novo ícone GYM incluído.
+
+COMO PUBLICAR
+1. Extraia o ZIP.
+2. Abra o repositório atual no GitHub.
+3. Add file > Upload files.
+4. Envie TODOS os arquivos e pastas de dentro da pasta GYM_Premium_v3_1.
+5. NÃO apague nem substitua seu config.js já configurado no GitHub. Este pacote não contém config.js.
+6. Faça o commit e aguarde o GitHub Pages ficar verde em Actions.
+7. No celular, desinstale o PWA antigo, limpe os dados do site no Chrome e instale novamente.
+
+OBSERVAÇÃO
+Os dados continuam usando a mesma estrutura e as mesmas chaves internas, portanto o histórico e o Supabase não são renomeados nem apagados.

@@ -1,4 +1,4 @@
-# EmyFit Pro v2
+# GYM v2
 
 Versão redesenhada do PWA com:
 - interface profissional;

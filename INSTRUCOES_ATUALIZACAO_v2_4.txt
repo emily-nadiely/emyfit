@@ -6,7 +6,7 @@ ATUALIZAÇÃO v2.4 — O QUE ENTRA NESTE PACOTE
 
 COMO PUBLICAR
 1. Extraia o ZIP.
-2. No GitHub do EmyFit, clique em Add file > Upload files.
+2. No GitHub do GYM, clique em Add file > Upload files.
 3. Envie TODO o conteúdo da pasta extraída para a raiz do repositório.
 4. Se o GitHub pedir para substituir arquivos, confirme.
 5. Faça commit.

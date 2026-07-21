@@ -1,4 +1,4 @@
-# EmyFit Pro v2 — Configuração
+# GYM v2 — Configuração
 
 ## 1. Publicar a interface
 Substitua os arquivos do repositório GitHub Pages pelos arquivos desta pasta. Mantenha `index.html` na raiz.
@@ -11,7 +11,7 @@ Substitua os arquivos do repositório GitHub Pages pelos arquivos desta pasta. M
 5. Edite `config.js`:
 
 ```js
-window.EMYFIT_CONFIG={
+window.GYM_CONFIG={
   supabaseUrl:"https://SEU-PROJETO.supabase.co",
   supabaseAnonKey:"SUA_CHAVE_PUBLICAVEL",
   aiFunctionUrl:"",

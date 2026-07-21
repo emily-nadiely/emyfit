@@ -1,6 +1,6 @@
 {
-  "name": "EmyFit Pro Premium — Treino Inteligente",
-  "short_name": "EmyFit Pro",
+  "name": "GYM — Treino Inteligente",
+  "short_name": "GYM",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -27,5 +27,5 @@
       "purpose": "maskable"
     }
   ],
-  "description": "Treino personalizado, fadiga muscular, cardio e relatórios premium."
+  "description": "Treino personalizado, recuperação muscular, cardio e relatórios."
 }

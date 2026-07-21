@@ -1,4 +1,4 @@
-# EmyFit Pro Premium v3.0
+# GYM v3.0
 
 Versão premium do PWA de treino, com:
 
@@ -19,7 +19,7 @@ Mantenha o `config.js` que já está no repositório.
 ## Publicação
 
 1. Extraia o ZIP.
-2. No GitHub, abra o repositório do EmyFit.
+2. No GitHub, abra o repositório do GYM.
 3. Use `Add file > Upload files`.
 4. Envie todo o conteúdo extraído para a raiz.
 5. Confirme a substituição dos arquivos.
