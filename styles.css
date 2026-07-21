@@ -75,7 +75,12 @@ html,body{background:
 .install-mini{border:1px solid #ef4f94;background:rgba(239,79,148,.12);color:#ff91bd;border-radius:999px;padding:8px 12px;font-weight:800}.install-app-btn.hidden{display:none}.exercise-media{height:260px!important}.exercise-media img{object-fit:contain!important;padding:8px}.auth-logo img,.premium-logo-small img{object-fit:cover!important;background:#111016}.premium-logo-small{overflow:hidden}.cardio-fields{margin-top:10px}
 @media(max-width:430px){.exercise-media{height:245px!important}.install-mini{padding:7px 9px;font-size:11px}}
 
-/* Biblioteca aberta v4 */
-.library-open-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.library-open-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;cursor:pointer}.library-open-media{height:155px;background:#f6f6f6;display:flex;align-items:center;justify-content:center}.library-open-media img{width:100%;height:100%;object-fit:contain}.library-open-body{padding:12px}.library-open-body h3{font-size:15px;margin:6px 0}.library-open-body p{font-size:11px;color:var(--muted);margin:0}.media-source{font-size:10px;color:var(--muted);margin:7px 0}.exercise-media-detail{height:min(56vh,480px)!important}.exercise-media-detail img{object-fit:contain!important}a{color:var(--accent2)}
-@media(min-width:760px){.library-open-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.library-open-media{height:190px}}
-@media(max-width:430px){.library-open-grid{grid-template-columns:1fr}.library-open-media{height:240px}.bottomnav button{font-size:9px}}
+/* GYM v5.0 — logo interno e mídia anatômica aprovada */
+.gym-mark{width:100%;height:100%;display:block}
+.premium-logo,.premium-logo-small{background:#15131b!important}
+.premium-logo svg,.premium-logo-small svg{width:100%;height:100%}
+.anatomical-media{height:auto!important;min-height:0;background:#f7f7f7;border:1px solid rgba(255,255,255,.08);overflow:hidden}
+.anatomical-media img{display:block;width:100%;height:auto;max-height:390px;object-fit:contain!important;padding:0!important;background:#fff}
+.detail-media img{max-height:420px}
+.workout-card:not(:has(.exercise-media)){padding-top:20px}
+@media(max-width:430px){.anatomical-media{height:auto!important}.anatomical-media img{max-height:330px}.detail-media img{max-height:350px}}

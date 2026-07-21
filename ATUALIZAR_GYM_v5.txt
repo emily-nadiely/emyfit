@@ -1,0 +1,29 @@
+GYM PREMIUM v5.0 — PROGRAMA REFEITO
+
+O QUE FOI CORRIGIDO
+- Removida a biblioteca pesquisável de fotos/exercícios.
+- As imagens aparecem somente dentro do exercício que está sendo realizado.
+- Removidas todas as fotos de pessoas reais.
+- Removidos todos os bonecos de palito e desenhos esquemáticos antigos.
+- Regra aplicada: ilustração anatômica correta ou nenhuma imagem.
+- Leg press 45° mantém a ilustração anatômica correspondente.
+- Remada foi corrigida para Remada sentada na polia, correspondente à imagem anatômica usada.
+- Leg press horizontal, panturrilha e demais exercícios sem ilustração aprovada ficam sem foto.
+- Panturrilha na máquina não usa mais imagem de halter nem qualquer imagem genérica.
+- Logo visível no login e no cabeçalho agora é incorporado ao código, sem depender de arquivo externo.
+- Ícones do PWA foram refeitos e o cache foi atualizado para v5.0.
+- Mantidos: botão de instalação, login/Supabase, Coach, fadiga/recuperação, relatórios e cardio somente na finalização.
+
+COMO ATUALIZAR
+1. Extraia o ZIP.
+2. Abra o repositório do GYM no GitHub.
+3. Clique em Add file > Upload files.
+4. Envie TODOS os arquivos e a pasta assets desta versão para a raiz, substituindo os antigos.
+5. NÃO apague o config.js já configurado no seu repositório.
+6. Faça o commit e aguarde o GitHub Pages concluir.
+7. No celular, desinstale o app antigo.
+8. Chrome > Configurações > Configurações do site > Todos os sites > seu endereço github.io > Limpar e redefinir.
+9. Abra o site novamente e toque em Instalar o app GYM.
+
+IMPORTANTE
+O ZIP não contém config.js para não apagar sua conexão com o Supabase.

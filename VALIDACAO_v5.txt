@@ -1,0 +1,15 @@
+CHECKLIST DA VERSÃO 5.0
+
+[OK] Não existe library.js nem tela de busca de fotografias.
+[OK] Imagens são renderizadas somente no card do exercício e no modal Como executar.
+[OK] Apenas Leg press 45° e Remada sentada na polia possuem imagem.
+[OK] Leg press horizontal fica sem imagem.
+[OK] Panturrilha na máquina fica sem imagem.
+[OK] Flexora sentada, extensora e demais exercícios ficam sem imagem.
+[OK] Todos os SVGs antigos de exercícios foram removidos.
+[OK] O logo do cabeçalho e do login é SVG incorporado ao app.js.
+[OK] Ícones PNG do PWA estão presentes em 192, 512, maskable, Apple Touch e favicon.
+[OK] Botão Instalar continua no login e no cabeçalho.
+[OK] Cardio continua somente na finalização.
+[OK] app.js passou na verificação de sintaxe do Node.
+[OK] manifest.webmanifest é JSON válido.
