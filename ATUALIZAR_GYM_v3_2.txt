@@ -1,0 +1,16 @@
+GYM Premium v3.2
+
+CORREÇÕES
+- Ícone refeito e cache corrigido.
+- Botão Instalar o app adicionado na tela de login e no cabeçalho.
+- Cardio removido do começo do treino.
+- Escolha do cardio permanece somente na finalização.
+- Campos específicos: tempo, velocidade e inclinação na esteira; resistência e distância em bikes/elíptico; distância e ritmo na caminhada.
+- Imagens aumentadas para melhor visualização.
+
+PUBLICAÇÃO
+1. Extraia o ZIP.
+2. Envie todos os arquivos para a raiz do repositório, substituindo os existentes.
+3. NÃO apague seu config.js já configurado.
+4. Aguarde o GitHub Pages.
+5. Desinstale a versão antiga, limpe os dados do site e abra novamente.

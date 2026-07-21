@@ -1,0 +1,22 @@
+
+GYM PREMIUM v4.0 — BIBLIOTECA ABERTA
+
+O QUE MUDOU
+- Biblioteca pesquisável com máquinas, halteres, barras, cabos/polias e peso corporal.
+- Integração online prioritária com a API pública do wger.
+- Fallback para a base aberta Exercemus quando o wger não responder.
+- Imagens/vídeos carregados conforme a ficha do exercício e licença exibida nos detalhes.
+- Flexora sentada deixa de usar a ilustração incorreta; aguarda imagem correspondente da base online.
+- Imagens do treino usam a base online quando há correspondência exata e mantêm fallback local.
+
+COMO ATUALIZAR
+1. Extraia o ZIP.
+2. No GitHub, abra o repositório atual.
+3. Add file > Upload files.
+4. Envie TODOS os arquivos e pastas desta versão para a raiz.
+5. Não apague o config.js que já está no repositório.
+6. Faça o commit e aguarde o GitHub Pages concluir.
+7. No celular, desinstale a versão antiga, limpe os dados do site github.io e instale novamente.
+
+OBSERVAÇÃO
+A biblioteca online exige internet na primeira abertura. Depois, os dados e imagens acessados ficam armazenados em cache quando o navegador permite.

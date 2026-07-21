@@ -1,5 +1,5 @@
 {
-  "name": "GYM — Treino Inteligente",
+  "name": "GYM",
   "short_name": "GYM",
   "start_url": "./",
   "scope": "./",
@@ -27,5 +27,6 @@
       "purpose": "maskable"
     }
   ],
-  "description": "Treino personalizado, recuperação muscular, cardio e relatórios."
+  "description": "Treino adaptativo com biblioteca aberta de exercícios, recuperação muscular, cardio e relatórios.",
+  "id": "./gym-app-v4"
 }
