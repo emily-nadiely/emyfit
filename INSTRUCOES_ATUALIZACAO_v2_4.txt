@@ -1,0 +1,18 @@
+ATUALIZAÇÃO v2.4 — O QUE ENTRA NESTE PACOTE
+- Ilustrações anatômicas do Leg press 45° e Remada.
+- Painel de fadiga / recuperação muscular.
+- Cardio com escolha de aparelho.
+- Ajuste do cache do PWA.
+
+COMO PUBLICAR
+1. Extraia o ZIP.
+2. No GitHub do EmyFit, clique em Add file > Upload files.
+3. Envie TODO o conteúdo da pasta extraída para a raiz do repositório.
+4. Se o GitHub pedir para substituir arquivos, confirme.
+5. Faça commit.
+6. Aguarde o GitHub Pages publicar.
+
+IMPORTANTE
+- NÃO apague nem edite a service key do Supabase.
+- O arquivo config.js deve permanecer com suas credenciais já preenchidas.
+- Se o app continuar antigo no celular, desinstale o PWA, limpe os dados do site no Chrome e instale novamente.

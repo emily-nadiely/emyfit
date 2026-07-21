@@ -13,3 +13,9 @@ Versão redesenhada do PWA com:
 - função opcional de IA no backend.
 
 Leia `CONFIGURAR_NUVEM.md`.
+
+
+## Atualização v2.4
+- Ilustrações anatômicas aprovadas para leg press e remada.
+- Cardio com aparelho selecionável: esteira, elíptico, bike horizontal, bike vertical e caminhada.
+- Painel de fadiga/recuperação muscular (carregada, recuperando, quase pronta, pronta).

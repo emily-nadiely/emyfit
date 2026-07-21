@@ -1,0 +1,28 @@
+EMYFIT PRO PREMIUM v3.0 — ATUALIZAÇÃO
+
+1. BAIXE E EXTRAIA O ZIP.
+2. ENTRE NO REPOSITÓRIO DO GITHUB.
+3. CLIQUE EM ADD FILE > UPLOAD FILES.
+4. ENVIE TODO O CONTEÚDO DA PASTA EXTRAÍDA PARA A RAIZ.
+5. CONFIRME O COMMIT.
+6. AGUARDE O GITHUB PAGES FICAR VERDE.
+
+IMPORTANTE:
+- Este pacote NÃO possui config.js.
+- Não apague o config.js que já está no seu GitHub.
+- Ele contém sua URL e chave publicável do Supabase.
+- Nunca publique a chave secreta ou service_role.
+
+NO CELULAR:
+1. Abra o link no Chrome e confirme o layout premium.
+2. Desinstale o app antigo da tela inicial.
+3. Limpe os dados do site github.io no Chrome.
+4. Abra o link novamente.
+5. Escolha Adicionar à tela inicial / Instalar aplicativo.
+
+NOVO ÍCONE:
+O ícone premium já está nos arquivos:
+- assets/icon-192.png
+- assets/icon-512.png
+- assets/icon-maskable-512.png
+- assets/apple-touch-icon.png
