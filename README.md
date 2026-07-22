@@ -1,4 +1,4 @@
-# GYM Premium v5.0
+# GYM Premium v5.1
 
 Aplicativo PWA de treino com:
 
@@ -30,3 +30,9 @@ Os demais exercícios ficam sem imagem até existir uma ilustração anatômica 
 Leia `ATUALIZAR_GYM_v5.txt`.
 
 O pacote não contém `config.js`. Mantenha no GitHub o arquivo já configurado com a URL e a chave publicável do Supabase.
+
+
+## Correção v5.1
+- pacote completo de ícones PWA e maskable;
+- instrução de instalação alterada para evitar atalho simples com letra;
+- cardio Escada incluído com tempo, nível e andares/lances.
