@@ -1,23 +1,25 @@
-# GYM Premium v5.5
+# GYM Premium v5.6
 
-Aplicativo PWA de treino com:
+Aplicativo PWA de treino com plano adaptativo, salvamento automático, sincronização pelo Supabase, cardio, relatórios e estimativa de fadiga muscular.
 
-- login e sincronização pelo Supabase;
-- salvamento automático durante o treino;
+## Destaques da v5.6
+
 - 53 exercícios de musculação cadastrados;
-- 9 opções de cardio;
-- edição dos exercícios de cada dia do plano;
-- inclusão de exercício durante a sessão;
-- substituição automática ou escolha manual entre todas as opções;
-- relatórios, fadiga muscular, peso, dor, carga e cardio;
-- instalação como aplicativo com ícone próprio.
+- 52 ilustrações incluídas corretamente em `assets/exercises`;
+- fotos exibidas somente nos cartões dos exercícios escolhidos;
+- relatório sem a seção pública de dor após o treino;
+- fadiga estimada por grupo muscular;
+- check-in opcional de sono, energia e cansaço;
+- salvamento automático do treino em andamento;
+- Escada, remo, corda e outros cardios;
+- ícone PWA corrigido.
 
-## Imagens
+## Configuração
 
-Não existe uma galeria separada de fotos. A busca para adicionar ou trocar exercícios é apenas textual. A ilustração aparece somente no cartão do exercício escolhido. Quando não existe uma imagem correspondente, o exercício permanece sem foto.
+O pacote não contém `config.js`. Mantenha no GitHub o arquivo que já contém a URL e a chave pública do seu projeto Supabase.
 
-As imagens fornecidas pela usuária foram organizadas para uso pessoal. Antes de disponibilização pública ou comercial, é necessário confirmar as licenças das imagens externas.
+Leia `ATUALIZAR_GYM_v5_6.txt` antes de publicar.
 
-## Atualização
+## Uso das imagens
 
-Leia `ATUALIZAR_GYM_v5_5.txt`. O pacote não contém `config.js`; mantenha no GitHub o arquivo que já está conectado ao Supabase.
+As ilustrações foram fornecidas pela usuária. Antes de disponibilizar ou comercializar publicamente o aplicativo, verifique as licenças e autorizações de cada imagem.

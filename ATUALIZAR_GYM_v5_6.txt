@@ -1,0 +1,53 @@
+GYM PREMIUM v5.6 — IMAGENS E FADIGA REFORMULADA
+
+CORREÇÕES DESTA VERSÃO
+
+1. IMAGENS DOS EXERCÍCIOS
+- A pasta assets/exercises agora está incluída corretamente no pacote.
+- As ilustrações aparecem no cartão do exercício durante o treino, na visualização do plano e em "Como executar".
+- Foram incluídas 52 ilustrações correspondentes aos exercícios cadastrados.
+- Elevação lateral na máquina permanece sem imagem, pois a ilustração disponível corresponde à versão na polia.
+
+2. RELATÓRIO
+- O gráfico "Dor após o treino" foi removido.
+- A dor não aparece mais no histórico nem nos detalhes dos relatórios.
+- O registro de dor no final do treino foi mantido internamente para segurança e para ajudar a estimativa de recuperação.
+
+3. FADIGA E RECUPERAÇÃO
+- A fadiga agora é calculada separadamente por grupo muscular.
+- Considera séries concluídas, tempo desde o treino, RPE, RIR e os registros recentes.
+- Mostra percentual de fadiga, último estímulo, recomendação e os grupos mais carregados primeiro.
+- Foi adicionado um check-in opcional de sono, energia e cansaço muscular.
+- A estimativa é um apoio de organização e não substitui avaliação profissional.
+
+COMO ATUALIZAR SEM PERDER SEUS DADOS
+
+1. Abra o GYM atual e vá em Perfil.
+2. Toque em "Sincronizar agora".
+3. Exporte o backup e guarde o arquivo gym-backup.json.
+4. Extraia este ZIP no computador.
+5. No GitHub, abra o repositório do GYM.
+6. Clique em Add file > Upload files.
+7. Envie TODOS os arquivos e pastas desta versão, principalmente a pasta assets completa.
+8. Confirme a substituição dos arquivos existentes.
+9. NÃO apague nem substitua o seu config.js atual.
+10. Faça o commit e aguarde a publicação do GitHub Pages.
+11. Feche completamente o aplicativo e abra novamente.
+
+IMPORTANTE PARA AS FOTOS
+
+No GitHub, confirme que existe este caminho:
+assets/exercises/
+
+Dentro dele devem aparecer arquivos como:
+- legpress.webp
+- extension.webp
+- curl.webp
+- row.webp
+- chest.webp
+
+O cache foi alterado para v5.6. Não é necessário limpar os dados do site. Feche e abra o app; caso continue vendo a versão antiga, atualize a página uma vez no Chrome.
+
+PROGRESSO
+
+Esta atualização não altera os IDs dos exercícios antigos nem a estrutura do histórico. Seus treinos, cargas, séries e relatórios devem permanecer vinculados à mesma conta.

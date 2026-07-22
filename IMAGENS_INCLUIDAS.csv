@@ -1,0 +1,53 @@
+﻿id;exercicio;arquivo
+bicycle_crunch;Abdominal bicicleta;assets/exercises/bicycle_crunch.webp
+crunch;Abdominal na máquina;assets/exercises/crunch.webp
+cable_crunch;Abdominal na polia alta com corda;assets/exercises/cable_crunch.webp
+reverse_crunch;Abdominal reverso;assets/exercises/reverse_crunch.webp
+smith_lunge;Afundo no Smith;assets/exercises/smith_lunge.webp
+goblet_squat;Agachamento Goblet com halter;assets/exercises/goblet_squat.webp
+barbell_squat;Agachamento livre com barra;assets/exercises/barbell_squat.webp
+smith_squat;Agachamento no Smith;assets/exercises/smith_squat.webp
+sumo_dumbbell;Agachamento sumô com halter;assets/exercises/sumo_dumbbell.webp
+sumo_kettlebell_step;Agachamento sumô com kettlebell sobre steps;assets/exercises/sumo_kettlebell_step.webp
+pullup_assisted;Barra fixa assistida na máquina;assets/exercises/pullup_assisted.webp
+abductor;Cadeira abdutora;assets/exercises/abductor.webp
+extension;Cadeira extensora;assets/exercises/extension.webp
+curl;Cadeira flexora;assets/exercises/curl.webp
+cable_kickback;Coice de glúteo no cabo;assets/exercises/cable_kickback.webp
+shoulder;Desenvolvimento de ombros na máquina;assets/exercises/shoulder.webp
+shoulder_db;Desenvolvimento sentado com halteres;assets/exercises/shoulder_db.webp
+lateral_cable;Elevação lateral unilateral na polia;assets/exercises/lateral_cable.webp
+hip;Elevação pélvica na máquina;assets/exercises/hip.webp
+glute;Glúteo na máquina;assets/exercises/glute.webp
+hack_squat;Hack squat 45°;assets/exercises/hack_squat.webp
+hip_thrust_barbell;Hip thrust com barra;assets/exercises/hip_thrust_barbell.webp
+legpress;Leg press 45°;assets/exercises/legpress.webp
+legpressh;Leg press horizontal;assets/exercises/legpressh.webp
+curllying;Mesa flexora;assets/exercises/curllying.webp
+mountain_climber;Mountain climber;assets/exercises/mountain_climber.webp
+calf;Panturrilha em pé na máquina;assets/exercises/calf.webp
+seated_calf;Panturrilha sentada na máquina;assets/exercises/seated_calf.webp
+pecdeck;Peck deck / voador;assets/exercises/pecdeck.webp
+plank;Prancha frontal;assets/exercises/plank.webp
+side_plank;Prancha lateral;assets/exercises/side_plank.webp
+pulldown_close;Puxada alta com pegada fechada;assets/exercises/pulldown_close.webp
+pulldown_behind_neck;Puxada atrás da nuca;assets/exercises/pulldown_behind_neck.webp
+pulldown;Puxada frontal na polia;assets/exercises/pulldown.webp
+row_machine;Remada articulada com apoio no peito;assets/exercises/row_machine.webp
+row;Remada baixa sentada na polia;assets/exercises/row.webp
+rear_delt_row_db;Remada curvada com halteres e cotovelos abertos;assets/exercises/rear_delt_row_db.webp
+one_arm_row_db;Remada unilateral com halter;assets/exercises/one_arm_row_db.webp
+armcurl;Rosca Scott com barra;assets/exercises/armcurl.webp
+curl_concentration;Rosca concentrada com halter;assets/exercises/curl_concentration.webp
+curl_barbell;Rosca direta com barra;assets/exercises/curl_barbell.webp
+curl_incline_db;Rosca inclinada com halteres;assets/exercises/curl_incline_db.webp
+reverse_curl_cable;Rosca inversa na polia baixa;assets/exercises/reverse_curl_cable.webp
+hammer_curl;Rosca martelo com halteres;assets/exercises/hammer_curl.webp
+stiff_barbell;Stiff com barra / levantamento terra romeno;assets/exercises/stiff_barbell.webp
+incline_bench_barbell;Supino inclinado com barra;assets/exercises/incline_bench_barbell.webp
+incline_chest_machine;Supino inclinado na máquina;assets/exercises/incline_chest_machine.webp
+chest;Supino sentado na máquina;assets/exercises/chest.webp
+triceps;Tríceps com corda na polia;assets/exercises/triceps.webp
+triceps_overhead_db;Tríceps francês sentado com halter;assets/exercises/triceps_overhead_db.webp
+triceps_overhead_single_db;Tríceps francês unilateral com halter;assets/exercises/triceps_overhead_single_db.webp
+triceps_bar;Tríceps na polia com barra;assets/exercises/triceps_bar.webp

@@ -1,0 +1,10 @@
+VALIDAÇÃO GYM PREMIUM v5.6
+
+- JavaScript validado com node --check.
+- 52 arquivos WebP verificados.
+- Todos os caminhos de imagens do app possuem arquivo correspondente.
+- Teste HTTP local: index.html e imagens responderam 200 OK.
+- Seção "Dor após o treino" removida dos relatórios.
+- Nova fadiga por grupo muscular e check-in incluídos.
+- Cache PWA alterado para gym-premium-v5-6-images-recovery.
+- config.js não está incluído para preservar a configuração existente no GitHub.

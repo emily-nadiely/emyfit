@@ -84,3 +84,27 @@ html,body{background:
 .detail-media img{max-height:420px}
 .workout-card:not(:has(.exercise-media)){padding-top:20px}
 @media(max-width:430px){.anatomical-media{height:auto!important}.anatomical-media img{max-height:330px}.detail-media img{max-height:350px}}
+
+/* GYM Premium v5.6 — fadiga e recuperação */
+.recovery-grid-v2{gap:12px}
+.recovery-item-v2{display:block!important;padding:13px 14px!important}
+.recovery-item-v2 .row{gap:10px}
+.fatigue-bar{height:9px;background:#2a242c;border-radius:999px;overflow:hidden;margin:10px 0 8px}
+.fatigue-bar>span{display:block;height:100%;border-radius:999px;background:#71d39b;transition:width .25s ease}
+.fatigue-bar>span.warn{background:#e6b65c}
+.fatigue-bar>span.bad{background:#f06f7f}
+.recovery-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:11px}
+.recovery-meta b{display:inline;color:#f3edf1}
+.recovery-item-v2 p{font-size:12px;color:#c3bbbf;margin:9px 0 0;line-height:1.45}
+.recovery-method{margin-top:12px;padding:12px;border:1px solid #342d35;border-radius:15px;background:#151116;display:grid;gap:5px}
+.recovery-method b{font-size:12px;color:#f4e9ee}
+.recovery-method span{font-size:11px;color:var(--muted);line-height:1.45}
+.recovery-checkin{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:12px;border:1px solid #382e36;border-radius:16px;background:rgba(239,79,148,.07)}
+.recovery-checkin>div{display:grid;gap:4px}
+.recovery-checkin b{font-size:12px}
+.recovery-checkin span{font-size:11px;color:var(--muted);line-height:1.35}
+.recovery-checkin strong{font-size:21px;color:#ff9dbd;white-space:nowrap}
+.recovery-checkin.empty{display:grid;background:#151116}
+.small-ring{width:86px!important;height:86px!important;padding:8px!important}
+.small-ring b{font-size:20px!important}
+@media(max-width:430px){.recovery-meta{display:grid;gap:3px}.premium-recovery>.row.between{align-items:flex-start}.small-ring{width:78px!important;height:78px!important}.recovery-checkin{align-items:flex-start}}
