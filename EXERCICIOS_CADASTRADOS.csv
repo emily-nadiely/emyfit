@@ -1,0 +1,54 @@
+﻿id;exercicio;grupo;equipamento;imagem
+bicycle_crunch;Abdominal bicicleta;Abdômen e core;Peso corporal;bicycle_crunch.webp
+crunch;Abdominal na máquina;Abdômen e core;Máquina abdominal;crunch.webp
+cable_crunch;Abdominal na polia alta com corda;Abdômen e core;Polia alta e corda;cable_crunch.webp
+reverse_crunch;Abdominal reverso;Abdômen e core;Peso corporal;reverse_crunch.webp
+smith_lunge;Afundo no Smith;Pernas;Máquina Smith;smith_lunge.webp
+goblet_squat;Agachamento Goblet com halter;Pernas;Halter;goblet_squat.webp
+barbell_squat;Agachamento livre com barra;Pernas;Rack e barra livre;barbell_squat.webp
+smith_squat;Agachamento no Smith;Pernas;Máquina Smith;smith_squat.webp
+sumo_dumbbell;Agachamento sumô com halter;Pernas;Halter;sumo_dumbbell.webp
+sumo_kettlebell_step;Agachamento sumô com kettlebell sobre steps;Pernas;Kettlebell e steps;sumo_kettlebell_step.webp
+pullup_assisted;Barra fixa assistida na máquina;Costas;Máquina de barra fixa assistida;pullup_assisted.webp
+abductor;Cadeira abdutora;Glúteos;Cadeira abdutora;abductor.webp
+extension;Cadeira extensora;Pernas;Cadeira extensora;extension.webp
+curl;Cadeira flexora;Pernas;Flexora sentada;curl.webp
+cable_kickback;Coice de glúteo no cabo;Glúteos;Polia baixa e tornozeleira;cable_kickback.webp
+shoulder;Desenvolvimento de ombros na máquina;Ombros;Shoulder press;shoulder.webp
+shoulder_db;Desenvolvimento sentado com halteres;Ombros;Banco e halteres;shoulder_db.webp
+lateral;Elevação lateral na máquina;Ombros;Máquina de elevação lateral;sem imagem
+lateral_cable;Elevação lateral unilateral na polia;Ombros;Polia baixa;lateral_cable.webp
+hip;Elevação pélvica na máquina;Glúteos;Hip thrust / glute drive;hip.webp
+glute;Glúteo na máquina;Glúteos;Glúteo máquina;glute.webp
+hack_squat;Hack squat 45°;Pernas;Hack squat;hack_squat.webp
+hip_thrust_barbell;Hip thrust com barra;Glúteos;Banco e barra livre;hip_thrust_barbell.webp
+legpress;Leg press 45°;Pernas;Leg press inclinado;legpress.webp
+legpressh;Leg press horizontal;Pernas;Leg press horizontal;legpressh.webp
+curllying;Mesa flexora;Pernas;Mesa flexora;curllying.webp
+mountain_climber;Mountain climber;Abdômen e core;Peso corporal;mountain_climber.webp
+calf;Panturrilha em pé na máquina;Panturrilhas;Panturrilha em pé;calf.webp
+seated_calf;Panturrilha sentada na máquina;Panturrilhas;Panturrilha sentada;seated_calf.webp
+pecdeck;Peck deck / voador;Peito;Voador / peck deck;pecdeck.webp
+plank;Prancha frontal;Abdômen e core;Peso corporal;plank.webp
+side_plank;Prancha lateral;Abdômen e core;Peso corporal;side_plank.webp
+pulldown_close;Puxada alta com pegada fechada;Costas;Polia alta e pegador fechado;pulldown_close.webp
+pulldown_behind_neck;Puxada atrás da nuca;Costas;Polia alta;pulldown_behind_neck.webp
+pulldown;Puxada frontal na polia;Costas;Pulley / puxada alta;pulldown.webp
+row_machine;Remada articulada com apoio no peito;Costas;Remada articulada;row_machine.webp
+row;Remada baixa sentada na polia;Costas;Remada baixa na polia;row.webp
+rear_delt_row_db;Remada curvada com halteres e cotovelos abertos;Ombros;Halteres;rear_delt_row_db.webp
+one_arm_row_db;Remada unilateral com halter;Costas;Banco e halter;one_arm_row_db.webp
+armcurl;Rosca Scott com barra;Braços;Banco Scott / barra;armcurl.webp
+curl_concentration;Rosca concentrada com halter;Braços;Banco e halter;curl_concentration.webp
+curl_barbell;Rosca direta com barra;Braços;Barra livre;curl_barbell.webp
+curl_incline_db;Rosca inclinada com halteres;Braços;Banco inclinado e halteres;curl_incline_db.webp
+reverse_curl_cable;Rosca inversa na polia baixa;Braços;Polia baixa e barra;reverse_curl_cable.webp
+hammer_curl;Rosca martelo com halteres;Braços;Halteres;hammer_curl.webp
+stiff_barbell;Stiff com barra / levantamento terra romeno;Pernas;Barra livre;stiff_barbell.webp
+incline_bench_barbell;Supino inclinado com barra;Peito;Banco inclinado e barra;incline_bench_barbell.webp
+incline_chest_machine;Supino inclinado na máquina;Peito;Chest press inclinado;incline_chest_machine.webp
+chest;Supino sentado na máquina;Peito;Chest press;chest.webp
+triceps;Tríceps com corda na polia;Braços;Polia alta com corda;triceps.webp
+triceps_overhead_db;Tríceps francês sentado com halter;Braços;Banco e halter;triceps_overhead_db.webp
+triceps_overhead_single_db;Tríceps francês unilateral com halter;Braços;Halter;triceps_overhead_single_db.webp
+triceps_bar;Tríceps na polia com barra;Braços;Polia alta e barra;triceps_bar.webp

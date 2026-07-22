@@ -1,0 +1,30 @@
+GYM PREMIUM v5.5 — TODAS AS OPÇÕES DE EXERCÍCIOS
+
+Esta versão mantém todas as correções anteriores:
+- ícone correto na instalação;
+- cardio Escada;
+- salvamento automático ao bloquear a tela;
+- login e sincronização com Supabase;
+- imagens somente quando correspondem ao exercício.
+
+NOVO
+- 53 exercícios de musculação cadastrados.
+- 9 opções de cardio.
+- Todos os exercícios aparecem no Coach e nos relatórios.
+- É possível editar cada dia do plano.
+- É possível adicionar um exercício durante o treino.
+- É possível escolher qualquer exercício na troca manual.
+- A busca de exercícios é apenas por texto; não foi criada uma biblioteca separada de fotos.
+- A imagem aparece somente depois que o exercício entra no plano ou no treino.
+
+COMO ATUALIZAR
+1. No GYM atual, toque em Sincronizar agora.
+2. Exporte o backup.
+3. Extraia este ZIP.
+4. Envie todos os arquivos e pastas para a raiz do GitHub.
+5. Substitua os arquivos existentes.
+6. NÃO apague nem substitua o seu config.js.
+7. Aguarde o GitHub Pages publicar.
+8. Feche e abra novamente o aplicativo.
+
+A atualização preserva os IDs antigos e não altera a estrutura do histórico.
