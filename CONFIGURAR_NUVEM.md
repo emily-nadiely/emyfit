@@ -38,3 +38,20 @@ A chave da API deve permanecer no servidor/Edge Function, nunca em `config.js`.
 - As animações são esquemáticas e não substituem ajuste presencial do aparelho.
 - O gerador usa regras transparentes; não faz diagnóstico.
 - Antes de abrir para o público, contrate revisão de profissional de Educação Física e revisão jurídica/LGPD.
+
+
+## Exclusão segura da conta
+
+A exclusão do usuário do Supabase Auth precisa acontecer no servidor. O pacote inclui a Edge Function:
+
+`supabase/functions/delete-account/index.ts`
+
+Publique uma vez com o Supabase CLI:
+
+```bash
+supabase login
+supabase link --project-ref SEU_PROJECT_REF
+supabase functions deploy delete-account
+```
+
+As variáveis `SUPABASE_URL`, `SUPABASE_ANON_KEY` e `SUPABASE_SERVICE_ROLE_KEY` são fornecidas automaticamente no ambiente das Edge Functions. Nunca copie a service role para o `config.js` ou para o GitHub.

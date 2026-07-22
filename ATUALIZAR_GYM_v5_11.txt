@@ -1,0 +1,24 @@
+GYM Premium v5.11 — cadastro, foco muscular e exclusão de conta
+
+1. Sincronize os dados e exporte um backup.
+2. Envie todos os arquivos e pastas deste pacote para a raiz do GitHub.
+3. Mantenha o seu config.js atual; não substitua pelas credenciais de exemplo.
+4. Aguarde a publicação e feche/reabra o aplicativo.
+
+NOVO CADASTRO
+- Data de nascimento digitada no formato DD/MM/AAAA.
+- Seleção de até 3 áreas de foco.
+- Planos de 2 a 5 dias com divisões diferentes e exercícios variados.
+
+USUÁRIOS JÁ CADASTRADOS
+- Acesse Perfil > Alterar áreas de foco.
+- Escolha os focos e toque em Salvar e gerar novo plano.
+- O histórico de treinos permanece salvo.
+
+EXCLUSÃO DE CONTA
+O botão foi incluído em Perfil, mas a função segura precisa ser publicada uma vez no Supabase:
+
+  supabase functions deploy delete-account
+
+A função está em supabase/functions/delete-account/index.ts.
+Não coloque a service role no config.js nem em arquivos do GitHub.
