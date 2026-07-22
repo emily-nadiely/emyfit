@@ -1,0 +1,11 @@
+VALIDAÇÃO GYM PREMIUM v5.9
+
+- app.js validado com node --check.
+- Login testado com evento SIGNED_IN disparado de forma síncrona.
+- Senha antiga de 6 caracteres aceita na tela de entrada.
+- Dados remotos simulados carregados após autenticação.
+- Logout testado.
+- Credenciais inválidas exibem mensagem visível na própria tela.
+- Botão é reativado após erro.
+- onAuthStateChange não executa consulta assíncrona diretamente no callback.
+- config.js não está incluído no pacote para não sobrescrever a configuração existente.

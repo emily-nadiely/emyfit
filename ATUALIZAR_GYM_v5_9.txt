@@ -1,0 +1,20 @@
+GYM PREMIUM v5.9 — LOGIN CORRIGIDO
+
+CORREÇÕES
+- Login não fica mais travado sem mensagem.
+- A sincronização não é executada dentro do evento de autenticação do Supabase.
+- Erros aparecem na própria tela de login.
+- O botão mostra “Entrando…” durante a tentativa.
+- A tecla Enter envia o formulário.
+- Senhas de contas antigas podem ter menos de 8 caracteres; o limite de 8 permanece apenas para novas contas.
+- Tempo limite e mensagens para falha de internet foram incluídos.
+
+COMO ATUALIZAR
+1. Envie todos os arquivos desta pasta para a raiz do repositório.
+2. NÃO substitua nem apague o seu config.js atual.
+3. Aguarde o GitHub Pages publicar.
+4. Feche totalmente o GYM e abra novamente.
+5. Teste o login do Eliseu.
+
+DADOS
+A atualização não apaga o histórico salvo na tabela user_app_state.

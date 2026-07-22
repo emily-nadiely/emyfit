@@ -1,21 +1,9 @@
-# GYM Premium v5.8
+# GYM Premium v5.9
 
-Aplicativo PWA de treino com plano adaptativo, salvamento automático, sincronização pelo Supabase, cardio, relatórios e estimativa de fadiga muscular.
+Atualização corretiva do login em nuvem. Mantém as imagens, relatórios, PDF, biblioteca de exercícios, cardio, fadiga e histórico da v5.8.
 
-## Correções e novidades
+## Correção principal
 
-- página inicial corrigida (erro de variável de peso removido);
-- botão **Gerar PDF** na aba Relatórios, com períodos de 30, 90, 180 dias ou todo o histórico;
-- relatório imprimível com treinos, peso, cargas, volume, cardio, aderência e fadiga;
-- 57 exercícios de musculação cadastrados;
-- novas imagens para Supino sentado na máquina, Flexora em pé unilateral, Rosca Scott na máquina, Remada alta com barra e Crucifixo no crossover;
-- imagens incorporadas no aplicativo e também mantidas como arquivos de fallback;
-- histórico e estrutura de sincronização preservados.
+A v5.8 executava uma consulta assíncrona ao banco dentro do evento `onAuthStateChange` do Supabase. Isso podia bloquear o cliente e fazer o botão **Entrar** ficar sem resposta. A v5.9 adia a sincronização para fora do evento, mostra mensagens de erro na própria tela e não rejeita senhas antigas apenas por terem menos de oito caracteres.
 
-## Configuração
-
-O pacote não contém `config.js`. Mantenha no GitHub o arquivo atual com a URL e a chave pública do Supabase.
-
-## Uso das imagens
-
-As ilustrações foram fornecidas pela usuária. Antes de disponibilizar ou comercializar publicamente o aplicativo, verifique as licenças e autorizações.
+Mantenha o seu `config.js` atual.

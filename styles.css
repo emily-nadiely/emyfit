@@ -109,10 +109,14 @@ html,body{background:
 .small-ring b{font-size:20px!important}
 @media(max-width:430px){.recovery-meta{display:grid;gap:3px}.premium-recovery>.row.between{align-items:flex-start}.small-ring{width:78px!important;height:78px!important}.recovery-checkin{align-items:flex-start}}
 
-/* v5.8 — início corrigido, relatório PDF e novas imagens */
+/* v5.9 — início corrigido, relatório PDF e novas imagens */
 .image-unavailable{display:flex;align-items:center;justify-content:center;min-height:150px;color:var(--muted);font-size:12px}
 .cardio-summary{display:grid;gap:14px;margin-top:12px}.cardio-summary-row .progress{margin-top:7px}
 
-/* v5.8 — exportação de relatório */
+/* v5.9 — exportação de relatório */
 .report-export-card{border:1px solid rgba(239,79,148,.35);background:linear-gradient(145deg,rgba(239,79,148,.10),rgba(240,195,90,.05));}
 .report-export-row{gap:16px;align-items:flex-end}.report-export-actions{display:flex;gap:9px;align-items:center;min-width:250px}.report-export-actions select{margin:0;min-width:160px}.report-export-actions .btn{white-space:nowrap}@media(max-width:640px){.report-export-row{display:block}.report-export-actions{display:grid;grid-template-columns:1fr;margin-top:12px;min-width:0}.report-export-actions select,.report-export-actions .btn{width:100%}}
+
+/* v5.9 — autenticação resiliente */
+.btn:disabled{opacity:.58;cursor:wait;filter:saturate(.7)}
+#authStatus[hidden]{display:none}
