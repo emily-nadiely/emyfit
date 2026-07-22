@@ -1,0 +1,2 @@
+Imagens incorporadas: 52
+Arquivo exercise-images.js: 1589679 bytes

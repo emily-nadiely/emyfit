@@ -108,3 +108,7 @@ html,body{background:
 .small-ring{width:86px!important;height:86px!important;padding:8px!important}
 .small-ring b{font-size:20px!important}
 @media(max-width:430px){.recovery-meta{display:grid;gap:3px}.premium-recovery>.row.between{align-items:flex-start}.small-ring{width:78px!important;height:78px!important}.recovery-checkin{align-items:flex-start}}
+
+/* v5.7 — imagens incorporadas e relatórios resilientes */
+.image-unavailable{display:flex;align-items:center;justify-content:center;min-height:150px;color:var(--muted);font-size:12px}
+.cardio-summary{display:grid;gap:14px;margin-top:12px}.cardio-summary-row .progress{margin-top:7px}

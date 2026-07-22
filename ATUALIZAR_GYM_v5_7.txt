@@ -1,0 +1,22 @@
+GYM PREMIUM v5.7 — IMAGENS E RELATÓRIOS CORRIGIDOS
+
+CORREÇÕES
+- As ilustrações foram incorporadas ao arquivo exercise-images.js. Assim, não dependem exclusivamente da pasta assets/exercises.
+- A aba Relatórios voltou a abrir: foi incluída a função de resumo de cardio que faltava.
+- Relatórios foram tornados compatíveis com históricos antigos e registros incompletos.
+- A análise de evolução não utiliza mais a dor após o treino.
+- O cache foi alterado e não guarda respostas de imagem com erro.
+
+ATUALIZAÇÃO
+1. No GYM atual, toque em Sincronizar agora e exporte o backup.
+2. Extraia o ZIP.
+3. Envie TODOS os arquivos e pastas para a raiz do repositório.
+4. Confirme que exercise-images.js está na raiz, ao lado de app.js e index.html.
+5. Não apague nem substitua o config.js existente no GitHub.
+6. Faça o commit e aguarde o GitHub Pages terminar.
+7. Feche completamente o aplicativo e abra novamente.
+8. Atualize a página uma vez. Não é necessário limpar os dados do site.
+
+TESTE
+- Abra um treino: a imagem deve aparecer acima do nome do exercício.
+- Toque em Relatórios: a tela deve abrir e exibir resumo, fadiga, peso, volume, cardio e histórico.

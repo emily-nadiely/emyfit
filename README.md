@@ -1,8 +1,8 @@
-# GYM Premium v5.6
+# GYM Premium v5.7
 
 Aplicativo PWA de treino com plano adaptativo, salvamento automático, sincronização pelo Supabase, cardio, relatórios e estimativa de fadiga muscular.
 
-## Destaques da v5.6
+## Destaques da v5.7
 
 - 53 exercícios de musculação cadastrados;
 - 52 ilustrações incluídas corretamente em `assets/exercises`;
