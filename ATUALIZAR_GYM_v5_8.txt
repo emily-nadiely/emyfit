@@ -1,0 +1,30 @@
+GYM PREMIUM v5.8 — INÍCIO, PDF E NOVAS IMAGENS
+
+ANTES DE ATUALIZAR
+1. Abra o GYM atual e toque em Sincronizar agora.
+2. Exporte o backup pelo Perfil.
+3. Não apague nem substitua o seu config.js do GitHub.
+
+COMO PUBLICAR
+1. Extraia este ZIP.
+2. Envie todos os arquivos e pastas para a raiz do repositório.
+3. Mantenha o config.js que já está no GitHub.
+4. Confirme que app.js, exercise-images.js, styles.css, service-worker.js e a pasta assets foram atualizados.
+5. Aguarde a publicação do GitHub Pages.
+6. Feche completamente o aplicativo e abra novamente. Atualize a página uma vez.
+
+CORREÇÕES
+- A página Início volta a abrir: foi corrigida uma variável de histórico de peso que não existia.
+- As imagens continuam incorporadas e possuem arquivos de fallback.
+- A aba Relatórios possui o botão Gerar PDF.
+
+RELATÓRIO EM PDF
+Na aba Relatórios, escolha 30 dias, 90 dias, 6 meses ou todo o histórico e toque em Gerar PDF. O navegador abre o relatório e a janela de impressão. Escolha Salvar como PDF.
+
+NOVOS EXERCÍCIOS
+- Flexora em pé unilateral
+- Rosca Scott na máquina
+- Remada alta com barra
+- Crucifixo no crossover
+
+A imagem nova de Supino sentado na máquina substitui a anterior desse exercício.

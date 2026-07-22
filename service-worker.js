@@ -1,4 +1,4 @@
-const CACHE='gym-premium-v5-7-images-reports';
+const CACHE='gym-premium-v5-8-home-pdf-images';
 const CORE=[
   './','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest',
   './icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png','./favicon.png','./favicon.ico',

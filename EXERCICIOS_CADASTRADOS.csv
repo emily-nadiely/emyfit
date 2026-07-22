@@ -14,11 +14,13 @@ abductor;Cadeira abdutora;Glúteos;Cadeira abdutora;abductor.webp
 extension;Cadeira extensora;Pernas;Cadeira extensora;extension.webp
 curl;Cadeira flexora;Pernas;Flexora sentada;curl.webp
 cable_kickback;Coice de glúteo no cabo;Glúteos;Polia baixa e tornozeleira;cable_kickback.webp
+cable_fly;Crucifixo no crossover;Peito;Crossover / polia dupla;cable_fly.gif
 shoulder;Desenvolvimento de ombros na máquina;Ombros;Shoulder press;shoulder.webp
 shoulder_db;Desenvolvimento sentado com halteres;Ombros;Banco e halteres;shoulder_db.webp
-lateral;Elevação lateral na máquina;Ombros;Máquina de elevação lateral;sem imagem
+lateral;Elevação lateral na máquina;Ombros;Máquina de elevação lateral;
 lateral_cable;Elevação lateral unilateral na polia;Ombros;Polia baixa;lateral_cable.webp
 hip;Elevação pélvica na máquina;Glúteos;Hip thrust / glute drive;hip.webp
+curl_standing;Flexora em pé unilateral;Pernas;Flexora vertical / em pé;curl_standing.webp
 glute;Glúteo na máquina;Glúteos;Glúteo máquina;glute.webp
 hack_squat;Hack squat 45°;Pernas;Hack squat;hack_squat.webp
 hip_thrust_barbell;Hip thrust com barra;Glúteos;Banco e barra livre;hip_thrust_barbell.webp
@@ -34,11 +36,13 @@ side_plank;Prancha lateral;Abdômen e core;Peso corporal;side_plank.webp
 pulldown_close;Puxada alta com pegada fechada;Costas;Polia alta e pegador fechado;pulldown_close.webp
 pulldown_behind_neck;Puxada atrás da nuca;Costas;Polia alta;pulldown_behind_neck.webp
 pulldown;Puxada frontal na polia;Costas;Pulley / puxada alta;pulldown.webp
+upright_row_barbell;Remada alta com barra;Ombros;Barra livre;upright_row_barbell.webp
 row_machine;Remada articulada com apoio no peito;Costas;Remada articulada;row_machine.webp
 row;Remada baixa sentada na polia;Costas;Remada baixa na polia;row.webp
 rear_delt_row_db;Remada curvada com halteres e cotovelos abertos;Ombros;Halteres;rear_delt_row_db.webp
 one_arm_row_db;Remada unilateral com halter;Costas;Banco e halter;one_arm_row_db.webp
 armcurl;Rosca Scott com barra;Braços;Banco Scott / barra;armcurl.webp
+armcurl_machine;Rosca Scott na máquina;Braços;Máquina Scott / preacher curl;armcurl_machine.webp
 curl_concentration;Rosca concentrada com halter;Braços;Banco e halter;curl_concentration.webp
 curl_barbell;Rosca direta com barra;Braços;Barra livre;curl_barbell.webp
 curl_incline_db;Rosca inclinada com halteres;Braços;Banco inclinado e halteres;curl_incline_db.webp

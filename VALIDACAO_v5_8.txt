@@ -1,0 +1,13 @@
+VALIDAÇÃO GYM PREMIUM v5.8
+
+- Sintaxe do app.js validada com Node.js: OK.
+- Página Início aberta com perfil, peso e plano preenchidos: OK.
+- Navegação Início → Relatórios → Início: OK.
+- Botão Gerar PDF e seletor de período: OK.
+- Relatório de progresso gerado e renderizado em 2 páginas A4: OK.
+- Seções do PDF: peso/medidas, exercícios, cardio, fadiga e histórico: OK.
+- Cinco imagens testadas no treino com dimensões naturais válidas: OK.
+- Novos exercícios disponíveis no catálogo: OK.
+- Erros de JavaScript durante o teste: nenhum.
+
+Teste automatizado executado em Chromium headless em 22/07/2026.
