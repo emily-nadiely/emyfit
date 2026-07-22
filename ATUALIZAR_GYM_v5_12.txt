@@ -1,0 +1,20 @@
+GYM PREMIUM v5.12 — BIBLIOTECA AMPLIADA
+
+1. Antes de atualizar, sincronize e exporte o backup.
+2. Extraia o ZIP.
+3. Envie todos os arquivos e subpastas ao GitHub, mantendo a estrutura.
+4. Mantenha o config.js atual. Não substitua suas chaves.
+5. Aguarde a publicação e feche completamente o aplicativo antes de abrir novamente.
+
+ALTERAÇÕES
+- Biblioteca ampliada para 225 exercícios cadastrados.
+- Inclusão de exercícios com barra, halteres, kettlebell, banco, polias, peso corporal, faixas e novas máquinas.
+- Exercícios sem imagem correta permanecem sem foto.
+- A quantidade de exercícios não aparece mais na página inicial.
+- Planos com preferência "misto" passam a utilizar mais exercícios livres.
+- A preferência entre aparelhos e treino misto pode ser alterada depois em Perfil > Foco do plano.
+- As áreas de foco usam uma seleção maior de exercícios.
+
+Para aplicar a nova divisão a uma conta antiga:
+Perfil > Foco do plano > Alterar áreas de foco > Salvar e gerar novo plano.
+O histórico concluído permanece salvo.

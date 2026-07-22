@@ -1,4 +1,4 @@
-const CACHE='gym-premium-v5-11-focus-account';
+const CACHE='gym-premium-v5-12-full-library';
 const CORE=[
   './','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest',
   './icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png','./favicon.png','./favicon.ico',
