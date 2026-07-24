@@ -1,0 +1,18 @@
+GYM PREMIUM v5.15 — ÚLTIMA CARGA E SÉRIES EXTRAS
+
+NOVIDADES
+- Ao iniciar um exercício já realizado, o app preenche a carga e as repetições da última sessão.
+- Os valores aparecem apenas como referência e continuam editáveis.
+- Todas as séries começam desmarcadas.
+- O botão “Adicionar série” cria uma série extra copiando os valores da série anterior.
+- Séries extras podem ser removidas.
+- É possível tornar a nova quantidade de séries o padrão daquele exercício no plano atual.
+- Exercícios nunca realizados continuam com os campos vazios.
+
+ATUALIZAÇÃO
+1. No app atual, sincronize e exporte o backup.
+2. Extraia o ZIP.
+3. Envie todos os arquivos e subpastas para a raiz do GitHub.
+4. Preserve o config.js já configurado.
+5. Aguarde o GitHub Pages publicar.
+6. Feche completamente o aplicativo e abra novamente.

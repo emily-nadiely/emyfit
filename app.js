@@ -108,11 +108,11 @@ function applyFocusEmphasis(tpl,p){const focuses=normalizedFocusAreas(p.focusAre
  return tpl}
 
 
-function blankState(){const now=new Date().toISOString();return {profile:null,plan:null,sessions:[],metrics:[],pain:[],recoveryCheckins:[],active:null,settings:{theme:'dark'},meta:{createdAt:now,updatedAt:now,version:'5.14.0'}}}
+function blankState(){const now=new Date().toISOString();return {profile:null,plan:null,sessions:[],metrics:[],pain:[],recoveryCheckins:[],active:null,settings:{theme:'dark'},meta:{createdAt:now,updatedAt:now,version:'5.15.0'}}}
 let state=blankState();
 function localKey(){return 'emyfit_pro_state_'+(currentUser?.id||'demo')}
 function loadLocal(){try{state={...blankState(),...JSON.parse(localStorage.getItem(localKey())||'{}')}}catch{state=blankState()}normalizeState()}
-function touchState(){state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),version:'5.14.0'}}
+function touchState(){state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),version:'5.15.0'}}
 function saveLocal(scheduleCloud=true){touchState();try{localStorage.setItem(localKey(),JSON.stringify(state))}catch(err){console.warn('Falha ao salvar localmente',err)}if(scheduleCloud)scheduleCloudSave()}
 let saveTimer=null,cloudWriteChain=Promise.resolve();function scheduleCloudSave(){if(!cloud||!currentUser)return;clearTimeout(saveTimer);saveTimer=setTimeout(syncUp,300)}
 function syncUp(){if(!cloud||!currentUser)return Promise.resolve(false);const snapshot=JSON.parse(JSON.stringify(state));cloudWriteChain=cloudWriteChain.catch(()=>false).then(async()=>{const {error}=await cloud.from('user_app_state').upsert({user_id:currentUser.id,data:snapshot,updated_at:new Date().toISOString()});if(error){console.warn(error);return false}return true});return cloudWriteChain}
@@ -123,7 +123,7 @@ async function syncDown(){if(!cloud||!currentUser)return false;let local=null;tr
 
 function normalizeState(){
  const all=Object.keys(CARDIO);
- state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:state.meta?.updatedAt||state.meta?.createdAt||'',version:'5.14.0'};
+ state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:state.meta?.updatedAt||state.meta?.createdAt||'',version:'5.15.0'};
  if(!Array.isArray(state.recoveryCheckins))state.recoveryCheckins=[];
  if(!Array.isArray(state.sessions))state.sessions=[];
  if(!Array.isArray(state.metrics))state.metrics=[];
@@ -690,5 +690,90 @@ reportsScreen=function(){
  return html.includes(anchor)?html.replace(anchor,`${muscleRecoveryPanel()}${anchor}`):`${html}${muscleRecoveryPanel()}`;
 };
 /* ===== fim do patch v5.14 ===== */
+
+
+/* ===== GYM v5.15 — última carga e séries extras ===== */
+function safeInputValue(value){
+ return String(value??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function lastExercisePerformance(exerciseId){
+ const sessions=Array.isArray(state.sessions)?state.sessions:[];
+ for(const session of sessions.slice().reverse()){
+  const exercise=(session?.exercises||[]).find(item=>item?.id===exerciseId);
+  if(!exercise)continue;
+  const sets=(exercise.sets||[]).filter(set=>{
+   if(!set)return false;
+   const hasKg=set.kg!==''&&set.kg!==null&&typeof set.kg!=='undefined';
+   const hasReps=set.reps!==''&&set.reps!==null&&typeof set.reps!=='undefined';
+   return (set.done!==false||hasKg||hasReps)&&(hasKg||hasReps);
+  }).map(set=>({kg:set.kg??'',reps:set.reps??''}));
+  if(sets.length)return {date:session.date||'',sets};
+ }
+ return null;
+}
+function activeExerciseFromHistory(exerciseId,setCount){
+ const count=Math.max(1,+setCount||1),previous=lastExercisePerformance(exerciseId),source=previous?.sets||[];
+ const sets=Array.from({length:count},(_,index)=>{
+  const prior=source.length?source[Math.min(index,source.length-1)]:null;
+  return {kg:prior?.kg??'',reps:prior?.reps??'',done:false,extra:false};
+ });
+ return {id:exerciseId,sets,lastPerformanceDate:previous?.date||null};
+}
+function performanceSetText(set){
+ const kg=set?.kg!==''&&set?.kg!==null&&typeof set?.kg!=='undefined'?`${set.kg} kg`:'';
+ const reps=set?.reps!==''&&set?.reps!==null&&typeof set?.reps!=='undefined'?`${set.reps} reps`:'';
+ return [kg,reps].filter(Boolean).join(' × ')||'sem valores';
+}
+function previousPerformanceHtml(exerciseId){
+ const previous=lastExercisePerformance(exerciseId);if(!previous)return '';
+ const values=previous.sets.map(performanceSetText),unique=[...new Set(values)],summary=unique.length===1?unique[0]:values.slice(0,3).join(' · ')+(values.length>3?'…':'');
+ return `<div class="last-performance"><span>Última vez${previous.date?` · ${fmt(previous.date)}`:''}</span><b>${summary}</b><small>Os valores foram preenchidos como referência e podem ser alterados.</small></div>`;
+}
+function plannedSetsForActiveExercise(exerciseId){
+ const day=(state.plan?.days||[]).find(item=>item.id===state.active?.dayId),exercise=(day?.exercises||[]).find(item=>item.id===exerciseId);
+ return Math.max(1,+exercise?.sets||+EX[exerciseId]?.sets||1);
+}
+function addSetToActive(exerciseIndex){
+ const exercise=state.active?.exercises?.[exerciseIndex];if(!exercise)return;
+ const previous=exercise.sets?.[exercise.sets.length-1]||{kg:'',reps:''};
+ exercise.sets=exercise.sets||[];
+ exercise.sets.push({kg:previous.kg??'',reps:previous.reps??'',done:false,extra:true});
+ saveLocal();renderApp();toast('Série extra adicionada.');
+}
+function removeSetFromActive(exerciseIndex,setIndex){
+ const exercise=state.active?.exercises?.[exerciseIndex];if(!exercise||!exercise.sets?.[setIndex])return;
+ const planned=plannedSetsForActiveExercise(exercise.id),isExtra=exercise.sets[setIndex].extra===true||setIndex>=planned;
+ if(!isExtra)return toast('Somente séries extras podem ser removidas.');
+ if(exercise.sets[setIndex].done&&!confirm('Esta série já foi marcada como concluída. Remover mesmo assim?'))return;
+ exercise.sets.splice(setIndex,1);saveLocal();renderApp();toast('Série extra removida.');
+}
+function makeCurrentSetCountDefault(exerciseIndex){
+ const activeExercise=state.active?.exercises?.[exerciseIndex],day=(state.plan?.days||[]).find(item=>item.id===state.active?.dayId),planExercise=(day?.exercises||[]).find(item=>item.id===activeExercise?.id);
+ if(!activeExercise||!planExercise)return;
+ planExercise.sets=activeExercise.sets.length;
+ activeExercise.sets.forEach(set=>set.extra=false);
+ saveLocal();renderApp();toast(`${activeExercise.sets.length} séries definidas como padrão neste treino.`);
+}
+startWorkout=function(dayId){
+ const day=state.plan?.days?.find(item=>item.id===dayId);if(!day)return;
+ state.active={id:uid(),dayId,date:today(),startedAt:Date.now(),exercises:day.exercises.map(item=>activeExerciseFromHistory(item.id,item.sets)),cardio:0,cardioSuggested:day.cardio||0,cardioType:day.cardioType||'bike_h',cardioOptions:Object.keys(CARDIO),finishDraft:{didCardio:null,cardio:'',cardioType:day.cardioType||'bike_h',speed:'',incline:'',level:'',distance:'',pace:'',floors:'',hadDiscomfort:null,discomfortRegion:'',discomfortIntensity:0,discomfortNote:'',rpe:7,notes:''}};
+ saveLocal();screen='workout';renderApp();
+};
+addExerciseToActive=function(id){
+ const exercise=EX[id];if(!state.active||!exercise)return;if(state.active.exercises.some(item=>item.id===id))return toast('Este exercício já está no treino.');
+ state.active.exercises.push(activeExerciseFromHistory(id,exercise.sets));saveLocal();closeModal();renderApp();toast('Exercício adicionado ao treino atual.');
+};
+replaceExerciseManual=function(index,id){
+ const exercise=EX[id];if(!state.active||!exercise)return;state.active.exercises[index]=activeExerciseFromHistory(id,exercise.sets);saveLocal();closeModal();renderApp();toast('Exercício trocado.');
+};
+applyReplacement=function(index,id){
+ const exercise=EX[id];if(!state.active||!exercise)return;state.active.exercises[index]=activeExerciseFromHistory(id,exercise.sets);saveLocal();closeModal();renderApp();toast('Substituição aplicada.');
+};
+activeExercise=function(item,exerciseIndex){
+ const exercise=EX[item.id],sets=Array.isArray(item.sets)?item.sets:[],complete=sets.length>0&&sets.every(set=>set.done);if(!exercise)return '';
+ const planned=plannedSetsForActiveExercise(item.id),hasExtra=sets.length>planned;
+ return `<div class="card workout-card">${exerciseMedia(item.id,exercise)}<div class="exercise-row"><div><div class="row wrap"><span class="pill">${exercise.machine}</span><span class="pill ${complete?'good':''}">${complete?'concluído':exercise.pattern}</span></div><h3 style="margin-top:9px">${exercise.name}</h3><p class="why">${exercise.why}</p></div><button class="btn secondary sm" onclick="exerciseDetail('${item.id}')">${icon('info')}</button></div>${previousPerformanceHtml(item.id)}<div class="row wrap"><button class="btn ghost sm" onclick="replacement('${item.id}',${exerciseIndex})">Trocar exercício</button><button class="btn ghost sm" onclick="startRest(${exercise.rest})">${icon('clock')} ${exercise.rest}s</button><button class="btn danger sm" onclick="removeActiveExercise(${exerciseIndex})">Remover</button></div><div class="set-head set-grid-v515"><span>#</span><span>kg</span><span>reps</span><span></span><span></span></div>${sets.map((set,setIndex)=>{const isExtra=set.extra===true||setIndex>=planned;return `<div class="set-row set-grid-v515 ${isExtra?'extra-set':''}"><b>${setIndex+1}${isExtra?'<small>extra</small>':''}</b><input inputmode="decimal" value="${safeInputValue(set.kg)}" placeholder="kg" oninput="setValue(${exerciseIndex},${setIndex},'kg',this.value)"><input inputmode="numeric" value="${safeInputValue(set.reps)}" placeholder="reps" oninput="setValue(${exerciseIndex},${setIndex},'reps',this.value)"><button class="set-check ${set.done?'done':''}" onclick="toggleSet(${exerciseIndex},${setIndex},${exercise.rest})">${set.done?icon('check'):'○'}</button>${isExtra?`<button class="set-remove" aria-label="Remover série extra" onclick="removeSetFromActive(${exerciseIndex},${setIndex})">×</button>`:'<span></span>'}</div>`}).join('')}<div class="set-actions"><button class="btn secondary sm" onclick="addSetToActive(${exerciseIndex})">${icon('plus')} Adicionar série</button>${hasExtra?`<button class="btn ghost sm" onclick="makeCurrentSetCountDefault(${exerciseIndex})">Usar ${sets.length} séries como padrão</button>`:''}</div></div>`;
+};
+/* ===== fim do patch v5.15 ===== */
 
 boot();
