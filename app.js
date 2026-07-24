@@ -108,11 +108,11 @@ function applyFocusEmphasis(tpl,p){const focuses=normalizedFocusAreas(p.focusAre
  return tpl}
 
 
-function blankState(){const now=new Date().toISOString();return {profile:null,plan:null,sessions:[],metrics:[],pain:[],recoveryCheckins:[],active:null,settings:{theme:'dark'},meta:{createdAt:now,updatedAt:now,version:'5.13.0'}}}
+function blankState(){const now=new Date().toISOString();return {profile:null,plan:null,sessions:[],metrics:[],pain:[],recoveryCheckins:[],active:null,settings:{theme:'dark'},meta:{createdAt:now,updatedAt:now,version:'5.14.0'}}}
 let state=blankState();
 function localKey(){return 'emyfit_pro_state_'+(currentUser?.id||'demo')}
 function loadLocal(){try{state={...blankState(),...JSON.parse(localStorage.getItem(localKey())||'{}')}}catch{state=blankState()}normalizeState()}
-function touchState(){state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),version:'5.13.0'}}
+function touchState(){state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),version:'5.14.0'}}
 function saveLocal(scheduleCloud=true){touchState();try{localStorage.setItem(localKey(),JSON.stringify(state))}catch(err){console.warn('Falha ao salvar localmente',err)}if(scheduleCloud)scheduleCloudSave()}
 let saveTimer=null,cloudWriteChain=Promise.resolve();function scheduleCloudSave(){if(!cloud||!currentUser)return;clearTimeout(saveTimer);saveTimer=setTimeout(syncUp,300)}
 function syncUp(){if(!cloud||!currentUser)return Promise.resolve(false);const snapshot=JSON.parse(JSON.stringify(state));cloudWriteChain=cloudWriteChain.catch(()=>false).then(async()=>{const {error}=await cloud.from('user_app_state').upsert({user_id:currentUser.id,data:snapshot,updated_at:new Date().toISOString()});if(error){console.warn(error);return false}return true});return cloudWriteChain}
@@ -123,7 +123,7 @@ async function syncDown(){if(!cloud||!currentUser)return false;let local=null;tr
 
 function normalizeState(){
  const all=Object.keys(CARDIO);
- state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:state.meta?.updatedAt||state.meta?.createdAt||'',version:'5.13.0'};
+ state.meta={...(state.meta||{}),createdAt:state.meta?.createdAt||new Date().toISOString(),updatedAt:state.meta?.updatedAt||state.meta?.createdAt||'',version:'5.14.0'};
  if(!Array.isArray(state.recoveryCheckins))state.recoveryCheckins=[];
  if(!Array.isArray(state.sessions))state.sessions=[];
  if(!Array.isArray(state.metrics))state.metrics=[];
@@ -588,5 +588,107 @@ coachAnswer=async function(){
 
 setTimeout(updateInstallButtons,0);
 /* ===== fim do patch v5.13 ===== */
+
+/* ===== GYM v5.14 — mapa visual de fadiga muscular ===== */
+let muscleRecoveryTab='current';
+let muscleRecoveryHistoryDays=7;
+
+function recoveryVisualInfo(item){
+ if(!item||item.days===null)return {key:'none',label:'Sem dados',color:'#686970'};
+ if(item.fatigue>=55)return {key:'high',label:'Fadiga alta',color:'#ff3b3b'};
+ if(item.fatigue>=35)return {key:'moderate',label:'Fadiga moderada',color:'#ff8a1f'};
+ if(item.fatigue>=18)return {key:'light',label:'Fadiga leve',color:'#f1c80f'};
+ return {key:'ready',label:'Recuperado',color:'#67c83f'};
+}
+function recoveryMap(){return Object.fromEntries(recoveryData().map(item=>[item.id,item]))}
+function muscleRegion(tag,group,attrs,map){
+ const item=map[group],visual=recoveryVisualInfo(item),label=GROUP_LABELS[group]||group,status=item?.days===null?'sem dados':`${visual.label}, ${item?.fatigue||0}% de fadiga estimada`;
+ return `<${tag} ${attrs} class="muscle-region muscle-${visual.key}" fill="${visual.color}" role="button" tabindex="0" aria-label="${label}: ${status}" onclick="openMuscleRecovery('${group}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMuscleRecovery('${group}')}"/>`;
+}
+function muscleBodySvg(compact=false){
+ const map=recoveryMap(),frontX=compact?100:135,backX=compact?300:405,scale=compact?.78:1;
+ const f=frontX,b=backX;
+ return `<svg class="muscle-body-svg ${compact?'compact':''}" viewBox="0 0 540 355" role="img" aria-label="Mapa frontal e posterior de fadiga muscular">
+  <text x="${f}" y="20" class="body-view-label" text-anchor="middle">Frente</text><text x="${b}" y="20" class="body-view-label" text-anchor="middle">Costas</text>
+  <g transform="translate(${f-135} 0) scale(${scale}) translate(${(f-135)*(1/scale-1)} 0)">
+   <circle class="body-base" cx="135" cy="48" r="22"/><path class="body-base" d="M126 68h18l5 17-14 11-14-11z"/>
+   <path class="body-base" d="M99 82Q135 64 171 82L164 171Q135 188 106 171Z"/>
+   <path class="body-base" d="M101 87C82 94 73 115 67 145L59 194 76 198 90 151 108 108Z"/>
+   <path class="body-base" d="M169 87C188 94 197 115 203 145L211 194 194 198 180 151 162 108Z"/>
+   <path class="body-base" d="M109 169 102 249 109 325 130 325 137 247 135 181Z"/>
+   <path class="body-base" d="M161 169 168 249 161 325 140 325 133 247 135 181Z"/>
+   ${muscleRegion('ellipse','shoulders',`cx="103" cy="91" rx="18" ry="14"`,map)}${muscleRegion('ellipse','shoulders',`cx="167" cy="91" rx="18" ry="14"`,map)}
+   ${muscleRegion('path','chest',`d="M108 91Q121 78 133 89L132 119Q116 122 106 108Z"`,map)}${muscleRegion('path','chest',`d="M162 91Q149 78 137 89L138 119Q154 122 164 108Z"`,map)}
+   ${muscleRegion('path','arms',`d="M88 99Q74 111 72 139L83 145 98 112Z"`,map)}${muscleRegion('path','arms',`d="M182 99Q196 111 198 139L187 145 172 112Z"`,map)}
+   ${muscleRegion('path','arms',`d="M70 142 61 190 75 194 85 148Z"`,map)}${muscleRegion('path','arms',`d="M200 142 209 190 195 194 185 148Z"`,map)}
+   ${muscleRegion('path','core',`d="M119 121Q135 116 151 121L153 165Q135 174 117 165Z"`,map)}
+   ${muscleRegion('path','legs',`d="M108 174Q121 168 133 180L130 246 108 245 102 204Z"`,map)}${muscleRegion('path','legs',`d="M162 174Q149 168 137 180L140 246 162 245 168 204Z"`,map)}
+   ${muscleRegion('path','calves',`d="M108 248Q122 242 130 253L126 316 109 318 103 278Z"`,map)}${muscleRegion('path','calves',`d="M162 248Q148 242 140 253L144 316 161 318 167 278Z"`,map)}
+  </g>
+  <g transform="translate(${b-405} 0) scale(${scale}) translate(${(b-405)*(1/scale-1)} 0)">
+   <circle class="body-base" cx="405" cy="48" r="22"/><path class="body-base" d="M396 68h18l5 17-14 11-14-11z"/>
+   <path class="body-base" d="M369 82Q405 64 441 82L434 171Q405 188 376 171Z"/>
+   <path class="body-base" d="M371 87C352 94 343 115 337 145L329 194 346 198 360 151 378 108Z"/>
+   <path class="body-base" d="M439 87C458 94 467 115 473 145L481 194 464 198 450 151 432 108Z"/>
+   <path class="body-base" d="M379 169 372 249 379 325 400 325 407 247 405 181Z"/>
+   <path class="body-base" d="M431 169 438 249 431 325 410 325 403 247 405 181Z"/>
+   ${muscleRegion('ellipse','shoulders',`cx="373" cy="91" rx="18" ry="14"`,map)}${muscleRegion('ellipse','shoulders',`cx="437" cy="91" rx="18" ry="14"`,map)}
+   ${muscleRegion('path','back',`d="M385 78Q405 68 425 78L434 113 405 129 376 113Z"`,map)}
+   ${muscleRegion('path','back',`d="M376 105Q389 111 402 128L397 166 376 155 367 122Z"`,map)}${muscleRegion('path','back',`d="M434 105Q421 111 408 128L413 166 434 155 443 122Z"`,map)}
+   ${muscleRegion('path','arms',`d="M358 99Q344 111 342 139L353 145 368 112Z"`,map)}${muscleRegion('path','arms',`d="M452 99Q466 111 468 139L457 145 442 112Z"`,map)}
+   ${muscleRegion('path','arms',`d="M340 142 331 190 345 194 355 148Z"`,map)}${muscleRegion('path','arms',`d="M470 142 479 190 465 194 455 148Z"`,map)}
+   ${muscleRegion('path','core',`d="M396 128Q405 121 414 128L416 166Q405 174 394 166Z"`,map)}
+   ${muscleRegion('ellipse','glutes',`cx="391" cy="184" rx="17" ry="20"`,map)}${muscleRegion('ellipse','glutes',`cx="419" cy="184" rx="17" ry="20"`,map)}
+   ${muscleRegion('path','legs',`d="M378 202Q391 194 403 204L400 248 378 246 372 218Z"`,map)}${muscleRegion('path','legs',`d="M432 202Q419 194 407 204L410 248 432 246 438 218Z"`,map)}
+   ${muscleRegion('path','calves',`d="M378 249Q392 243 400 254L396 316 379 318 373 278Z"`,map)}${muscleRegion('path','calves',`d="M432 249Q418 243 410 254L414 316 431 318 437 278Z"`,map)}
+  </g>
+ </svg>`;
+}
+function recoveryLegend(){return `<div class="muscle-legend"><span><i class="ready"></i>Recuperado</span><span><i class="light"></i>Fadiga leve</span><span><i class="moderate"></i>Fadiga moderada</span><span><i class="high"></i>Fadiga alta</span><span><i class="none"></i>Sem dados</span></div>`}
+function recoverySummary(){
+ const data=recoveryData(),withData=data.filter(x=>x.days!==null),most=withData.slice().sort((a,b)=>b.fatigue-a.fatigue)[0],ready=withData.filter(x=>x.fatigue<18).sort((a,b)=>a.fatigue-b.fatigue).slice(0,2);
+ const readyText=ready.length?ready.map(x=>x.label).join(' e '):(withData.length?withData.slice().sort((a,b)=>a.fatigue-b.fatigue).slice(0,2).map(x=>x.label).join(' e '):'Sem dados suficientes');
+ return `<div class="muscle-summary"><button onclick="${most?`openMuscleRecovery('${most.id}')`:`openAllMuscleRecovery()`}"><span class="summary-icon fatigue">⌁</span><span><small>Mais fatigado hoje</small><b>${most?most.label:'Sem dados suficientes'}</b></span><span class="summary-arrow">›</span></button><button onclick="openAllMuscleRecovery()"><span class="summary-icon ready">✓</span><span><small>Pronto para treinar</small><b>${readyText}</b></span><span class="summary-arrow">›</span></button></div>`;
+}
+function setMuscleRecoveryTab(tab){muscleRecoveryTab=tab==='history'?'history':'current';renderApp();scrollTo(0,0)}
+function setMuscleHistoryDays(days){muscleRecoveryHistoryDays=[7,14,28].includes(+days)?+days:7;renderApp()}
+function recoveryHistoryData(days){
+ const start=startOfDaysAgo(days),map=Object.fromEntries(Object.entries(GROUP_LABELS).map(([id,label])=>[id,{id,label,sets:0,sessions:0,lastDate:null}]));
+ for(const s of state.sessions||[]){if(new Date(s.date+'T12:00:00')<start)continue;const touched=new Set();for(const ex of s.exercises||[]){const completed=(ex.sets||[]).filter(a=>a.done||(+a.kg>0&&+a.reps>0)).length;if(!completed)continue;for(const group of EX_GROUPS[ex.id]||[]){if(!map[group])continue;map[group].sets+=completed;map[group].lastDate=!map[group].lastDate||s.date>map[group].lastDate?s.date:map[group].lastDate;touched.add(group)}}for(const group of touched)map[group].sessions++}
+ return Object.values(map).sort((a,b)=>b.sets-a.sets||a.label.localeCompare(b.label,'pt-BR'));
+}
+function muscleRecoveryHistoryHtml(){
+ const rows=recoveryHistoryData(muscleRecoveryHistoryDays),max=Math.max(1,...rows.map(x=>x.sets)),has=rows.some(x=>x.sets>0);
+ return `<div class="history-periods">${[7,14,28].map(d=>`<button class="${muscleRecoveryHistoryDays===d?'active':''}" onclick="setMuscleHistoryDays(${d})">${d} dias</button>`).join('')}</div>${has?`<div class="muscle-history-list">${rows.map(x=>{const current=recoveryMap()[x.id],visual=recoveryVisualInfo(current);return `<button onclick="openMuscleRecovery('${x.id}')"><span class="history-dot" style="background:${visual.color}"></span><span class="history-main"><b>${x.label}</b><small>${x.sets} séries em ${x.sessions} treino${x.sessions===1?'':'s'}${x.lastDate?` · último estímulo ${fmt(x.lastDate)}`:''}</small><i><em style="width:${Math.max(4,x.sets/max*100)}%"></em></i></span><span class="summary-arrow">›</span></button>`}).join('')}</div>`:`<div class="recovery-empty-visual"><b>Sem treinos neste período</b><span>Conclua uma sessão para visualizar o histórico muscular.</span></div>`}`;
+}
+function muscleRecoveryPanel(){
+ const current=muscleRecoveryTab==='current';
+ return `<div class="recovery-tabs"><button class="${current?'active':''}" onclick="setMuscleRecoveryTab('current')">Visão atual</button><button class="${!current?'active':''}" onclick="setMuscleRecoveryTab('history')">Histórico</button></div><div class="card premium-recovery muscle-map-card"><div class="muscle-map-heading"><div class="muscle-map-icon">💪</div><div><h3>Fadiga muscular</h3><p>Acompanhe a recuperação dos principais grupos musculares.</p></div><button class="map-info" onclick="modal('<span class=&quot;eyebrow&quot;>COMO FUNCIONA</span><h2>Mapa de fadiga muscular</h2><p>A estimativa combina tempo desde o treino, séries concluídas, esforço geral, desconforto informado e seu check-in. As cores ajudam na organização do treino, mas não representam diagnóstico ou medição clínica.</p>')">i</button></div>${current?`<div class="muscle-map-stage">${muscleBodySvg(false)}</div>${recoveryLegend()}${recoverySummary()}<div class="muscle-map-actions"><button class="btn secondary" onclick="recoveryCheckinModal()">Atualizar check-in</button><button class="btn ghost" onclick="openAllMuscleRecovery()">Ver detalhes ${icon('arrow')}</button></div>`:muscleRecoveryHistoryHtml()}</div>`;
+}
+function muscleRecoveryHomeCard(){
+ const summary=recoverySummary();
+ return `<div class="card premium-recovery muscle-map-card muscle-map-home"><div class="muscle-map-heading"><div class="muscle-map-icon">💪</div><div><span class="eyebrow">FADIGA MUSCULAR</span><h3>Mapa de recuperação</h3><p>Toque em uma região para ver os detalhes.</p></div></div><div class="muscle-map-stage compact-stage">${muscleBodySvg(true)}</div>${summary}<div class="muscle-map-actions"><button class="btn secondary" onclick="recoveryCheckinModal()">Atualizar check-in</button><button class="btn ghost" onclick="setScreen('reports')">Abrir mapa completo ${icon('arrow')}</button></div></div>`;
+}
+function openMuscleRecovery(id){
+ const item=recoveryMap()[id]||{id,label:GROUP_LABELS[id]||id,days:null,fatigue:0,recentSets:0,recentSessions:0,status:'Sem dados',detail:'Ainda sem treino registrado',recommendation:'Conclua um treino para iniciar a estimativa.'},visual=recoveryVisualInfo(item);
+ modal(`<span class="eyebrow">DETALHE MUSCULAR</span><h2>${item.label}</h2><div class="muscle-detail-status"><i style="background:${visual.color}"></i><div><b>${visual.label}</b><span>${item.days===null?'Sem estímulo recente':`${item.fatigue}% de fadiga estimada`}</span></div></div><div class="grid grid2"><div class="metric"><b>${item.recentSets||0}</b><span>séries nos últimos 6 dias</span></div><div class="metric"><b>${item.days===null?'—':item.days===0?'Hoje':item.days===1?'Ontem':`${item.days} dias`}</b><span>último estímulo</span></div></div><div class="notice"><b>Orientação</b><br>${item.recommendation}</div><p class="muted small">Esta informação é uma estimativa de organização do treino, não uma avaliação clínica.</p>`);
+}
+function openAllMuscleRecovery(){
+ const rows=recoveryData().slice().sort((a,b)=>(b.days!==null)-(a.days!==null)||b.fatigue-a.fatigue);
+ modal(`<span class="eyebrow">FADIGA MUSCULAR</span><h2>Detalhes por grupo</h2><div class="modal-muscle-list">${rows.map(item=>{const v=recoveryVisualInfo(item);return `<button onclick="closeModal();openMuscleRecovery('${item.id}')"><i style="background:${v.color}"></i><span><b>${item.label}</b><small>${v.label}${item.days===null?'':` · ${item.fatigue}%`}</small></span><span>›</span></button>`}).join('')}</div><div class="recovery-method"><b>Como a estimativa é calculada</b><span>Tempo desde cada treino, séries concluídas, esforço geral, desconforto informado e check-in de sono, energia e cansaço muscular.</span></div>`);
+}
+
+const homeScreenV513MuscleMap=homeScreen;
+homeScreen=function(){
+ const html=homeScreenV513MuscleMap();
+ return html.replace('<div class="section-title">',`${muscleRecoveryHomeCard()}<div class="section-title">`);
+};
+const reportsScreenV513MuscleMap=reportsScreen;
+reportsScreen=function(){
+ const html=reportsScreenV513MuscleMap();
+ const anchor='<div class="card"><div class="row between"><div><h3>Peso e medidas</h3>';
+ return html.includes(anchor)?html.replace(anchor,`${muscleRecoveryPanel()}${anchor}`):`${html}${muscleRecoveryPanel()}`;
+};
+/* ===== fim do patch v5.14 ===== */
 
 boot();

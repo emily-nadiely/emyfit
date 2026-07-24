@@ -1,0 +1,24 @@
+GYM PREMIUM v5.14 — MAPA VISUAL DE FADIGA MUSCULAR
+
+NOVIDADES
+- Mapa corporal frontal e posterior com cores dinâmicas por grupo muscular.
+- Verde: recuperado.
+- Amarelo: fadiga leve.
+- Laranja: fadiga moderada.
+- Vermelho: fadiga alta.
+- Cinza: sem dados recentes.
+- Cada região do corpo pode ser tocada para abrir os detalhes.
+- Resumo com o grupo mais fatigado e os grupos mais prontos para treinar.
+- Aba Histórico com períodos de 7, 14 e 28 dias.
+- Tela inicial recebe uma versão compacta do mapa.
+- A aba Relatórios recebe o mapa completo.
+
+ATUALIZAÇÃO NO GITHUB
+1. Sincronize os dados no aplicativo e exporte um backup.
+2. Extraia este ZIP.
+3. Envie todos os arquivos e subpastas para a raiz do repositório.
+4. Preserve o config.js que já está configurado no GitHub.
+5. Aguarde o GitHub Pages concluir a publicação.
+6. Feche completamente o aplicativo e abra novamente.
+
+O mapa é uma estimativa para organização do treino. Não representa diagnóstico ou medição clínica.

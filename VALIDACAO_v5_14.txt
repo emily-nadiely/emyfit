@@ -1,0 +1,8 @@
+VALIDAÇÃO GYM PREMIUM v5.14
+
+- Sintaxe JavaScript verificada com Node.js.
+- Mapa SVG frontal e posterior incluído sem depender de imagens externas.
+- Cores ligadas aos dados reais de recuperação por grupo muscular.
+- Regiões clicáveis com detalhes e orientação.
+- Visão atual e histórico de 7, 14 e 28 dias incluídos.
+- Cache do service worker atualizado para v5.14.

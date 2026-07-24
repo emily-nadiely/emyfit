@@ -1,4 +1,4 @@
-# GYM Premium v5.13
+# GYM Premium v5.14
 
 Atualização de experiência do treino e relatórios:
 
@@ -10,3 +10,6 @@ Atualização de experiência do treino e relatórios:
 - geração de planos com maior diversidade entre os dias.
 
 As imagens aparecem somente quando existe uma ilustração correta para o exercício.
+
+
+A v5.14 adiciona mapa corporal frontal e posterior para visualização dinâmica da fadiga muscular.
