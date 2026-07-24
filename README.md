@@ -1,7 +1,12 @@
-# GYM Premium v5.12
+# GYM Premium v5.13
 
-Biblioteca ampliada com **225 exercícios**, incluindo opções em máquinas, barras, halteres, kettlebells, polias, faixas e peso corporal.
+Atualização de experiência do treino e relatórios:
 
-As imagens aparecem somente nos exercícios para os quais existe uma ilustração correspondente. Exercícios sem imagem permanecem disponíveis normalmente.
+- cardio e desconforto com perguntas condicionais;
+- registro de séries simplificado, sem RIR;
+- cartões por grupos musculares e duração estimada;
+- filtros completos da biblioteca de 225 exercícios;
+- relatórios com frequência, recordes e evolução das cargas;
+- geração de planos com maior diversidade entre os dias.
 
-A versão mantém login, sincronização, relatórios, PDF, focos personalizados e exclusão de conta.
+As imagens aparecem somente quando existe uma ilustração correta para o exercício.

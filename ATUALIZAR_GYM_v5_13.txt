@@ -1,0 +1,28 @@
+GYM PREMIUM v5.13 — AJUSTES APROVADOS
+
+ANTES DE ATUALIZAR
+1. No app atual, toque em Sincronizar agora.
+2. Exporte o backup.
+3. Extraia o ZIP.
+4. Envie todos os arquivos e subpastas para a raiz do GitHub, mantendo a estrutura.
+5. Preserve o seu config.js atual. Não substitua as chaves do Supabase.
+6. Aguarde a publicação, feche completamente o app e abra novamente.
+
+ALTERAÇÕES DESTA VERSÃO
+- Nova frase na abertura da aba Relatórios.
+- Pergunta “Você fez cardio hoje?” com Sim ou Não.
+- Campos de cardio aparecem somente quando a resposta é Sim.
+- Tempo de cardio começa vazio/zerado, sem usar a sugestão do plano.
+- Pergunta condicional sobre desconforto, com região, intensidade e observação.
+- Campo RIR removido do treino, histórico, Coach, recuperação e relatórios.
+- “Volume por sessão” removido da aba Relatórios e do PDF.
+- Cartões mostram grupos musculares trabalhados e duração estimada, em vez de listar aparelhos.
+- Progresso do treino permanece no formato 4/7, sem barra adicional.
+- Busca de exercícios ganhou filtros por grupo, equipamento e nível.
+- Relatórios agora destacam frequência, comparação com período anterior, duração média, recordes pessoais, exercícios mais realizados e evolução das cargas.
+- Botão Instalar fica oculto quando o PWA é aberto como aplicativo instalado.
+- Novos planos recebem verificação adicional para evitar exercícios repetidos entre os dias.
+
+CONTAS ANTIGAS
+O histórico permanece compatível. Para aplicar a divisão mais variada ao plano atual:
+Perfil > Alterar foco e estilo do treino > Salvar e gerar novo plano.

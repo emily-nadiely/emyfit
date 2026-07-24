@@ -1,0 +1,15 @@
+GYM PREMIUM v5.13 — AJUSTES APROVADOS
+
+Implementado:
+- nova frase na aba Relatórios;
+- cardio com pergunta Sim/Não e tempo inicial vazio;
+- desconforto condicional por região e intensidade;
+- remoção do RIR das telas, relatórios e lógica nova;
+- remoção do volume por sessão;
+- grupos musculares e duração estimada nos cartões;
+- filtros por grupo, equipamento e nível;
+- relatórios com frequência, comparação, recordes, exercícios mais realizados e duração média;
+- botão Instalar oculto no modo PWA;
+- diversificação automática dos planos novos.
+
+Histórico antigo permanece compatível.
