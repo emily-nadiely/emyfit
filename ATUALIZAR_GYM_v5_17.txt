@@ -1,0 +1,9 @@
+GYM Premium v5.17 — correção de largura/zoom
+
+O que foi ajustado:
+- correção de overflow horizontal que deixava a tela de Relatórios com aspecto de zoom
+- cards e seções principais limitados à largura da tela
+- barra inferior travada ao viewport
+- cache do service worker atualizado para forçar a nova versão
+
+Se o app estiver instalado como PWA, após publicar esta versão vale fechar e abrir novamente o app para carregar os arquivos novos.
