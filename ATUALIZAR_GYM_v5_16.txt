@@ -1,0 +1,12 @@
+GYM Premium v5.16 — mapa muscular refinado
+
+O que foi ajustado:
+1. Refinado o mapa de fadiga muscular com visual mais limpo.
+2. Corrigido o corte dos bonecos na tela inicial e em Relatórios.
+3. Melhorado o encaixe responsivo do mapa em telas menores.
+4. Mantidas as funções de clique por região muscular e resumo de recuperação.
+
+Como atualizar:
+- Substitua os arquivos do app por esta versão.
+- Publique novamente no mesmo projeto/hosting.
+- Limpe o cache do navegador/app ou reinstale o PWA após publicar.

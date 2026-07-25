@@ -13,3 +13,8 @@ As imagens aparecem somente quando existe uma ilustração correta para o exerc�
 
 
 A v5.15 adiciona mapa corporal frontal e posterior para visualização dinâmica da fadiga muscular.
+
+
+## Atualização v5.16
+- Mapa de fadiga muscular refinado e responsivo.
+- Correção do corte dos bonecos na Home e em Relatórios.

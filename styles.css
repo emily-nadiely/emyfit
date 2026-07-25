@@ -171,3 +171,16 @@ html,body{background:
 .last-performance{margin:12px 0;padding:11px 13px;border:1px solid rgba(239,79,148,.28);border-radius:15px;background:linear-gradient(135deg,rgba(239,79,148,.10),rgba(255,255,255,.025));display:grid;gap:3px}.last-performance span{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:800}.last-performance b{font-size:14px;color:var(--text)}.last-performance small{font-size:11px;color:var(--muted)}
 .set-head.set-grid-v515,.set-row.set-grid-v515{grid-template-columns:38px minmax(68px,1fr) minmax(68px,1fr) 44px 38px}.set-row.extra-set{padding:6px;border:1px dashed rgba(239,79,148,.35);border-radius:14px;background:rgba(239,79,148,.045)}.set-row> b small{display:block;font-size:8px;text-transform:uppercase;color:var(--accent2);letter-spacing:.05em}.set-remove{width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,104,116,.35);background:rgba(255,104,116,.10);color:#ff8790;font-size:22px;line-height:1}.set-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.set-actions .btn{flex:1;min-width:145px}
 @media(max-width:430px){.set-head.set-grid-v515,.set-row.set-grid-v515{grid-template-columns:28px minmax(58px,1fr) minmax(58px,1fr) 40px 34px;gap:5px}.set-row.extra-set{padding:5px}.set-remove{width:32px;height:36px}}
+
+
+/* ===== GYM v5.16 — mapa muscular refinado ===== */
+.muscle-map-card{overflow:visible}
+.muscle-map-stage{padding:16px 12px 8px;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.05),transparent 62%);overflow:visible;display:flex;justify-content:center;align-items:center}
+.muscle-map-home .muscle-map-stage,.muscle-map-home .compact-stage{padding:10px 0 4px}
+.muscle-body-svg{display:block;width:100%;max-width:640px;height:auto;max-height:none;margin:0 auto}
+.muscle-body-svg.compact{max-width:560px}
+.muscle-legend{justify-content:center}
+.muscle-summary{margin-top:12px}
+@media(max-width:620px){.muscle-map-stage{padding:14px 6px 6px}.muscle-body-svg,.muscle-body-svg.compact{max-width:100%}.muscle-legend{justify-content:flex-start}}
+@media(max-width:390px){.muscle-map-stage,.muscle-map-home .compact-stage{margin:0;padding-left:0;padding-right:0}.muscle-body-svg,.muscle-body-svg.compact{min-width:0!important;transform:none!important}}
+/* ===== fim do patch v5.16 ===== */

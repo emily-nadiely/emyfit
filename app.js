@@ -777,3 +777,70 @@ activeExercise=function(item,exerciseIndex){
 /* ===== fim do patch v5.15 ===== */
 
 boot();
+
+
+/* ===== GYM v5.16 — mapa muscular refinado ===== */
+function muscleBodySvg(compact=false){
+ const map=recoveryMap();
+ const width=compact?520:640,height=compact?360:430;
+ const frontX=compact?145:190,backX=compact?375:455,figureY=compact?28:34,scale=compact?0.92:1.08;
+ const labelY=compact?0:22;
+ const labelClass='body-view-label';
+ function frontFigure(x,y){
+  return `<g transform="translate(${x} ${y}) scale(${scale})">
+   <circle class="body-base" cx="0" cy="20" r="18"/>
+   <path class="body-base" d="M-8 38h16l4 11-12 9-12-9z"/>
+   <path class="body-base" d="M-34 54Q0 40 34 54L28 138Q0 158-28 138Z"/>
+   <path class="body-base" d="M-36 60Q-58 71 -64 103L-58 140 -41 145 -28 79Z"/>
+   <path class="body-base" d="M36 60Q58 71 64 103L58 140 41 145 28 79Z"/>
+   <path class="body-base" d="M-24 138 -32 214 -26 296 -8 296 1 214 0 151Z"/>
+   <path class="body-base" d="M24 138 32 214 26 296 8 296 -1 214 0 151Z"/>
+   ${muscleRegion('ellipse','shoulders',`cx="-36" cy="61" rx="18" ry="14"`,map)}
+   ${muscleRegion('ellipse','shoulders',`cx="36" cy="61" rx="18" ry="14"`,map)}
+   ${muscleRegion('path','chest',`d="M-29 60Q-12 49 -2 60L-4 93Q-18 97 -30 82Z"`,map)}
+   ${muscleRegion('path','chest',`d="M29 60Q12 49 2 60L4 93Q18 97 30 82Z"`,map)}
+   ${muscleRegion('path','arms',`d="M-40 70Q-54 79 -56 104L-45 109 -28 77Z"`,map)}
+   ${muscleRegion('path','arms',`d="M40 70Q54 79 56 104L45 109 28 77Z"`,map)}
+   ${muscleRegion('path','arms',`d="M-56 105 -64 188 -49 191 -41 109Z"`,map)}
+   ${muscleRegion('path','arms',`d="M56 105 64 188 49 191 41 109Z"`,map)}
+   ${muscleRegion('path','core',`d="M-16 96Q0 88 16 96L18 133Q0 145 -18 133Z"`,map)}
+   ${muscleRegion('path','legs',`d="M-22 145Q-8 139 -1 154L-4 213 -27 212 -31 173Z"`,map)}
+   ${muscleRegion('path','legs',`d="M22 145Q8 139 1 154L4 213 27 212 31 173Z"`,map)}
+   ${muscleRegion('path','calves',`d="M-27 214Q-13 208 -5 220L-8 287 -24 289 -30 241Z"`,map)}
+   ${muscleRegion('path','calves',`d="M27 214Q13 208 5 220L8 287 24 289 30 241Z"`,map)}
+  </g>`;
+ }
+ function backFigure(x,y){
+  return `<g transform="translate(${x} ${y}) scale(${scale})">
+   <circle class="body-base" cx="0" cy="20" r="18"/>
+   <path class="body-base" d="M-8 38h16l4 11-12 9-12-9z"/>
+   <path class="body-base" d="M-34 54Q0 40 34 54L28 138Q0 158-28 138Z"/>
+   <path class="body-base" d="M-36 60Q-58 71 -64 103L-58 140 -41 145 -28 79Z"/>
+   <path class="body-base" d="M36 60Q58 71 64 103L58 140 41 145 28 79Z"/>
+   <path class="body-base" d="M-24 138 -32 214 -26 296 -8 296 1 214 0 151Z"/>
+   <path class="body-base" d="M24 138 32 214 26 296 8 296 -1 214 0 151Z"/>
+   ${muscleRegion('ellipse','shoulders',`cx="-36" cy="61" rx="18" ry="14"`,map)}
+   ${muscleRegion('ellipse','shoulders',`cx="36" cy="61" rx="18" ry="14"`,map)}
+   ${muscleRegion('path','back',`d="M-22 52Q0 41 22 52L33 86 0 102 -33 86Z"`,map)}
+   ${muscleRegion('path','back',`d="M-33 82Q-16 88 -4 108L-9 136 -31 124 -39 96Z"`,map)}
+   ${muscleRegion('path','back',`d="M33 82Q16 88 4 108L9 136 31 124 39 96Z"`,map)}
+   ${muscleRegion('path','arms',`d="M-40 70Q-54 79 -56 104L-45 109 -28 77Z"`,map)}
+   ${muscleRegion('path','arms',`d="M40 70Q54 79 56 104L45 109 28 77Z"`,map)}
+   ${muscleRegion('path','arms',`d="M-56 105 -64 188 -49 191 -41 109Z"`,map)}
+   ${muscleRegion('path','arms',`d="M56 105 64 188 49 191 41 109Z"`,map)}
+   ${muscleRegion('path','core',`d="M-8 108Q0 100 8 108L10 135Q0 145 -10 135Z"`,map)}
+   ${muscleRegion('ellipse','glutes',`cx="-15" cy="156" rx="17" ry="19"`,map)}
+   ${muscleRegion('ellipse','glutes',`cx="15" cy="156" rx="17" ry="19"`,map)}
+   ${muscleRegion('path','legs',`d="M-28 172Q-14 166 -2 176L-4 215 -26 214 -33 187Z"`,map)}
+   ${muscleRegion('path','legs',`d="M28 172Q14 166 2 176L4 215 26 214 33 187Z"`,map)}
+   ${muscleRegion('path','calves',`d="M-26 215Q-13 208 -5 220L-8 287 -24 289 -30 242Z"`,map)}
+   ${muscleRegion('path','calves',`d="M26 215Q13 208 5 220L8 287 24 289 30 242Z"`,map)}
+  </g>`;
+ }
+ return `<svg class="muscle-body-svg ${compact?'compact':''}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa frontal e posterior de fadiga muscular">
+  ${compact?'':`<text x="${frontX}" y="${labelY}" class="${labelClass}" text-anchor="middle">Frente</text><text x="${backX}" y="${labelY}" class="${labelClass}" text-anchor="middle">Costas</text>`}
+  ${frontFigure(frontX,figureY)}
+  ${backFigure(backX,figureY)}
+ </svg>`;
+}
+/* ===== fim do patch v5.16 ===== */
