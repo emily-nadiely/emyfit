@@ -1,0 +1,22 @@
+GYM Premium v5.18 — evolução corporal e acompanhamento
+
+Principais novidades:
+- evolução corporal ampliada: peso, pescoço, ombros, tórax/busto, braços, antebraços, cintura, abdômen, quadril, coxas e panturrilhas
+- gordura corporal e massa muscular apenas quando informadas pelo usuário
+- gráfico visual selecionável por medida
+- comparação entre duas datas
+- edição e exclusão de registros corporais
+- calendário mensal de treinos
+- recorde pessoal avisado durante o treino
+- evolução percentual de carga por exercício
+- aviso de reavaliação ao fim do ciclo
+- configuração de equipamentos disponíveis na academia
+- Coach com ações rápidas
+- status de última sincronização no Perfil
+- relatório PDF atualizado com medidas ampliadas
+
+Atualização:
+1. Sincronize e exporte o backup.
+2. Envie todos os arquivos e subpastas ao GitHub.
+3. Preserve o config.js atual.
+4. Aguarde a publicação e reabra o PWA.
