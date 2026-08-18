@@ -1,0 +1,12 @@
+GYM Premium v5.19 — Coach e Histórico
+
+Ajustes:
+- lista de exercícios do Coach em ordem alfabética
+- campo de busca por nome do exercício
+- contador de resultados da busca
+- exercício selecionado preservado ao trocar a ação rápida do Coach
+- correção da aba Histórico do mapa de fadiga muscular
+- reforço do Histórico corporal
+- cache atualizado para a v5.19
+
+Publique todos os arquivos e subpastas. Preserve o config.js já configurado no seu projeto.

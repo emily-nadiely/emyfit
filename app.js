@@ -974,3 +974,64 @@ generateProgressPdf=function(){
 }
 
 /* ===== fim do patch v5.18 ===== */
+
+
+/* ===== GYM v5.19 — busca do Coach + histórico corrigido ===== */
+let coachExerciseQuery='';
+let coachSelectedExerciseId=null;
+function coachSortedExercises(query=''){
+ const q=String(query||'').trim().toLocaleLowerCase('pt-BR');
+ return Object.entries(EX)
+  .filter(([id,e])=>!q||String(e?.name||'').toLocaleLowerCase('pt-BR').includes(q)||String(e?.machine||'').toLocaleLowerCase('pt-BR').includes(q))
+  .sort((a,b)=>String(a[1]?.name||'').localeCompare(String(b[1]?.name||''),'pt-BR',{sensitivity:'base'}));
+}
+function coachExerciseOptions(query=''){
+ const list=coachSortedExercises(query);
+ if(!list.length)return '<option value="">Nenhum exercício encontrado</option>';
+ const activeId=state.active?.exercises?.[0]?.id;
+ const availableIds=new Set(list.map(([id])=>id));
+ let selected=coachSelectedExerciseId;
+ if(!selected||!availableIds.has(selected))selected=(activeId&&availableIds.has(activeId))?activeId:list[0][0];
+ coachSelectedExerciseId=selected;
+ return list.map(([id,e])=>`<option value="${id}" ${id===selected?'selected':''}>${e.name}</option>`).join('');
+}
+function filterCoachExerciseList(value){
+ coachExerciseQuery=value||'';
+ const select=document.getElementById('coachEx'),count=document.getElementById('coachExCount');
+ if(!select)return;
+ select.innerHTML=coachExerciseOptions(coachExerciseQuery);
+ if(count)count.textContent=`${coachSortedExercises(coachExerciseQuery).length} exercício${coachSortedExercises(coachExerciseQuery).length===1?'':'s'} encontrado${coachSortedExercises(coachExerciseQuery).length===1?'':'s'}`;
+}
+function rememberCoachExercise(value){if(value)coachSelectedExerciseId=value;}
+coachScreen=function(){
+ const matches=coachSortedExercises(coachExerciseQuery);
+ return `<section class="hero"><span class="eyebrow">COACH</span><h2>Resolva o que apareceu no treino.</h2><p>Escolha uma ação rápida ou faça uma pergunta específica.</p></section><div class="card"><label>Procurar exercício</label><input id="coachExSearch" type="search" value="${safeInputValue(coachExerciseQuery)}" placeholder="Digite o nome do exercício" autocomplete="off" oninput="filterCoachExerciseList(this.value)"><div class="row between" style="margin:7px 2px 2px"><label style="margin:0">Exercício atual</label><span id="coachExCount" class="muted small">${matches.length} exercício${matches.length===1?'':'s'} encontrado${matches.length===1?'':'s'}</span></div><select id="coachEx" onchange="rememberCoachExercise(this.value)">${coachExerciseOptions(coachExerciseQuery)}</select><p class="muted small" style="margin-top:7px">Lista em ordem alfabética. Você pode digitar parte do nome para filtrar.</p><div class="coach-quick-grid"><button type="button" class="coach-quick ${coachQuickIntent==='occupied'?'active':''}" onclick="setCoachQuick('occupied')"><b>Equipamento ocupado</b><small>Buscar substituição equivalente</small></button><button type="button" class="coach-quick ${coachQuickIntent==='free'?'active':''}" onclick="setCoachQuick('free')"><b>Quero opção livre</b><small>Halteres, barra ou peso corporal</small></button><button type="button" class="coach-quick ${coachQuickIntent==='pain'?'active':''}" onclick="setCoachQuick('pain')"><b>Senti desconforto</b><small>Orientação conservadora</small></button><button type="button" class="coach-quick ${coachQuickIntent==='load'?'active':''}" onclick="setCoachQuick('load')"><b>Aumento a carga?</b><small>Usar histórico recente</small></button><button type="button" class="coach-quick ${coachQuickIntent==='technique'?'active':''}" onclick="setCoachQuick('technique')"><b>Revisar execução</b><small>Pontos de técnica</small></button></div><select id="coachIntent" class="hidden"><option value="${coachQuickIntent}" selected>${coachQuickIntent}</option></select>${coachQuickIntent==='pain'?`<label>Desconforto agora (0–10)</label><input id="coachPain" type="range" min="0" max="10" value="0">`:'<input id="coachPain" type="hidden" value="0">'}<label>Pergunta adicional</label><textarea id="coachQuestion" placeholder="Ex.: só tenho halteres disponíveis"></textarea><button type="button" class="btn primary block" style="margin-top:13px" onclick="coachAnswer()">${icon('coach')} Analisar</button></div><div id="coachResult"></div><div class="card"><h3>Limites do Coach</h3><p class="muted small">Não diagnostica nem substitui avaliação presencial. Em dor forte, sintomas importantes ou piora progressiva, interrompa e procure avaliação.</p></div>`;
+};
+setCoachQuick=function(intent){
+ const current=document.getElementById('coachEx');if(current?.value)coachSelectedExerciseId=current.value;
+ const search=document.getElementById('coachExSearch');if(search)coachExerciseQuery=search.value||'';
+ coachQuickIntent=intent;renderApp();
+};
+
+/* Histórico da fadiga: mantém a aba e o scroll, sem depender de um clique frágil. */
+setMuscleRecoveryTab=function(tab){
+ muscleRecoveryTab=tab==='history'?'history':'current';
+ const y=window.scrollY||0;screen='reports';renderApp();
+ requestAnimationFrame(()=>window.scrollTo({top:y,behavior:'auto'}));
+};
+setMuscleHistoryDays=function(days){
+ muscleRecoveryHistoryDays=[7,14,28].includes(+days)?+days:7;
+ const y=window.scrollY||0;screen='reports';renderApp();
+ requestAnimationFrame(()=>window.scrollTo({top:y,behavior:'auto'}));
+};
+const muscleRecoveryPanelV519=muscleRecoveryPanel;
+muscleRecoveryPanel=function(){
+ const current=muscleRecoveryTab==='current';
+ return `<div class="recovery-tabs" role="tablist" aria-label="Fadiga muscular"><button type="button" role="tab" aria-selected="${current?'true':'false'}" class="${current?'active':''}" onclick="setMuscleRecoveryTab('current')">Visão atual</button><button type="button" role="tab" aria-selected="${!current?'true':'false'}" class="${!current?'active':''}" onclick="setMuscleRecoveryTab('history')">Histórico</button></div><div class="card premium-recovery muscle-map-card"><div class="muscle-map-heading"><div class="muscle-map-icon">💪</div><div><h3>Fadiga muscular</h3><p>Acompanhe a recuperação dos principais grupos musculares.</p></div><button type="button" class="map-info" onclick="modal('<span class=&quot;eyebrow&quot;>COMO FUNCIONA</span><h2>Mapa de fadiga muscular</h2><p>A estimativa combina tempo desde o treino, séries concluídas, esforço geral, desconforto informado e seu check-in. As cores ajudam na organização do treino, mas não representam diagnóstico ou medição clínica.</p>')">i</button></div>${current?`<div class="muscle-map-stage">${muscleBodySvg(false)}</div>${recoveryLegend()}${recoverySummary()}<div class="muscle-map-actions"><button type="button" class="btn secondary" onclick="recoveryCheckinModal()">Atualizar check-in</button><button type="button" class="btn ghost" onclick="openAllMuscleRecovery()">Ver detalhes ${icon('arrow')}</button></div>`:muscleRecoveryHistoryHtml()}</div>`;
+};
+/* Histórico corporal: botão reforçado e atualização preservada. */
+bodyHistoryModal=function(){
+ const list=state.metrics||[];
+ modal(`<span class="eyebrow">HISTÓRICO CORPORAL</span><h2>Todos os registros</h2><p class="muted small">${list.length} registro${list.length===1?'':'s'} salvo${list.length===1?'':'s'}.</p>${bodyHistoryHtml(200)}`);
+};
+/* ===== fim do patch v5.19 ===== */
