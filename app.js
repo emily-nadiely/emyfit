@@ -20,19 +20,8 @@ function exerciseMedia(id,e,extraClass=''){
   const fallback=FILE_EXERCISE_MEDIA[id]||'';
   return `<div class="exercise-media anatomical-media ${extraClass}"><img src="${src}" data-fallback="${fallback}" alt="Ilustração anatômica de ${e.name}, com a musculatura trabalhada destacada" loading="lazy" decoding="async" onerror="handleExerciseImageError(this)"></div>`;
 }
-function brandMark(){return `<svg class="gym-mark" viewBox="0 0 120 120" role="img" aria-label="GYM"><rect x="3" y="3" width="114" height="114" rx="30" fill="#15131b" stroke="#6fe356" stroke-width="4"/><path d="M46 52 60 64 74 52 87 63v18L60 105 33 81V63z" fill="none" stroke="#6fe356" stroke-width="7" stroke-linejoin="round"/><path d="M18 55h11m-6-10v20m74-10h-6m3-10v20M29 49v12m62-12v12" stroke="#6fe356" stroke-width="7" stroke-linecap="round"/><path d="m48 30 8-12 7 10 9-12 9 14" fill="none" stroke="#f0c35a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M47 34h36" stroke="#f0c35a" stroke-width="6" stroke-linecap="round"/></svg>`}
-
-const icon=n=>`<svg class="icon"><use href="#i-${n}"></use></svg>`;
-const today=()=>new Date().toISOString().slice(0,10);
-const uid=()=>crypto.randomUUID?.()||Math.random().toString(36).slice(2);
-const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-
-const EVIDENCE={
- acsm:{title:'ACSM Position Stand — Resistance Training (2026)',note:'A programação prioriza regularidade, esforço adequado, progressão e trabalho dos grandes grupos musculares; complexidade não substitui consistência.',url:'https://acsm.org/resistance-training-guidelines-update-2026/'},
- who:{title:'WHO Guidelines on Physical Activity',note:'A meta de cardio é progressiva e considera a recomendação populacional de 150–300 min/semana de atividade moderada, respeitando tolerância individual.',url:'https://www.who.int/publications/i/item/9789240015128'},
- obesity:{title:'Lopez et al. — Systematic review and meta-analysis',note:'Programas baseados em treinamento resistido podem melhorar composição corporal em pessoas com sobrepeso ou obesidade, especialmente em abordagem multicomponente.',url:'https://pubmed.ncbi.nlm.nih.gov/35191588/'},
- knee:{title:'Resistance training and knee symptoms — systematic reviews',note:'Fortalecimento pode integrar o manejo de sintomas e função, mas dose, amplitude e seleção precisam ser individualizadas e interrompidas diante de sinais de alerta.',url:'https://pubmed.ncbi.nlm.nih.gov/38980284/'}
+function brandMark(){
+ return `<img class="gym-brand-img" src="./gym-icon-v62-512.png?v=6.2" alt="GYM">`;
 };
 
 const CARDIO={"treadmill":{"name":"Esteira","short":"esteira","desc":"Caminhada ou trote com velocidade e inclinação controladas.","impact":"médio"},"elliptical":{"name":"Elíptico","short":"elíptico","desc":"Cardio contínuo com baixo impacto.","impact":"baixo"},"bike_h":{"name":"Bike horizontal","short":"bike horizontal","desc":"Opção estável e confortável para maior suporte.","impact":"baixo"},"bike_v":{"name":"Bike vertical","short":"bike vertical","desc":"Bicicleta ergométrica tradicional ou spinning.","impact":"baixo"},"walk":{"name":"Caminhada externa","short":"caminhada","desc":"Cardio fora da academia com ritmo registrado.","impact":"baixo"},"stair":{"name":"Escada","short":"escada","desc":"Escada ergométrica com nível ajustável.","impact":"médio"},"rower":{"name":"Remo ergométrico","short":"remo","desc":"Cardio que integra pernas, tronco e braços.","impact":"baixo"},"jump_rope":{"name":"Pular corda","short":"corda","desc":"Cardio de maior impacto e coordenação.","impact":"alto"},"curved_treadmill":{"name":"Esteira curva manual","short":"esteira curva","desc":"Caminhada ou corrida em esteira sem motor.","impact":"médio"}};
@@ -1036,11 +1025,11 @@ bodyHistoryModal=function(){
 
 
 /* ===== GYM v6.0 INDIVIDUAL ===== */
-const GYM_V60='6.1.0';
+const GYM_V60='6.2.0';
 let bodyChartPeriod='all';
 
 function brandMark(){
- return `<svg class="gym-mark" viewBox="0 0 120 120" role="img" aria-label="GYM"><defs><linearGradient id="gymBrandGradient" x1="25" y1="18" x2="96" y2="104" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d8ffb8"/><stop offset=".42" stop-color="#a5f47b"/><stop offset="1" stop-color="#63d947"/></linearGradient></defs><rect x="3" y="3" width="114" height="114" rx="30" fill="#0b100c"/><circle cx="60" cy="59" r="33" fill="none" stroke="url(#gymBrandGradient)" stroke-width="15" stroke-linecap="round" stroke-dasharray="168 55" transform="rotate(-36 60 59)"/><path d="M61 65h31" fill="none" stroke="url(#gymBrandGradient)" stroke-width="13" stroke-linecap="round"/><path d="M91 58v15" fill="none" stroke="url(#gymBrandGradient)" stroke-width="7" stroke-linecap="round"/></svg>`;
+ return `<img class="gym-brand-img" src="./gym-icon-v62-512.png?v=6.2" alt="GYM">`;
 }
 
 const normalizeStateV60Base=normalizeState;
@@ -1176,7 +1165,7 @@ const profileScreenV60Base=profileScreen;
 profileScreen=function(){
  let html=profileScreenV60Base(),prefs=exercisePrefs(),t=state.profile?.trainingPrefs||{};
  const block=`<div class="card"><h3>Avaliação e preferências</h3><p class="muted small">${t.experience==='beginner'?'Iniciante':t.experience==='advanced'?'Avançada':'Intermediária'} · ${t.preferredDuration||state.profile?.duration||60} min por treino · ${prefs.favorite.length} favoritos · ${prefs.avoid.length} evitados.</p><div class="grid grid2"><button class="btn secondary block" onclick="trainingAssessmentModal(false)">Atualizar avaliação</button><button class="btn ghost block" onclick="exercisePreferencesModal()">Favoritos e evitados</button></div></div>`;
- const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.1 Individual');return html;
+ const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.2 Individual');return html;
 };
 
 const reportsScreenV60Base=reportsScreen;
@@ -1197,5 +1186,34 @@ homeScreen=function(){
 recoveryBlock=function(limit=8,detailed=false){const arr=recoveryData().filter(x=>x.days!==null).sort((a,b)=>b.fatigue-a.fatigue).slice(0,limit);if(!arr.length)return '<p class="muted small">Conclua seus primeiros treinos para acompanhar a fadiga por grupo muscular.</p>';return `<div class="recovery-grid recovery-grid-v2">${arr.map(x=>`<div class="recovery-item recovery-item-v2"><div class="row between"><b>${x.label}</b><span class="pill ${x.cls}">${x.status}</span></div><div class="fatigue-bar"><span class="${x.cls}" style="width:${x.fatigue}%"></span></div><div class="recovery-meta"><span>Fadiga estimada: <b>${x.fatigue}%</b></span><span>${x.detail}</span></div>${detailed?`<p>${x.recommendation}</p>`:''}</div>`).join('')}</div><div class="recovery-method"><b>Como a estimativa é calculada</b><span>Tempo desde cada treino, séries concluídas, esforço geral da sessão, desconforto informado e check-in de sono, energia e cansaço. É uma orientação de organização, não uma medição fisiológica.</span></div>`};
 
 /* ===== fim GYM v6.0 INDIVIDUAL ===== */
+
+
+/* ===== GYM v6.2 — logo consistente + relatório do mês atual ===== */
+const reportPeriodDataV62Base=reportPeriodData;
+reportPeriodData=function(period){
+ if(period!=='month')return reportPeriodDataV62Base(period);
+ const now=new Date(),year=now.getFullYear(),month=now.getMonth();
+ const start=new Date(year,month,1);start.setHours(0,0,0,0);
+ const end=new Date(year,month+1,1);end.setHours(0,0,0,0);
+ const sessions=(state.sessions||[]).filter(item=>{const d=new Date(item.date+'T12:00:00');return d>=start&&d<end});
+ const metrics=(state.metrics||[]).filter(item=>{const d=new Date(item.date+'T12:00:00');return d>=start&&d<end});
+ return {sessions,metrics,start:`${year}-${String(month+1).padStart(2,'0')}-01`,end:today(),label:`${start.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}`};
+};
+function currentMonthReportLabel(){
+ const txt=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+ return txt.charAt(0).toUpperCase()+txt.slice(1);
+}
+const reportsScreenV62Base=reportsScreen;
+reportsScreen=function(){
+ let html=reportsScreenV62Base();
+ const option30='<option value="30">Últimos 30 dias</option>';
+ const option90='<option value="90" selected>Últimos 90 dias</option>';
+ if(html.includes(option30)){
+  html=html.replace(option30,`<option value="month" selected>Mês atual — ${currentMonthReportLabel()}</option>${option30}`);
+  html=html.replace(option90,'<option value="90">Últimos 90 dias</option>');
+ }
+ return html;
+};
+/* ===== fim v6.2 ===== */
 
 boot();

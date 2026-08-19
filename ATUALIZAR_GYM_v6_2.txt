@@ -1,0 +1,11 @@
+GYM v6.2 Individual
+
+AJUSTES DESTA VERSÃO
+- Logo do app refeita com símbolo simples e proporcional de halter, mantendo grafite + verde.
+- A mesma arte agora é usada dentro da interface e nos arquivos do PWA para evitar diferença/deformação.
+- Todos os ícones antigos de compatibilidade também foram substituídos pela nova arte.
+- Manifest, favicon, Apple Touch Icon e Service Worker atualizados para v6.2.
+- Relatórios agora incluem a opção “Mês atual”, do dia 1º até hoje, além de 30/90/180 dias e todo o histórico.
+
+IMPORTANTE SOBRE O ÍCONE JÁ INSTALADO NO ANDROID
+O Android/Chrome pode manter o ícone e a tela de abertura do WebAPK já instalado. Depois de publicar v6.2 e confirmar que os dados estão sincronizados, remova apenas o app instalado e instale-o novamente pelo navegador para o novo ícone aparecer imediatamente. Não limpe os dados do site antes de confirmar a sincronização.
