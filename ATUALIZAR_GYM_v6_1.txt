@@ -1,0 +1,13 @@
+GYM v6.1 Individual — ajustes visuais
+
+Alterações:
+1. O tempo da sessão não fica mais solto no topo da tela. Agora aparece dentro do cabeçalho do treino em andamento, junto com o progresso das séries e o botão Pausar/Retomar.
+2. Novo ícone do GYM: símbolo minimalista, sem o halter separado e sem borda chamativa.
+3. O ícone do PWA usa NOVOS nomes físicos de arquivo (gym-icon-v61-...), para evitar o cache do ícone antigo no Android/Chrome.
+4. Manifesto e service worker atualizados para v6.1.
+
+IMPORTANTE AO ATUALIZAR O APP INSTALADO:
+- primeiro sincronize seus dados na nuvem e mantenha um backup;
+- publique todos os arquivos desta versão;
+- feche e abra o app novamente;
+- se o ícone da tela inicial continuar antigo, remova somente o atalho/app instalado e instale novamente pelo navegador. Não apague os dados do site antes de confirmar a sincronização.

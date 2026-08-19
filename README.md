@@ -26,3 +26,9 @@ Evolução corporal ampliada, calendário, recordes, reavaliação de ciclo, equ
 
 ## GYM v6.0 Individual
 Atualização individual com nova identidade neutra, evolução corporal avançada, progressão inteligente, preferências por exercício, calendário, cronômetro de sessão e reavaliação de ciclo. A modalidade professor/aluno permanece fora desta versão.
+
+
+## v6.1 Individual
+- Novo ícone do app e do PWA.
+- Tempo da sessão integrado ao cabeçalho do treino, sem painel solto no topo.
+- Cache/manifesto atualizados para melhorar a troca do ícone instalado.

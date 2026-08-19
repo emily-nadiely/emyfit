@@ -1036,11 +1036,11 @@ bodyHistoryModal=function(){
 
 
 /* ===== GYM v6.0 INDIVIDUAL ===== */
-const GYM_V60='6.0.0';
+const GYM_V60='6.1.0';
 let bodyChartPeriod='all';
 
 function brandMark(){
- return `<svg class="gym-mark" viewBox="0 0 120 120" role="img" aria-label="GYM"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0b100c" stroke="#76dc55" stroke-width="4"/><path d="M76 35a30 30 0 1 0 5 39H61" fill="none" stroke="#c9ffb4" stroke-width="9" stroke-linecap="round"/><path d="M61 74h25" stroke="#c9ffb4" stroke-width="9" stroke-linecap="round"/><path d="M25 91h13m44 0h13M38 84v14m44-14v14M42 91h36" fill="none" stroke="#76dc55" stroke-width="7" stroke-linecap="round"/></svg>`;
+ return `<svg class="gym-mark" viewBox="0 0 120 120" role="img" aria-label="GYM"><defs><linearGradient id="gymBrandGradient" x1="25" y1="18" x2="96" y2="104" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d8ffb8"/><stop offset=".42" stop-color="#a5f47b"/><stop offset="1" stop-color="#63d947"/></linearGradient></defs><rect x="3" y="3" width="114" height="114" rx="30" fill="#0b100c"/><circle cx="60" cy="59" r="33" fill="none" stroke="url(#gymBrandGradient)" stroke-width="15" stroke-linecap="round" stroke-dasharray="168 55" transform="rotate(-36 60 59)"/><path d="M61 65h31" fill="none" stroke="url(#gymBrandGradient)" stroke-width="13" stroke-linecap="round"/><path d="M91 58v15" fill="none" stroke="url(#gymBrandGradient)" stroke-width="7" stroke-linecap="round"/></svg>`;
 }
 
 const normalizeStateV60Base=normalizeState;
@@ -1144,11 +1144,11 @@ function progressionDashboard(){
 
 function workoutElapsedSeconds(){if(!state.active)return 0;const now=state.active.pausedAt?+state.active.pausedAt:Date.now();return Math.max(0,Math.floor((now-(+state.active.startedAt||now)-(+state.active.pausedMs||0))/1000))}
 function pauseWorkoutV60(){if(!state.active)return;if(state.active.pausedAt){state.active.pausedMs=(+state.active.pausedMs||0)+(Date.now()-+state.active.pausedAt);state.active.pausedAt=null;toast('Treino retomado.')}else{state.active.pausedAt=Date.now();toast('Treino pausado.')}saveLocal();renderApp()}
-function liveWorkoutStatus(){const sec=workoutElapsedSeconds(),done=(state.active?.exercises||[]).reduce((n,e)=>n+(e.sets||[]).filter(s=>s.done).length,0),total=(state.active?.exercises||[]).reduce((n,e)=>n+(e.sets||[]).length,0);return `<div class="v6-workout-status"><div><small>${state.active?.pausedAt?'TREINO PAUSADO':'TEMPO DE TREINO'} · ${done}/${total} séries concluídas</small><b id="workoutLiveTime">${timeText(sec)}</b></div><button type="button" class="btn secondary sm" onclick="pauseWorkoutV60()">${state.active?.pausedAt?'Retomar':'Pausar'}</button></div>`}
+function liveWorkoutStatus(){const sec=workoutElapsedSeconds(),done=(state.active?.exercises||[]).reduce((n,e)=>n+(e.sets||[]).filter(s=>s.done).length,0),total=(state.active?.exercises||[]).reduce((n,e)=>n+(e.sets||[]).length,0);return `<div class="v61-workout-session"><div class="v61-session-time"><span>${state.active?.pausedAt?'Treino pausado':'Tempo da sessão'}</span><b id="workoutLiveTime">${timeText(sec)}</b></div><div class="v61-session-progress"><span>${done}/${total}</span><small>séries concluídas</small></div><button type="button" class="btn secondary sm" onclick="pauseWorkoutV60()">${state.active?.pausedAt?'Retomar':'Pausar'}</button></div>`}
 setInterval(()=>{const el=document.getElementById('workoutLiveTime');if(el&&state.active&&!state.active.pausedAt)el.textContent=timeText(workoutElapsedSeconds())},1000);
 
 const workoutScreenV60Base=workoutScreen;
-workoutScreen=function(){const html=workoutScreenV60Base();return state.active?liveWorkoutStatus()+html:html};
+workoutScreen=function(){const html=workoutScreenV60Base();if(!state.active)return html;const marker='✓ Salvamento automático ativo</p></section>';return html.includes(marker)?html.replace(marker,`✓ Salvamento automático ativo</p>${liveWorkoutStatus()}</section>`):html};
 
 const activeExerciseV60Base=activeExercise;
 activeExercise=function(x,ei){
@@ -1176,7 +1176,7 @@ const profileScreenV60Base=profileScreen;
 profileScreen=function(){
  let html=profileScreenV60Base(),prefs=exercisePrefs(),t=state.profile?.trainingPrefs||{};
  const block=`<div class="card"><h3>Avaliação e preferências</h3><p class="muted small">${t.experience==='beginner'?'Iniciante':t.experience==='advanced'?'Avançada':'Intermediária'} · ${t.preferredDuration||state.profile?.duration||60} min por treino · ${prefs.favorite.length} favoritos · ${prefs.avoid.length} evitados.</p><div class="grid grid2"><button class="btn secondary block" onclick="trainingAssessmentModal(false)">Atualizar avaliação</button><button class="btn ghost block" onclick="exercisePreferencesModal()">Favoritos e evitados</button></div></div>`;
- const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.0 Individual');return html;
+ const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.1 Individual');return html;
 };
 
 const reportsScreenV60Base=reportsScreen;

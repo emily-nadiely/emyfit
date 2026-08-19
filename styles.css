@@ -244,3 +244,15 @@ body{background:radial-gradient(circle at 75% -10%,rgba(118,220,85,.08),transpar
 @media(max-width:620px){.v6-kpi-grid,.calendar-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.exercise-progress-strip{grid-template-columns:1fr 1fr 1fr}.assessment-grid{grid-template-columns:1fr}}
 @media(max-width:390px){.v6-kpi-grid{grid-template-columns:1fr 1fr}.v6-before-after{grid-template-columns:1fr}.v6-before-after i{display:none}.exercise-progress-strip{grid-template-columns:1fr 1fr}.exercise-progress-strip>div:last-child{grid-column:1/-1}}
 /* ===== fim GYM v6.0 ===== */
+
+
+/* ===== GYM v6.1 — ícone e tempo da sessão ===== */
+.premium-logo-small,.auth-logo.premium-logo{box-shadow:0 0 0 1px rgba(118,220,85,.20),0 12px 32px rgba(62,196,52,.12)!important}
+.v6-workout-status{display:none!important}
+.v61-workout-session{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;margin-top:16px;padding:12px 13px;border:1px solid rgba(118,220,85,.22);border-radius:17px;background:rgba(8,12,9,.48);backdrop-filter:blur(8px)}
+.v61-session-time,.v61-session-progress{display:grid;gap:2px;min-width:0}
+.v61-session-time span,.v61-session-progress small{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.v61-session-time b{font-size:22px;color:var(--accent2);font-variant-numeric:tabular-nums;line-height:1.05}
+.v61-session-progress span{font-size:16px;color:var(--ink);font-weight:900;line-height:1.05}
+@media(max-width:390px){.v61-workout-session{grid-template-columns:1fr auto;gap:9px}.v61-session-progress{display:none}.v61-workout-session .btn{padding:10px 12px}}
+/* ===== fim do patch v6.1 ===== */

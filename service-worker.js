@@ -1,7 +1,7 @@
-const CACHE='gym-v6-0-individual';
+const CACHE='gym-v6-1-icon-timer-fix';
 const CORE=[
   './','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest',
-  './icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png','./favicon.png','./favicon.ico',
+  './gym-icon-v61-192.png','./gym-icon-v61-512.png','./gym-icon-v61-maskable-512.png','./gym-icon-v61-180.png','./favicon.png','./favicon.ico',
   './assets/icon-96.png','./assets/icon-128.png','./assets/icon-144.png','./assets/icon-152.png','./assets/icon-192.png','./assets/icon-256.png','./assets/icon-384.png','./assets/icon-512.png','./assets/icon-maskable-512.png',
   './assets/apple-touch-icon.png','./assets/favicon.png','./assets/favicon.ico'
 ];
