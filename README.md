@@ -1,4 +1,18 @@
-# GYM Premium v5.15
+# Progressa v6.4 Individual
+
+Atualização oficial de identidade visual:
+
+- novo nome **Progressa** em todo o aplicativo;
+- paleta em vermelho vivo, preto e branco;
+- nova logo interna e novo ícone instalado;
+- manifestos, favicon, Apple Touch Icon e cache atualizados;
+- relatórios e PDF com a identidade Progressa;
+- preservação dos relatórios por período da v6.3;
+- estrutura de dados, login e sincronização mantidos.
+
+Ao publicar, preserve o seu `config.js` atual.
+
+## Histórico funcional
 
 Atualização de experiência do treino e relatórios:
 
@@ -24,7 +38,7 @@ A v5.15 adiciona mapa corporal frontal e posterior para visualização dinâmica
 Evolução corporal ampliada, calendário, recordes, reavaliação de ciclo, equipamentos, Coach rápido e sincronização visível.
 
 
-## GYM v6.0 Individual
+## Progressa v6.0 Individual
 Atualização individual com nova identidade neutra, evolução corporal avançada, progressão inteligente, preferências por exercício, calendário, cronômetro de sessão e reavaliação de ciclo. A modalidade professor/aluno permanece fora desta versão.
 
 

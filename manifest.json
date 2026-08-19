@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "GYM",
-  "short_name": "GYM",
+  "name": "Progressa",
+  "short_name": "Progressa",
   "description": "Treino adaptativo, cardio, recuperação muscular e relatórios.",
   "start_url": "./",
   "scope": "./",
@@ -10,8 +10,8 @@
     "standalone",
     "minimal-ui"
   ],
-  "background_color": "#090d0a",
-  "theme_color": "#0b100c",
+  "background_color": "#070709",
+  "theme_color": "#070709",
   "lang": "pt-BR",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
@@ -22,19 +22,19 @@
   ],
   "icons": [
     {
-      "src": "./gym-icon-v621-192.png",
+      "src": "./progressa-icon-v640-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./gym-icon-v621-512.png",
+      "src": "./progressa-icon-v640-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./gym-icon-v621-maskable-512.png",
+      "src": "./progressa-icon-v640-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

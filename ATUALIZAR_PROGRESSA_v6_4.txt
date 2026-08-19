@@ -1,0 +1,20 @@
+PROGRESSA v6.4 INDIVIDUAL — IDENTIDADE OFICIAL
+
+Esta versão inclui:
+- nome Progressa em todo o aplicativo;
+- identidade em vermelho vivo, preto e branco;
+- nova logo interna;
+- novo ícone do app instalado;
+- novos arquivos de favicon, Apple Touch Icon e ícone maskable;
+- cache atualizado para reconhecer os novos arquivos;
+- relatórios e PDF com a marca Progressa;
+- todos os filtros de relatório da v6.3, incluindo data personalizada.
+
+IMPORTANTE AO PUBLICAR
+1. Preserve o seu config.js atual. O pacote não inclui esse arquivo.
+2. Envie todos os demais arquivos e pastas para a raiz do repositório.
+3. Substitua os arquivos antigos quando o GitHub solicitar.
+4. Aguarde a publicação e abra primeiro pelo navegador.
+5. O novo ícone usa nomes inéditos para reduzir o reaproveitamento do cache antigo.
+
+Os dados, o login e a conexão com o Supabase foram preservados.

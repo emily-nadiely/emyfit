@@ -1,4 +1,6 @@
-GYM v6.3 Individual — Relatórios por período
+Progressa v6.3 Individual — Relatórios por período
+
+Esta versão foi sucedida pela Progressa v6.4, que mantém todos estes recursos e adiciona a identidade oficial em vermelho, preto e branco.
 
 Novidades:
 - Mês atual
