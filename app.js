@@ -1040,7 +1040,7 @@ bodyHistoryModal=function(){
 
 
 /* ===== GYM v6.0 INDIVIDUAL ===== */
-const GYM_V60='6.2.1';
+const GYM_V60='6.3.0';
 let bodyChartPeriod='all';
 
 function brandMark(){
@@ -1180,7 +1180,7 @@ const profileScreenV60Base=profileScreen;
 profileScreen=function(){
  let html=profileScreenV60Base(),prefs=exercisePrefs(),t=state.profile?.trainingPrefs||{};
  const block=`<div class="card"><h3>Avaliação e preferências</h3><p class="muted small">${t.experience==='beginner'?'Iniciante':t.experience==='advanced'?'Avançada':'Intermediária'} · ${t.preferredDuration||state.profile?.duration||60} min por treino · ${prefs.favorite.length} favoritos · ${prefs.avoid.length} evitados.</p><div class="grid grid2"><button class="btn secondary block" onclick="trainingAssessmentModal(false)">Atualizar avaliação</button><button class="btn ghost block" onclick="exercisePreferencesModal()">Favoritos e evitados</button></div></div>`;
- const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.2.1 Individual');return html;
+ const anchor='<div class="card"><h3>Conta e sincronização</h3>';html=html.includes(anchor)?html.replace(anchor,block+anchor):html+block;html=html.replace(/GYM Premium v5\.18/g,'GYM v6.3 Individual');return html;
 };
 
 const reportsScreenV60Base=reportsScreen;
@@ -1201,5 +1201,129 @@ homeScreen=function(){
 recoveryBlock=function(limit=8,detailed=false){const arr=recoveryData().filter(x=>x.days!==null).sort((a,b)=>b.fatigue-a.fatigue).slice(0,limit);if(!arr.length)return '<p class="muted small">Conclua seus primeiros treinos para acompanhar a fadiga por grupo muscular.</p>';return `<div class="recovery-grid recovery-grid-v2">${arr.map(x=>`<div class="recovery-item recovery-item-v2"><div class="row between"><b>${x.label}</b><span class="pill ${x.cls}">${x.status}</span></div><div class="fatigue-bar"><span class="${x.cls}" style="width:${x.fatigue}%"></span></div><div class="recovery-meta"><span>Fadiga estimada: <b>${x.fatigue}%</b></span><span>${x.detail}</span></div>${detailed?`<p>${x.recommendation}</p>`:''}</div>`).join('')}</div><div class="recovery-method"><b>Como a estimativa é calculada</b><span>Tempo desde cada treino, séries concluídas, esforço geral da sessão, desconforto informado e check-in de sono, energia e cansaço. É uma orientação de organização, não uma medição fisiológica.</span></div>`};
 
 /* ===== fim GYM v6.0 INDIVIDUAL ===== */
+
+
+
+/* ===== GYM v6.3 — relatórios por período e data personalizada ===== */
+let reportViewPeriod='month';
+let reportCustomStart='';
+let reportCustomEnd='';
+let reportBodyMetric='weight';
+
+function reportLocalToday(){
+ const d=new Date();
+ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function reportIsoDate(iso){
+ const p=String(iso||'').split('-').map(Number);
+ if(p.length!==3||!p[0]||!p[1]||!p[2])return null;
+ const d=new Date(p[0],p[1]-1,p[2],12,0,0,0);
+ return Number.isNaN(d.getTime())?null:d;
+}
+function reportDateIso(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function reportAddDays(iso,days){const d=reportIsoDate(iso);if(!d)return iso;d.setDate(d.getDate()+days);return reportDateIso(d)}
+function reportDaysInclusive(start,end){const a=reportIsoDate(start),b=reportIsoDate(end);if(!a||!b)return 1;return Math.max(1,Math.round((b-a)/86400000)+1)}
+function reportMonthName(iso){const d=reportIsoDate(iso);if(!d)return '';const s=d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});return s.charAt(0).toUpperCase()+s.slice(1)}
+function reportFirstDayOfMonth(iso){const d=reportIsoDate(iso);if(!d)return iso;d.setDate(1);return reportDateIso(d)}
+function ensureReportCustomDefaults(){
+ if(!reportCustomEnd)reportCustomEnd=reportLocalToday();
+ if(!reportCustomStart)reportCustomStart=reportFirstDayOfMonth(reportCustomEnd);
+}
+function reportRangeInfo(period=reportViewPeriod,startOverride=reportCustomStart,endOverride=reportCustomEnd){
+ const todayIso=reportLocalToday(),currentMonthStart=reportFirstDayOfMonth(todayIso);
+ if(period==='all')return {period,start:null,end:todayIso,label:'Todo o histórico'};
+ if(period==='month')return {period,start:currentMonthStart,end:todayIso,label:`Mês atual — ${reportMonthName(todayIso)}`};
+ if(period==='previous_month'){
+  const end=reportAddDays(currentMonthStart,-1),start=reportFirstDayOfMonth(end);
+  return {period,start,end,label:`Mês anterior — ${reportMonthName(end)}`};
+ }
+ if(period==='custom'){
+  const start=startOverride||currentMonthStart,end=endOverride||todayIso;
+  return {period,start,end,label:'Período personalizado'};
+ }
+ const days=Math.max(1,+period||30),start=reportAddDays(todayIso,-days+1);
+ return {period,start,end:todayIso,label:`Últimos ${days} dias`};
+}
+function reportFilterByRange(list,start,end){
+ return (Array.isArray(list)?list:[]).filter(item=>{
+  const date=String(item?.date||'').slice(0,10);
+  if(!date)return false;
+  return (!start||date>=start)&&(!end||date<=end);
+ });
+}
+function reportPeriodData(period=reportViewPeriod){
+ if(period==='custom')ensureReportCustomDefaults();
+ const info=reportRangeInfo(period),allSessions=(state.sessions||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))),allMetrics=(state.metrics||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const sessions=reportFilterByRange(allSessions,info.start,info.end),metrics=reportFilterByRange(allMetrics,info.start,info.end);
+ const allDates=[...sessions.map(x=>x.date),...metrics.map(x=>x.date)].filter(Boolean).sort();
+ const effectiveStart=info.start||(allDates[0]||null),effectiveEnd=info.end||reportLocalToday();
+ return {...info,sessions,metrics,start:effectiveStart,end:effectiveEnd};
+}
+function reportPreviousRange(data){
+ if(!data?.start||!data?.end||data.period==='all')return null;
+ const days=reportDaysInclusive(data.start,data.end),end=reportAddDays(data.start,-1),start=reportAddDays(end,-days+1);
+ return {start,end,days};
+}
+function setReportPeriod(period){
+ const allowed=['month','previous_month','15','30','90','180','all','custom'];
+ reportViewPeriod=allowed.includes(String(period))?String(period):'month';
+ if(reportViewPeriod==='custom')ensureReportCustomDefaults();
+ renderApp();
+}
+function applyCustomReportPeriod(){
+ const start=document.getElementById('reportCustomStart')?.value||'',end=document.getElementById('reportCustomEnd')?.value||'',todayIso=reportLocalToday();
+ if(!start||!end)return toast('Informe a data inicial e a data final.');
+ if(start>end)return toast('A data inicial não pode ser maior que a data final.');
+ if(end>todayIso)return toast('A data final não pode ser futura.');
+ reportCustomStart=start;reportCustomEnd=end;reportViewPeriod='custom';renderApp();toast('Período personalizado aplicado.');
+}
+function reportPeriodSelectorHtml(){
+ const data=reportPeriodData(reportViewPeriod),selected=v=>reportViewPeriod===v?'selected':'';
+ return `<div class="report-period-control"><div class="report-period-main"><label>Período analisado</label><select id="reportPeriod" onchange="setReportPeriod(this.value)"><option value="month" ${selected('month')}>Mês atual</option><option value="previous_month" ${selected('previous_month')}>Mês anterior</option><option value="15" ${selected('15')}>Últimos 15 dias</option><option value="30" ${selected('30')}>Últimos 30 dias</option><option value="90" ${selected('90')}>Últimos 90 dias</option><option value="180" ${selected('180')}>Últimos 6 meses</option><option value="all" ${selected('all')}>Todo o histórico</option><option value="custom" ${selected('custom')}>Data personalizada</option></select></div>${reportViewPeriod==='custom'?`<div class="report-custom-range"><div><label>Data inicial</label><input id="reportCustomStart" type="date" value="${safeInputValue(reportCustomStart)}" max="${reportLocalToday()}"></div><div><label>Data final</label><input id="reportCustomEnd" type="date" value="${safeInputValue(reportCustomEnd)}" max="${reportLocalToday()}"></div><button type="button" class="btn secondary" onclick="applyCustomReportPeriod()">Aplicar período</button></div>`:''}<div class="report-period-applied"><span>Período analisado</span><b>${data.start?`${reportDate(data.start)} a ${reportDate(data.end)}`:'Todo o histórico'}</b><small>${data.label}</small></div></div>`;
+}
+function reportMetricRows(metrics,key){return (metrics||[]).map(m=>({date:m.date,value:metricValue(m,key),record:m})).filter(x=>x.value!=null).sort((a,b)=>String(a.date).localeCompare(String(b.date)))}
+function reportMetricTrendSvg(metrics,key){
+ const rows=reportMetricRows(metrics,key);if(rows.length<2)return `<div class="body-empty">Registre pelo menos duas medições de ${BODY_METRICS[key]?.label||'esta medida'} dentro do período selecionado.</div>`;
+ const w=600,h=210,p=40,vals=rows.map(x=>x.value),min=Math.min(...vals),max=Math.max(...vals),pad=Math.max(.5,(max-min)*.18),low=min-pad,high=max+pad,range=Math.max(.1,high-low),pts=rows.map((r,i)=>({x:p+(w-p*2)*(i/Math.max(1,rows.length-1)),y:h-p-(h-p*2)*((r.value-low)/range),...r}));
+ const path=pts.map((pt,i)=>`${i?'L':'M'}${pt.x.toFixed(1)},${pt.y.toFixed(1)}`).join(' '),step=Math.max(1,Math.ceil(pts.length/7));
+ return `<svg class="body-trend-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet"><path d="${path}" class="body-trend-line"/>${pts.map((pt,i)=>`<circle cx="${pt.x}" cy="${pt.y}" r="4.5" class="body-trend-dot"/>${(i%step===0||i===pts.length-1)?`<text x="${pt.x}" y="${Math.max(16,pt.y-10)}" text-anchor="middle" class="body-trend-value">${pt.value.toFixed(1).replace('.',',')}</text>`:''}${(i===0||i===pts.length-1)?`<text x="${pt.x}" y="${h-8}" text-anchor="middle" class="body-trend-label">${fmt(pt.date)}</text>`:''}`).join('')}</svg>`;
+}
+function setReportBodyMetric(key){if(BODY_METRICS[key]){reportBodyMetric=key;renderApp()}}
+function reportBodyCard(metrics){
+ const keys=Object.keys(BODY_METRICS),weightRows=reportMetricRows(metrics,'weight'),firstW=weightRows[0],lastW=weightRows.at(-1),deltaW=firstW&&lastW?lastW.value-firstW.value:null,latest=(metrics||[]).at(-1)||null;
+ const comparison=keys.map(k=>{const rows=reportMetricRows(metrics,k);if(rows.length<2)return null;const a=rows[0],b=rows.at(-1);return {k,label:BODY_METRICS[k].label,a:a.value,b:b.value,delta:b.value-a.value}}).filter(Boolean);
+ const latestChips=latest?keys.map(k=>{const v=metricValue(latest,k);return v==null?'':`<span class="pill">${BODY_METRICS[k].label}: ${metricFmt(v,k)}</span>`}).filter(Boolean).join(''):'';
+ return `<div class="card report-body-card"><div class="row between wrap"><div><span class="eyebrow">EVOLUÇÃO CORPORAL</span><h3 style="margin-top:5px">Peso e medidas no período</h3></div><button class="btn secondary sm" onclick="metricModal()">${icon('plus')} Registrar</button></div><div class="grid grid3 premium-metrics" style="margin-top:12px"><div class="metric"><b>${lastW?metricFmt(lastW.value,'weight'):'—'}</b><span>peso mais recente</span></div><div class="metric"><b>${firstW?metricFmt(firstW.value,'weight'):'—'}</b><span>primeiro peso do período</span></div><div class="metric"><b>${deltaW!=null?signedMetricDelta(deltaW,'weight'):'—'}</b><span>variação no período</span></div></div><label>Visualizar evolução de</label><select onchange="setReportBodyMetric(this.value)">${keys.map(k=>`<option value="${k}" ${reportBodyMetric===k?'selected':''}>${BODY_METRICS[k].label}</option>`).join('')}</select><div class="report-body-chart">${reportMetricTrendSvg(metrics,reportBodyMetric)}</div>${comparison.length?`<div class="v6-section-title"><h3>Antes × Agora</h3><span>dentro do período</span></div><div class="report-measure-compare">${comparison.slice(0,12).map(x=>`<div><span>${x.label}</span><b>${metricFmt(x.a,x.k)} → ${metricFmt(x.b,x.k)}</b><strong>${signedMetricDelta(x.delta,x.k)}</strong></div>`).join('')}</div>`:''}${latestChips?`<div class="v6-section-title"><h3>Última avaliação do período</h3><span>${fmt(latest.date)}</span></div><div class="row wrap">${latestChips}</div>`:'<p class="muted small">Nenhuma medida corporal registrada neste período.</p>'}</div>`;
+}
+function reportTopExercisesForSessions(sessions,limit=6){
+ const counts={};for(const s of sessions||[]){for(const x of s.exercises||[]){const done=(x.sets||[]).some(set=>set.done||(+set.kg>0&&+set.reps>0));if(done)counts[x.id]=(counts[x.id]||0)+1}}
+ return Object.entries(counts).sort((a,b)=>b[1]-a[1]||String(EX[a[0]]?.name||'').localeCompare(String(EX[b[0]]?.name||''),'pt-BR')).slice(0,limit);
+}
+function reportCardioForSessions(sessions){
+ const totals={};for(const s of sessions||[]){const min=Math.max(0,+s.cardio||0);if(!min)continue;const id=CARDIO[s.cardioType]?s.cardioType:'other';totals[id]=(totals[id]||0)+min}
+ const rows=Object.entries(totals).sort((a,b)=>b[1]-a[1]);if(!rows.length)return '<p class="muted">Nenhum cardio registrado neste período.</p>';const max=Math.max(...rows.map(x=>x[1]),1);
+ return `<div class="cardio-summary">${rows.map(([id,min])=>`<div class="cardio-summary-row"><div class="row between"><b>${id==='other'?'Outro cardio':cardioName(id)}</b><span>${Math.round(min)} min</span></div><div class="progress"><span style="width:${Math.max(4,min/max*100)}%"></span></div></div>`).join('')}</div>`;
+}
+function reportProgressionForSessions(sessions){
+ const rows=reportExerciseProgress(sessions).slice(0,10);if(!rows.length)return '<p class="muted">Registre cargas neste período para acompanhar a progressão.</p>';
+ return `<div class="report-progression-list">${rows.map(x=>{const pct=x.firstKg>0?((x.lastKg-x.firstKg)/x.firstKg*100):null;return `<div class="v6-insight"><b>${EX[x.id]?.name||x.id}</b><small>${x.count} sessão${x.count===1?'':'ões'} · primeira ${x.firstKg||'—'} kg · última ${x.lastKg||'—'} kg · recorde ${x.bestKg||'—'} kg</small><small>${pct==null?'Sem base suficiente para comparar.':`${pct>=0?'+':''}${pct.toFixed(1).replace('.',',')}% de variação entre a primeira e a última carga máxima do período.`}</small></div>`}).join('')}</div>`;
+}
+function reportHistoryHtml(sessions){return sessions.length?sessions.slice().reverse().map(x=>`<div class="row between report-history-row"><div><b>${x.name||'Treino'}</b><div class="muted small">${fmt(x.date)} · ${+x.duration||0} min${+x.cardio>0?` · cardio ${+x.cardio} min · ${cardioName(x.cardioType)}`:''}</div></div><button class="btn secondary sm" onclick="sessionDetail('${x.id}')">Ver</button></div>`).join(''):'<p class="muted">Nenhum treino concluído neste período.</p>'}
+
+reportsScreen=function(){
+ const data=reportPeriodData(reportViewPeriod),sessions=data.sessions,metrics=data.metrics,mins=sessions.reduce((n,s)=>n+(+s.duration||0),0),avg=sessions.length?Math.round(mins/sessions.length):0,cardio=sessions.reduce((n,s)=>n+(+s.cardio||0),0),records=personalRecords(sessions,8),top=reportTopExercisesForSessions(sessions,8),previous=reportPreviousRange(data),previousSessions=previous?reportFilterByRange(state.sessions||[],previous.start,previous.end):[],days=data.start?reportDaysInclusive(data.start,data.end):1,expected=Math.max(1,Math.round(days/7*Math.max(1,+state.profile?.days||1))),frequency=Math.min(100,Math.round(sessions.length/expected*100)),comparison=previous?comparisonText(sessions.length,previousSessions.length):'Sem período anterior equivalente';
+ return `<section class="hero"><span class="eyebrow">RELATÓRIOS</span><h2>Sua evolução em um só lugar.</h2><p>Escolha o período e todo o painel acompanha o mesmo intervalo.</p></section><div class="card report-export-card"><div class="row between report-export-row"><div><span class="eyebrow">FILTRO DO RELATÓRIO</span><h3 style="margin-top:5px">Defina exatamente o que deseja analisar</h3><p class="muted small">O período selecionado vale para treinos, frequência, cargas, cardio, peso, medidas, recordes, histórico e PDF.</p></div><button class="btn primary" onclick="generateProgressPdf()">${icon('chart')} Gerar PDF</button></div>${reportPeriodSelectorHtml()}</div><div class="grid grid3 premium-metrics"><div class="metric"><b>${sessions.length}</b><span>treinos no período</span></div><div class="metric"><b>${avg}</b><span>min por treino</span></div><div class="metric"><b>${cardio}</b><span>min de cardio</span></div></div><div class="card premium-insight"><span class="eyebrow">FREQUÊNCIA</span><div class="grid grid3" style="margin-top:10px"><div><b>${frequency}%</b><span>frequência estimada</span></div><div><b>${sessions.length}</b><span>período atual</span></div><div><b>${previous?previousSessions.length:'—'}</b><span>período anterior</span></div></div><p class="muted small">${comparison}${previous?` · Comparação com ${reportDate(previous.start)} a ${reportDate(previous.end)}.`:''}</p></div>${reportBodyCard(metrics)}<div class="grid grid2"><div class="card"><h3>Exercícios mais realizados</h3>${top.length?top.map(([id,count],i)=>`<div class="row between report-list-row"><span>${i+1}. ${EX[id]?.name||id}</span><b>${count}×</b></div>`).join(''):'<p class="muted">Sem dados neste período.</p>'}</div><div class="card"><h3>Recordes do período</h3>${records.length?records.map(([id,kg])=>`<div class="row between report-list-row"><span>${EX[id]?.name||id}</span><b>${kg} kg</b></div>`).join(''):'<p class="muted">Sem cargas registradas neste período.</p>'}</div></div><div class="card"><h3>Cardio por aparelho</h3>${reportCardioForSessions(sessions)}</div><div class="card"><div class="v6-section-title"><h3>Evolução das cargas</h3><span>somente no período selecionado</span></div>${reportProgressionForSessions(sessions)}</div>${muscleRecoveryPanel()}<div class="card"><div class="row between"><div><h3>Histórico do período</h3><span class="muted small">${data.start?`${reportDate(data.start)} a ${reportDate(data.end)}`:'Todo o histórico'}</span></div></div>${reportHistoryHtml(sessions)}</div><div class="card"><h3>Calendário geral</h3><p class="muted small">O calendário continua disponível para navegar entre meses e abrir qualquer sessão salva.</p>${workoutCalendarHtml()}</div>`;
+};
+
+generateProgressPdf=function(){
+ const data=reportPeriodData(reportViewPeriod),sessions=data.sessions,metrics=data.metrics,profile=state.profile||{},mins=sessions.reduce((n,s)=>n+(+s.duration||0),0),avg=sessions.length?Math.round(mins/sessions.length):0,cardio=sessions.reduce((n,s)=>n+(+s.cardio||0),0),records=personalRecords(sessions,12),top=reportTopExercisesForSessions(sessions,12),exerciseRows=reportExerciseProgress(sessions),previous=reportPreviousRange(data),previousSessions=previous?reportFilterByRange(state.sessions||[],previous.start,previous.end):[],days=data.start?reportDaysInclusive(data.start,data.end):1,expected=Math.max(1,Math.round(days/7*Math.max(1,+profile.days||1))),frequency=Math.min(100,Math.round(sessions.length/expected*100)),readiness=overallRecoveryScore();
+ const bodyRows=Object.keys(BODY_METRICS).map(k=>{const rows=reportMetricRows(metrics,k);if(!rows.length)return null;const a=rows[0],b=rows.at(-1);return {k,label:BODY_METRICS[k].label,first:a.value,last:b.value,delta:rows.length>1?b.value-a.value:null,count:rows.length}}).filter(Boolean);
+ const cardioMap={};sessions.forEach(s=>{const min=Math.max(0,+s.cardio||0);if(!min)return;const id=CARDIO[s.cardioType]?s.cardioType:'other';cardioMap[id]=(cardioMap[id]||0)+min});const cardioRows=Object.entries(cardioMap).sort((a,b)=>b[1]-a[1]);
+ const win=window.open('','_blank');if(!win){toast('O navegador bloqueou a abertura do relatório. Permita pop-ups e tente novamente.');return;}
+ const rangeLabel=data.start?`${reportDate(data.start)} a ${reportDate(data.end)}`:'Todo o histórico',comparison=previous?comparisonText(sessions.length,previousSessions.length):'Sem período anterior equivalente';
+ const html=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Relatório GYM</title><style>@page{size:A4;margin:10mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#1c211d;font-size:10px;line-height:1.4;margin:0}h1{font-size:24px;margin-bottom:4px}h2{font-size:15px;border-left:4px solid #83e35f;padding-left:7px;margin:18px 0 8px}.head{border-bottom:3px solid #83e35f;padding-bottom:10px;margin-bottom:12px}.head strong{color:#57b93c}.muted{color:#666}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.metric{border:1px solid #ddd;border-radius:8px;padding:8px}.metric b{display:block;font-size:17px;color:#4ea936}.note{padding:8px;background:#f3f6f2;border-radius:8px;margin:8px 0}table{width:100%;border-collapse:collapse;font-size:8.5px;margin-bottom:8px}th,td{border:1px solid #ddd;padding:5px;text-align:left;vertical-align:top}th{background:#eff7ec}.print{padding:9px 14px;background:#57b93c;color:white;border:0;border-radius:7px;font-weight:700;margin-bottom:10px}@media print{.print{display:none}h2{break-after:avoid}table{break-inside:auto}tr{break-inside:avoid}}</style></head><body><button class="print" onclick="window.print()">Salvar como PDF / Imprimir</button><div class="head"><h1>GYM <strong>Relatório de progresso</strong></h1><div><b>${reportEscape(profile.name||'Atleta')}</b></div><div class="muted">Período analisado: ${rangeLabel} · ${reportEscape(data.label)} · gerado em ${new Date().toLocaleString('pt-BR')}</div></div><div class="grid"><div class="metric"><b>${sessions.length}</b>treinos</div><div class="metric"><b>${avg}</b>min por treino</div><div class="metric"><b>${cardio}</b>min de cardio</div><div class="metric"><b>${frequency}%</b>frequência estimada</div><div class="metric"><b>${records.length}</b>recordes no período</div><div class="metric"><b>${readiness}%</b>prontidão atual</div><div class="metric"><b>${previous?previousSessions.length:'—'}</b>treinos no período anterior</div><div class="metric"><b>${comparison}</b>comparação</div></div><h2>Evolução corporal</h2>${bodyRows.length?`<table><thead><tr><th>Medida</th><th>Primeiro valor</th><th>Último valor</th><th>Variação</th><th>Registros</th></tr></thead><tbody>${bodyRows.map(x=>`<tr><td>${reportEscape(x.label)}</td><td>${metricFmt(x.first,x.k)}</td><td>${metricFmt(x.last,x.k)}</td><td>${x.delta==null?'—':signedMetricDelta(x.delta,x.k)}</td><td>${x.count}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Nenhuma medida corporal registrada neste período.</p>'}<h2>Evolução das cargas</h2>${exerciseRows.length?`<table><thead><tr><th>Exercício</th><th>Sessões</th><th>Primeira carga máx.</th><th>Última carga máx.</th><th>Recorde</th></tr></thead><tbody>${exerciseRows.slice(0,40).map(x=>`<tr><td>${reportEscape(EX[x.id]?.name||x.id)}</td><td>${x.count}</td><td>${x.firstKg||'—'} kg</td><td>${x.lastKg||'—'} kg</td><td>${x.bestKg||'—'} kg</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Sem cargas registradas neste período.</p>'}<h2>Exercícios mais realizados</h2>${top.length?`<table><thead><tr><th>Exercício</th><th>Sessões</th></tr></thead><tbody>${top.map(([id,count])=>`<tr><td>${reportEscape(EX[id]?.name||id)}</td><td>${count}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Sem dados.</p>'}<h2>Recordes do período</h2>${records.length?`<table><thead><tr><th>Exercício</th><th>Maior carga registrada</th></tr></thead><tbody>${records.map(([id,kg])=>`<tr><td>${reportEscape(EX[id]?.name||id)}</td><td>${kg} kg</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Sem recordes registrados.</p>'}<h2>Cardio</h2>${cardioRows.length?`<table><thead><tr><th>Modalidade</th><th>Minutos</th></tr></thead><tbody>${cardioRows.map(([id,min])=>`<tr><td>${reportEscape(id==='other'?'Outro cardio':cardioName(id))}</td><td>${Math.round(min)}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Nenhum cardio registrado.</p>'}<h2>Histórico do período</h2>${sessions.length?`<table><thead><tr><th>Data</th><th>Treino</th><th>Duração</th><th>Cardio</th><th>RPE</th></tr></thead><tbody>${sessions.slice().reverse().map(s=>`<tr><td>${reportDate(s.date)}</td><td>${reportEscape(s.name||'Treino')}</td><td>${+s.duration||0} min</td><td>${+s.cardio||0} min${s.cardioType?` · ${reportEscape(cardioName(s.cardioType))}`:''}</td><td>${s.rpe||'—'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Nenhum treino concluído neste período.</p>'}<div class="note">A prontidão/fadiga mostrada é o estado atual no momento da geração do relatório. O restante dos indicadores respeita o período selecionado.</div></body></html>`;
+ win.document.open();win.document.write(html);win.document.close();setTimeout(()=>{try{win.focus();win.print()}catch{}},350);
+};
+/* ===== fim GYM v6.3 ===== */
 
 boot().catch(error=>{console.error('Falha ao iniciar GYM',error);try{renderRoot()}catch{const app=document.getElementById('app');if(app)app.innerHTML='<div class="auth-page"><div class="auth-card"><h2>Não foi possível iniciar o GYM</h2><p class="muted">Recarregue a página. Seus dados locais não foram apagados.</p></div></div>'}});

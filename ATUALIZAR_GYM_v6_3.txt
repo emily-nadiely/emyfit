@@ -1,0 +1,25 @@
+GYM v6.3 Individual — Relatórios por período
+
+Novidades:
+- Mês atual
+- Mês anterior
+- Últimos 15 dias
+- Últimos 30 dias
+- Últimos 90 dias
+- Últimos 6 meses
+- Todo o histórico
+- Data personalizada com data inicial e final
+
+O filtro agora controla o painel de Relatórios e o PDF:
+- treinos
+- frequência
+- cargas
+- cardio
+- peso e medidas
+- recordes
+- histórico
+
+O relatório mostra claramente o período analisado no painel e no PDF.
+A fadiga/prontidão permanece como estado atual, pois representa recuperação de hoje.
+
+Ao atualizar, preserve o config.js que já está funcionando com seu Supabase.

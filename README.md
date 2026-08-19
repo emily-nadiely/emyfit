@@ -32,3 +32,7 @@ Atualização individual com nova identidade neutra, evolução corporal avança
 - Novo ícone do app e do PWA.
 - Tempo da sessão integrado ao cabeçalho do treino, sem painel solto no topo.
 - Cache/manifesto atualizados para melhorar a troca do ícone instalado.
+
+
+## v6.3
+Relatórios agora aceitam mês atual, mês anterior, períodos móveis e intervalo personalizado. O mesmo filtro é aplicado ao painel e ao PDF.

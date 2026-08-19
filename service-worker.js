@@ -1,4 +1,4 @@
-const CACHE='gym-v6-2-1-recovery';
+const CACHE='gym-v6-3-report-periods';
 const CORE=['./','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./gym-icon-v621-192.png','./gym-icon-v621-512.png','./gym-icon-v621-maskable-512.png','./gym-icon-v621-180.png'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.allSettled(CORE.map(url=>cache.add(url)));await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})()));
