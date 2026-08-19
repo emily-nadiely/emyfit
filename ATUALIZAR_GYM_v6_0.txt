@@ -1,0 +1,25 @@
+GYM v6.0 INDIVIDUAL — atualização principal
+
+Incluído nesta versão:
+- nova identidade visual grafite + verde, mais neutra
+- novo ícone GYM
+- evolução corporal com filtros de 30/90/180 dias e histórico completo
+- comparação automática do primeiro registro com o atual
+- destaques das maiores mudanças de peso e medidas
+- calendário mensal com dias treinados, minutos e média
+- sequência atual de treinos
+- inteligência de progressão por exercício e detecção de carga estável
+- última carga, recorde e comparação com sessão anterior durante o treino
+- cronômetro total da sessão com pausar/retomar
+- favoritos e exercícios a evitar
+- novo gerador adaptativo considerando equipamentos, favoritos, evitados e plano anterior
+- avaliação individual ampliada e reavaliação de ciclo
+- Coach usando o histórico de progressão para orientar aumento de carga
+
+A versão professor/aluno NÃO foi incluída. Esta versão permanece 100% individual para testes.
+
+IMPORTANTE AO PUBLICAR:
+1. Faça sincronização e exporte um backup antes de atualizar.
+2. Envie todos os arquivos e subpastas desta versão ao GitHub.
+3. Preserve seu config.js atual; não substitua por config.example.js.
+4. Depois da publicação, feche e abra novamente o PWA para carregar o cache v6.0.

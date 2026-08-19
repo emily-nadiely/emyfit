@@ -1,18 +1,25 @@
 {
   "id": "./",
-  "name": "GYM — Treino Inteligente",
+  "name": "GYM",
   "short_name": "GYM",
   "description": "Treino adaptativo, cardio, recuperação muscular e relatórios.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "background_color": "#15131b",
-  "theme_color": "#15131b",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#090d0a",
+  "theme_color": "#0b100c",
   "lang": "pt-BR",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
-  "categories": ["fitness", "health", "lifestyle"],
+  "categories": [
+    "fitness",
+    "health",
+    "lifestyle"
+  ],
   "icons": [
     {
       "src": "./icon-192.png",
