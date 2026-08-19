@@ -256,10 +256,3 @@ body{background:radial-gradient(circle at 75% -10%,rgba(118,220,85,.08),transpar
 .v61-session-progress span{font-size:16px;color:var(--ink);font-weight:900;line-height:1.05}
 @media(max-width:390px){.v61-workout-session{grid-template-columns:1fr auto;gap:9px}.v61-session-progress{display:none}.v61-workout-session .btn{padding:10px 12px}}
 /* ===== fim do patch v6.1 ===== */
-
-
-/* ===== GYM v6.2 — logo sem deformação ===== */
-.gym-brand-img{display:block;width:100%;height:100%;object-fit:contain!important;border-radius:inherit}
-.premium-logo,.premium-logo-small,.auth-logo.premium-logo{padding:0!important;overflow:hidden;background:#0b100c!important}
-.premium-logo img,.premium-logo-small img,.auth-logo.premium-logo img{width:100%!important;height:100%!important;object-fit:contain!important;padding:0!important;margin:0!important;background:#0b100c!important}
-/* ===== fim v6.2 ===== */

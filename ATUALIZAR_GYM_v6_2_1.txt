@@ -1,0 +1,10 @@
+GYM v6.2.1 — recuperação de inicialização
+
+- Reconstruída sobre a v6.1 estável.
+- Mantido o novo conjunto de ícones com nomes inéditos para forçar atualização do PWA.
+- Adicionada a opção Mês atual nos relatórios.
+- Inicialização protegida contra falha de config.js e erros de boot.
+- Service Worker refeito para não travar a instalação inteira se um arquivo opcional falhar.
+
+IMPORTANTE: preserve o config.js que já está funcionando no seu site.
+Não limpe os dados do navegador antes de confirmar a sincronização.

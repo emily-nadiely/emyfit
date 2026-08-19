@@ -32,7 +32,3 @@ Atualização individual com nova identidade neutra, evolução corporal avança
 - Novo ícone do app e do PWA.
 - Tempo da sessão integrado ao cabeçalho do treino, sem painel solto no topo.
 - Cache/manifesto atualizados para melhorar a troca do ícone instalado.
-
-
-## v6.2
-Nova identidade de ícone consistente no PWA e na interface; relatório do mês atual adicionado.

@@ -22,19 +22,19 @@
   ],
   "icons": [
     {
-      "src": "./gym-icon-v62-192.png",
+      "src": "./gym-icon-v621-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./gym-icon-v62-512.png",
+      "src": "./gym-icon-v621-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./gym-icon-v62-maskable-512.png",
+      "src": "./gym-icon-v621-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

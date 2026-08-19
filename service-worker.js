@@ -1,30 +1,5 @@
-const CACHE='gym-v6-2-logo-current-month-report';
-const CORE=[
-  './','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest',
-  './gym-icon-v62-192.png','./gym-icon-v62-512.png','./gym-icon-v62-maskable-512.png','./gym-icon-v62-180.png','./favicon.png','./favicon.ico',
-  './assets/icon-96.png','./assets/icon-128.png','./assets/icon-144.png','./assets/icon-152.png','./assets/icon-192.png','./assets/icon-256.png','./assets/icon-384.png','./assets/icon-512.png','./assets/icon-maskable-512.png',
-  './assets/apple-touch-icon.png','./assets/favicon.png','./assets/favicon.ico'
-];
-self.addEventListener('install',event=>event.waitUntil(
-  caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())
-));
-self.addEventListener('activate',event=>event.waitUntil(
-  caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())
-));
-self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET')return;
-  const url=new URL(event.request.url);
-  if(url.origin!==location.origin)return;
-  const networkFirst=event.request.mode==='navigate'||/\.(?:js|css|html|json|webmanifest)$/.test(url.pathname)||url.pathname.includes('/assets/exercises/');
-  if(networkFirst){
-    event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{
-      if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));}
-      return response;
-    }).catch(()=>caches.match(event.request).then(hit=>hit||caches.match('./index.html'))));
-    return;
-  }
-  event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(response=>{
-    if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));}
-    return response;
-  })));
-});
+const CACHE='gym-v6-2-1-recovery';
+const CORE=['./','./index.html','./styles.css','./app.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./gym-icon-v621-192.png','./gym-icon-v621-512.png','./gym-icon-v621-maskable-512.png','./gym-icon-v621-180.png'];
+self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.allSettled(CORE.map(url=>cache.add(url)));await self.skipWaiting()})()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})()));
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==location.origin)return;const networkFirst=event.request.mode==='navigate'||/\.(?:js|css|html|json|webmanifest)$/.test(url.pathname);if(networkFirst){event.respondWith(fetch(event.request,{cache:'no-store'}).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(event.request,r.clone()));return r}).catch(()=>caches.match(event.request).then(hit=>hit||caches.match('./index.html'))));return}event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(event.request,r.clone()));return r})))})
