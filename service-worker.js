@@ -1,4 +1,4 @@
-const CACHE='progressa-v6-4-cardio';
+const CACHE='progressa-v6-4-2-cardio';
 const CORE=['./','./index.html','./styles.css','./app.js','./cardio-mode.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./progressa-icon-v640-192.png','./progressa-icon-v640-512.png','./progressa-icon-v640-maskable-512.png','./progressa-icon-v640-180.png','./favicon.ico'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.allSettled(CORE.map(url=>cache.add(url)));await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})()));
