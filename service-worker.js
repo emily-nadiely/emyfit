@@ -1,5 +1,5 @@
-const CACHE='progressa-v6-4-9-plan-restore';
-const CORE=['./','./index.html','./styles.css','./app.js','./plan-personalization.js','./cardio-mode.js','./cardio-recovery.js','./cycle-exercise-preferences.js','./plan-restore.js','./measurement-import.js','./smart-scale-import.js','./smart-scale-ocr-fix.js','./share-target-import.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./progressa-icon-v640-192.png','./progressa-icon-v640-512.png','./progressa-icon-v640-maskable-512.png','./progressa-icon-v640-180.png','./favicon.ico'];
+const CACHE='progressa-v6-4-10-profile-layout';
+const CORE=['./','./index.html','./styles.css','./app.js','./plan-personalization.js','./cardio-mode.js','./cardio-recovery.js','./cycle-exercise-preferences.js','./plan-restore.js','./measurement-import.js','./smart-scale-import.js','./smart-scale-ocr-fix.js','./share-target-import.js','./profile-layout.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./progressa-icon-v640-192.png','./progressa-icon-v640-512.png','./progressa-icon-v640-maskable-512.png','./progressa-icon-v640-180.png','./favicon.ico'];
 
 function openShareDb(){
  return new Promise((resolve,reject)=>{const request=indexedDB.open('progressa-share-target',1);request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains('files'))db.createObjectStore('files')};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error||new Error('Falha ao abrir compartilhamento'))});
