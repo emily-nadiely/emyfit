@@ -1,4 +1,4 @@
-/* Progressa v6.4.10 — organização do Perfil e restauração do plano */
+/* Progressa v6.4.12 — organização do Perfil, restauração e treino simplificado */
 (function(){
   if(typeof profileScreen!=='function'||typeof workoutScreen!=='function')return;
 
@@ -74,6 +74,79 @@
       return host.innerHTML;
     }catch(error){
       console.warn('Falha ao ocultar restauração em Treino',error);
+      return html;
+    }
+  };
+})();
+
+(function(){
+  if(typeof workoutScreen!=='function')return;
+
+  const workoutScreenBeforeClassic=workoutScreen;
+  const norm=value=>String(value||'').replace(/\s+/g,' ').trim();
+
+  function exactLeaf(root,text){
+    return [...root.querySelectorAll('*')].find(el=>el.children.length===0&&norm(el.textContent)===text)||null;
+  }
+
+  function removeCompactBlock(node,maxLength=120){
+    if(!node)return;
+    let current=node.parentElement,candidate=null;
+    while(current&&current.parentElement){
+      const text=norm(current.textContent);
+      if(!text||text.length>maxLength)break;
+      candidate=current;
+      current=current.parentElement;
+    }
+    (candidate||node.parentElement||node).remove();
+  }
+
+  function removeLoadSummary(host){
+    const first=exactLeaf(host,'Última carga máx.');
+    if(first){
+      let current=first.parentElement,candidate=null;
+      while(current&&current!==host){
+        const text=norm(current.textContent);
+        if(text.length>220)break;
+        if(text.includes('Última carga máx.')||text.includes('Recorde pessoal')||text.includes('Vs. sessão anterior'))candidate=current;
+        if(text.includes('Última carga máx.')&&text.includes('Recorde pessoal')&&text.includes('Vs. sessão anterior')){candidate=current;break;}
+        current=current.parentElement;
+      }
+      if(candidate)candidate.remove();
+      else removeCompactBlock(first,100);
+    }
+    ['Recorde pessoal','Vs. sessão anterior'].forEach(label=>{
+      const node=exactLeaf(host,label);
+      if(node)removeCompactBlock(node,100);
+    });
+  }
+
+  function removeProgressionGuidance(host){
+    ['Consolidação','Progressão','Manutenção','Regressão'].forEach(title=>{
+      const node=exactLeaf(host,title);
+      if(!node)return;
+      let current=node.parentElement,candidate=null;
+      while(current&&current!==host){
+        const text=norm(current.textContent);
+        if(text.length>360)break;
+        candidate=current;
+        current=current.parentElement;
+      }
+      if(candidate)candidate.remove();
+    });
+  }
+
+  workoutScreen=function(){
+    const html=workoutScreenBeforeClassic.apply(this,arguments);
+    if(!state?.active||state.active.mode==='cardio')return html;
+    try{
+      const host=document.createElement('div');
+      host.innerHTML=html;
+      removeLoadSummary(host);
+      removeProgressionGuidance(host);
+      return host.innerHTML;
+    }catch(error){
+      console.warn('Falha ao simplificar tela do treino',error);
       return html;
     }
   };
