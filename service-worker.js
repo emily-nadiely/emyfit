@@ -1,4 +1,4 @@
-const CACHE='progressa-v6-4-11-exercise-alias';
+const CACHE='progressa-v6-4-12-classic-workout';
 const CORE=['./','./index.html','./styles.css','./app.js','./exercise-aliases.js','./plan-personalization.js','./cardio-mode.js','./cardio-recovery.js','./cycle-exercise-preferences.js','./plan-restore.js','./measurement-import.js','./smart-scale-import.js','./smart-scale-ocr-fix.js','./share-target-import.js','./profile-layout.js','./exercise-images.js','./manifest.json','./manifest.webmanifest','./progressa-icon-v640-192.png','./progressa-icon-v640-512.png','./progressa-icon-v640-maskable-512.png','./progressa-icon-v640-180.png','./favicon.ico'];
 
 function openShareDb(){
