@@ -1,4 +1,4 @@
-const CACHE='progressa-v6-4-15-pulldown-bar';
+const CACHE='progressa-v6-4-16-workout-sequence';
 const CORE=['./','./index.html','./styles.css','./app.js','./exercise-aliases.js','./plan-personalization.js','./cardio-mode.js','./cardio-recovery.js','./cycle-exercise-preferences.js','./plan-restore.js','./measurement-import.js','./smart-scale-import.js','./smart-scale-ocr-fix.js','./share-target-import.js','./profile-layout.js','./workout-card-cleanup.js','./exercise-images.js','./approved-exercise-images-1.js','./approved-exercise-images-2.js','./approved-exercise-images-3.js','./approved-exercise-images-4.js','./approved-exercise-images-5.js','./approved-exercise-images-6.js','./approved-exercise-images-7.js','./approved-exercise-images-8.js','./approved-exercise-images-9.js','./pulldown-bar-fix.js','./assets/exercises/approved/seated_calf-v6.4.14.webp','./assets/exercises/approved/curl-v6.4.14.webp','./manifest.json','./manifest.webmanifest','./progressa-icon-v640-192.png','./progressa-icon-v640-512.png','./progressa-icon-v640-maskable-512.png','./progressa-icon-v640-180.png','./favicon.ico'];
 
 function openShareDb(){
