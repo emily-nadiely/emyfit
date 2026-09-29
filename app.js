@@ -23,7 +23,8 @@ function exerciseMedia(id,e,extraClass=''){
 function brandMark(){return `<img class="progressa-mark" src="./progressa-icon-v640-512.png" alt="Progressa">`}
 
 const icon=n=>`<svg class="icon"><use href="#i-${n}"></use></svg>`;
-const today=()=>new Date().toISOString().slice(0,10);
+const dateIsoLocal=(value=new Date())=>{const d=value instanceof Date?value:new Date(value);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const today=()=>dateIsoLocal(new Date());
 const uid=()=>crypto.randomUUID?.()||Math.random().toString(36).slice(2);
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -299,7 +300,7 @@ function reportPeriodData(period){
   const now=new Date(),year=now.getFullYear(),month=now.getMonth()+1,iso=`${year}-${String(month).padStart(2,'0')}-01`;
   return {sessions:allSessions.filter(x=>String(x.date||'')>=iso&&String(x.date||'')<=today()),metrics:allMetrics.filter(x=>String(x.date||'')>=iso&&String(x.date||'')<=today()),start:iso};
  }
- const days=Math.max(1,+period||90),start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()-days+1);const iso=start.toISOString().slice(0,10);
+ const days=Math.max(1,+period||90),start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()-days+1);const iso=dateIsoLocal(start);
  return {sessions:allSessions.filter(x=>x.date>=iso),metrics:allMetrics.filter(x=>x.date>=iso),start:iso};
 }
 function reportExerciseProgress(sessions){
@@ -1093,7 +1094,7 @@ bodyEvolutionCard=function(){
 function sessionDatesUnique(){return [...new Set((state.sessions||[]).map(s=>s.date))].sort()}
 function workoutStreak(){
  const dates=new Set(sessionDatesUnique()),now=new Date(today()+'T12:00:00');let n=0;
- for(let i=0;i<400;i++){const d=new Date(now);d.setDate(d.getDate()-i);const key=d.toISOString().slice(0,10);if(dates.has(key)){n++;continue}if(i===0)continue;break}return n;
+ for(let i=0;i<400;i++){const d=new Date(now);d.setDate(d.getDate()-i);const key=dateIsoLocal(d);if(dates.has(key)){n++;continue}if(i===0)continue;break}return n;
 }
 workoutCalendarHtml=function(){
  const base=new Date();base.setDate(1);base.setMonth(base.getMonth()+calendarMonthOffset);const y=base.getFullYear(),m=base.getMonth(),firstDay=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),monthName=base.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});const sessionMap={};(state.sessions||[]).forEach(s=>{sessionMap[s.date]=(sessionMap[s.date]||[]).concat(s)});let cells='';for(let i=0;i<firstDay;i++)cells+='<button class="calendar-day empty"></button>';for(let d=1;d<=days;d++){const date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,has=sessionMap[date]?.length,t=date===today();cells+=`<button class="calendar-day ${has?'trained':''} ${t?'today':''}" onclick="openCalendarDay('${date}')">${d}${has?'<span class="calendar-dot"></span>':''}</button>`}
