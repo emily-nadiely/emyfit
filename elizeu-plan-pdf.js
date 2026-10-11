@@ -79,6 +79,7 @@
   function applyOnce(){
     if(typeof state==='undefined'||!isElizeu())return false;
     state.meta=state.meta||{};
+    if(state.meta.elizeuPplFullBodyVersion)return false;
     if(state.meta.elizeuPdfPlanVersion===VERSION)return false;
     state.plan=makePlan();
     state.meta.elizeuPdfPlanVersion=VERSION;
