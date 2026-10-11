@@ -309,3 +309,22 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
 
 /* Progressa v6.4.27 — relatórios recolhíveis */
 .report-drawer-stack{display:grid;gap:12px;margin-top:12px}.report-drawer{padding:0;overflow:hidden}.report-drawer summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;user-select:none}.report-drawer summary::-webkit-details-marker{display:none}.report-drawer summary h3{margin:0}.report-drawer summary .small{display:block;margin-top:4px}.report-drawer-chevron{font-size:28px;line-height:1;color:var(--accent,#ff3650);transition:transform .2s ease}.report-drawer[open] .report-drawer-chevron{transform:rotate(180deg)}.report-drawer-body{padding:0 22px 22px;border-top:1px solid var(--line)}.report-load-search{padding-top:18px;margin-bottom:14px}.report-load-search label{display:block;margin-bottom:7px;font-weight:700}.report-load-search input{width:100%;margin-bottom:6px}.report-load-item[hidden]{display:none!important}@media(max-width:640px){.report-drawer summary{padding:18px}.report-drawer-body{padding:0 18px 18px}.report-drawer-stack{gap:10px}}
+
+/* Progressa v6.4.28 — pesquisa em relatórios e importação de treino */
+.report-universal-search{padding-top:18px;margin-bottom:16px}
+.report-universal-search label{display:block;font-weight:700;margin-bottom:7px}
+.report-universal-search input{width:100%;margin-bottom:6px}
+.report-search-empty{padding:12px 0}
+.import-progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin:16px 0}
+.import-progress span{display:block;height:100%;width:4%;background:var(--primary,#ff1630);transition:width .2s ease}
+.workout-import-card .row{align-items:center;gap:16px}
+.workout-import-card p{max-width:560px}
+.import-day{margin:12px 0}
+.import-day>label{display:block;margin-bottom:7px}
+.import-ex-row{display:grid;grid-template-columns:minmax(0,1fr) 78px 110px;gap:8px;margin:8px 0}
+.import-ex-row select,.import-ex-row input{min-width:0}
+@media(max-width:640px){
+ .workout-import-card .row{align-items:flex-start;flex-direction:column}
+ .workout-import-card .btn{width:100%}
+ .import-ex-row{grid-template-columns:1fr 72px 92px}
+}
