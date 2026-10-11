@@ -748,11 +748,26 @@ function addSetToActive(exerciseIndex){
 function removeSetFromActive(exerciseIndex,setIndex){
  const exercise=state.active?.exercises?.[exerciseIndex];if(!exercise||!exercise.sets?.[setIndex])return;
  if(exercise.sets.length<=1)return toast('O exercício precisa manter pelo menos 1 série.');
- const set=exercise.sets[setIndex];
+ const set=exercise.sets[setIndex],exerciseName=EX[exercise.id]?.name||'este exercício';
  const hasData=set.done||String(set.kg??'').trim()!==''||String(set.reps??'').trim()!=='';
- if(hasData&&!confirm(`Excluir a série ${setIndex+1}? Os dados preenchidos nela serão removidos deste treino.`))return;
+ modal(`<span class="eyebrow">EXCLUIR SÉRIE</span><h2>${exerciseName}</h2><p class="muted">Você está removendo a série ${setIndex+1}. Escolha se essa alteração vale só para o treino de hoje ou também para os próximos.</p>${hasData?'<div class="notice"><b>Atenção:</b> esta série já possui carga, repetições ou está marcada como concluída. Esses dados serão removidos desta sessão.</div>':''}<div class="grid grid2" style="margin-top:14px"><button class="btn secondary block" onclick="applySetRemoval(${exerciseIndex},${setIndex},false)">Só neste treino</button><button class="btn primary block" onclick="applySetRemoval(${exerciseIndex},${setIndex},true)">Neste e nos próximos</button></div><button class="btn ghost block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function applySetRemoval(exerciseIndex,setIndex,persistFuture){
+ const exercise=state.active?.exercises?.[exerciseIndex];if(!exercise||!exercise.sets?.[setIndex])return closeModal();
+ if(exercise.sets.length<=1){closeModal();return toast('O exercício precisa manter pelo menos 1 série.');}
  exercise.sets.splice(setIndex,1);
- saveLocal();renderApp();toast('Série excluída deste treino.');
+ if(persistFuture){
+  const day=(state.plan?.days||[]).find(item=>item.id===state.active?.dayId);
+  const planExercise=(day?.exercises||[]).find(item=>item.id===exercise.id);
+  if(planExercise){
+   planExercise.sets=exercise.sets.length;
+   exercise.sets.forEach(set=>set.extra=false);
+  }
+ }
+ saveLocal();
+ closeModal();
+ renderApp();
+ toast(persistFuture?`${exercise.sets.length} séries salvas para os próximos treinos.`:'Série excluída somente deste treino.');
 }
 function makeCurrentSetCountDefault(exerciseIndex){
  const activeExercise=state.active?.exercises?.[exerciseIndex],day=(state.plan?.days||[]).find(item=>item.id===state.active?.dayId),planExercise=(day?.exercises||[]).find(item=>item.id===activeExercise?.id);
