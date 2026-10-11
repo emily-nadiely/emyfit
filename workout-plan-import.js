@@ -168,12 +168,31 @@
     saveLocal();closeModal();screen='workout';renderApp();toast('Novo treino importado e salvo. Histórico preservado.');draft=null;
   };
 
-  const workoutBeforeImport=workoutScreen;
-  workoutScreen=function(){
-    const html=workoutBeforeImport();
-    if(state.active)return html;
-    const card='<div class="card workout-import-card"><div class="row between"><div><span class="eyebrow">IMPORTAR TREINO</span><h3>Foto, PDF ou planilha</h3><p class="muted small">O Progressa lê o arquivo, reconhece o treino e mostra uma prévia antes de substituir sua ficha.</p></div><button class="btn secondary" onclick="openWorkoutImport()">Importar</button></div></div>';
-    const marker='<div class="card">';
-    return html.includes(marker)?html.replace(marker,card+marker):card+html;
+  const profileBeforeWorkoutImport=profileScreen;
+  profileScreen=function(){
+    const html=profileBeforeWorkoutImport();
+    try{
+      const host=document.createElement('div');host.innerHTML=html;
+      const cards=[...host.children].filter(el=>el.classList?.contains('card'));
+      const personal=cards.find(el=>[...el.querySelectorAll('h3')].some(h=>h.textContent.trim()==='Dados pessoais'));
+      const plan=cards.find(el=>[...el.querySelectorAll('h3')].some(h=>h.textContent.trim()==='Plano'||h.textContent.trim()==='Plano e ciclo'));
+
+      const card=document.createElement('div');
+      card.className='card profile-import-export-card';
+      card.innerHTML='<span class="eyebrow">DADOS E PLANO</span><h3>Importação e exportação</h3><p class="muted small">Importe uma ficha de treino por foto, PDF ou planilha, ou exporte uma cópia completa dos seus dados.</p><div class="grid grid2 profile-data-actions"><button class="btn primary block" onclick="openWorkoutImport()">Importar treino</button><button class="btn secondary block" onclick="exportBackup()">Exportar backup</button></div>';
+
+      if(personal)personal.insertAdjacentElement('afterend',card);
+      else host.prepend(card);
+
+      if(plan){
+        const exportBtn=[...plan.querySelectorAll('button')].find(b=>b.textContent.trim()==='Exportar backup');
+        if(exportBtn)exportBtn.remove();
+      }
+
+      return host.innerHTML;
+    }catch(error){
+      console.warn('Falha ao posicionar importação no Perfil',error);
+      return html;
+    }
   };
 })();

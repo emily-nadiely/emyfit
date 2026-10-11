@@ -328,3 +328,9 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
  .workout-import-card .btn{width:100%}
  .import-ex-row{grid-template-columns:1fr 72px 92px}
 }
+
+/* Progressa v6.4.29 — importação e exportação no Perfil */
+.profile-import-export-card{border-color:rgba(255,54,80,.24)}
+.profile-import-export-card .eyebrow{margin-bottom:6px}
+.profile-data-actions{margin-top:14px}
+@media(max-width:640px){.profile-data-actions{grid-template-columns:1fr}}
