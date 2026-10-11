@@ -334,3 +334,9 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
 .profile-import-export-card .eyebrow{margin-bottom:6px}
 .profile-data-actions{margin-top:14px}
 @media(max-width:640px){.profile-data-actions{grid-template-columns:1fr}}
+
+/* Progressa v6.4.31 — toque nas abas de fadiga */
+.recovery-tabs{position:relative;z-index:20;pointer-events:auto;isolation:isolate}
+.recovery-tabs button{position:relative;z-index:21;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.muscle-map-card{position:relative;z-index:1}
+.premium-recovery:before{pointer-events:none}
