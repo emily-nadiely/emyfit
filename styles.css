@@ -306,3 +306,6 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
 .report-period-applied b,.report-measure-compare strong{color:#fff}
 .install-mini{border-color:#ff1630;background:rgba(255,22,48,.12);color:#fff}
 /* ===== fim Progressa v6.4 ===== */
+
+/* Progressa v6.4.27 — relatórios recolhíveis */
+.report-drawer-stack{display:grid;gap:12px;margin-top:12px}.report-drawer{padding:0;overflow:hidden}.report-drawer summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;user-select:none}.report-drawer summary::-webkit-details-marker{display:none}.report-drawer summary h3{margin:0}.report-drawer summary .small{display:block;margin-top:4px}.report-drawer-chevron{font-size:28px;line-height:1;color:var(--accent,#ff3650);transition:transform .2s ease}.report-drawer[open] .report-drawer-chevron{transform:rotate(180deg)}.report-drawer-body{padding:0 22px 22px;border-top:1px solid var(--line)}.report-load-search{padding-top:18px;margin-bottom:14px}.report-load-search label{display:block;margin-bottom:7px;font-weight:700}.report-load-search input{width:100%;margin-bottom:6px}.report-load-item[hidden]{display:none!important}@media(max-width:640px){.report-drawer summary{padding:18px}.report-drawer-body{padding:0 18px 18px}.report-drawer-stack{gap:10px}}
