@@ -3,7 +3,7 @@
   "name": "Progressa",
   "short_name": "Progressa",
   "description": "Treino adaptativo, cardio, recuperação muscular e relatórios.",
-  "start_url": "./",
+  "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
   "display_override": [
@@ -31,7 +31,10 @@
       "files": [
         {
           "name": "files",
-          "accept": ["image/*", "application/pdf"]
+          "accept": [
+            "image/*",
+            "application/pdf"
+          ]
         }
       ]
     }
@@ -54,6 +57,36 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "shortcuts": [
+    {
+      "name": "Treino",
+      "short_name": "Treino",
+      "url": "./?open=workout",
+      "icons": [
+        {
+          "src": "./progressa-icon-v640-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Relatórios",
+      "short_name": "Relatórios",
+      "url": "./?open=reports",
+      "icons": [
+        {
+          "src": "./progressa-icon-v640-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
