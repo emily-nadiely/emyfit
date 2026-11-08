@@ -340,3 +340,6 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
 .recovery-tabs button{position:relative;z-index:21;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .muscle-map-card{position:relative;z-index:1}
 .premium-recovery:before{pointer-events:none}
+
+/* Progressa v6.5.2 — Google Auth */
+.google-auth-btn{margin-top:15px;background:#fff!important;color:#202124!important;border:1px solid #dadce0!important;box-shadow:none!important}.google-auth-btn:hover{background:#f8f9fa!important}.google-g{width:24px;height:24px;display:inline-grid;place-items:center;border-radius:50%;font-weight:900;font-family:Arial,sans-serif;color:#4285f4}.auth-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;margin:14px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--line);flex:1}
