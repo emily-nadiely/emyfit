@@ -340,3 +340,33 @@ input,select,textarea{background:#101014;border-color:#32323a;color:#fff}input:f
 .recovery-tabs button{position:relative;z-index:21;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .muscle-map-card{position:relative;z-index:1}
 .premium-recovery:before{pointer-events:none}
+
+
+/* Progressa v6.5.0 — Android + iOS */
+:root{
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+}
+html,body{min-height:calc(var(--app-vh,1vh)*100);overscroll-behavior-y:none}
+body{padding-left:var(--safe-left);padding-right:var(--safe-right)}
+.app-shell{min-height:calc(var(--app-vh,1vh)*100);padding-bottom:calc(92px + var(--safe-bottom))}
+.topbar{padding-top:calc(14px + var(--safe-top));padding-left:calc(18px + var(--safe-left));padding-right:calc(18px + var(--safe-right))}
+.bottomnav{height:calc(76px + var(--safe-bottom));padding-bottom:var(--safe-bottom)}
+.modal{padding-bottom:calc(10px + var(--safe-bottom))}
+.mobile-platform-card{border-color:rgba(255,22,48,.28)}
+.mobile-platform-head{align-items:flex-start}
+.mobile-platform-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mobile-platform-badges span{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 9px}
+.mobile-install-steps{display:grid;gap:10px;margin-top:16px}
+.mobile-install-steps>div{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}
+.mobile-install-steps>div>b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(255,22,48,.14);color:var(--accent)}
+@media(display-mode:standalone){
+  body{user-select:none;-webkit-user-select:none}
+  input,textarea,[contenteditable="true"]{user-select:text;-webkit-user-select:text}
+}
+@supports(-webkit-touch-callout:none){
+  input,select,textarea{font-size:16px}
+}
+
