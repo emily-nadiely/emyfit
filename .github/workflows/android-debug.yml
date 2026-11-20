@@ -37,6 +37,28 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Restore stable Android debug signing key
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: progressa-android-debug-keystore-v1
+
+      - name: Create Android debug signing key if missing
+        shell: bash
+        run: |
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            mkdir -p "$HOME/.android"
+            keytool -genkeypair -v \
+              -keystore "$HOME/.android/debug.keystore" \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Progressa Debug,O=Progressa,C=BR"
+          fi
+
       - name: Prepare web bundle
         run: npm run native:web
 
