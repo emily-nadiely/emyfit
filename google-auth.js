@@ -1,4 +1,4 @@
-/* Progressa v6.5.2 — Login com Google */
+/* Progressa v6.5.3 — Login com Google sem flash de autenticação */
 (function(){
   async function googleLogin(){
     if(typeof cloud==='undefined'||!cloud){
@@ -53,5 +53,4 @@
     form.parentNode.insertBefore(button,divider);
   };
 
-  if(!document.querySelector('.app-shell'))renderAuth();
 })();
