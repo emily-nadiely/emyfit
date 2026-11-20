@@ -1,6 +1,6 @@
 /* Progressa v7.1.0 — Health Connect */
 (function(){
-  const HEALTH_KEY=()=>`progressa_health_${window.currentUser?.id||'local'}`;
+  const HEALTH_KEY=()=>`progressa_health_${(typeof currentUser!=='undefined'&&currentUser?.id)||'local'}`;
   const readTypes=['steps','heartRate','weight','workouts'];
   const writeTypes=['weight'];
 
@@ -119,7 +119,7 @@
   function useWeight(){
     const data=loadHealthCache(),weight=Number(data.weight);
     if(!Number.isFinite(weight)||weight<=0)return toast?.('Nenhum peso disponível no Health Connect.');
-    if(!window.state?.metrics)return;
+    if(typeof state==='undefined'||!Array.isArray(state.metrics))return;
     const date=typeof today==='function'?today():new Date().toISOString().slice(0,10);
     const existing=state.metrics.find(m=>m.date===date);
     if(existing)existing.weight=weight;else state.metrics.push({date,weight});
