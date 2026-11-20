@@ -20,7 +20,7 @@ const oauthIntentFilter=`
                 <data android:scheme="com.progressa.app" android:host="login-callback" />
             </intent-filter>`;
 if(!xml.includes('android:scheme="com.progressa.app"')){
-  xml=xml.replace(/(<activity[^>]*android:name="\\.MainActivity"[\\s\\S]*?)(<\\/activity>)/, '$1'+oauthIntentFilter+'\n        $2');
+  xml=xml.replace(/(<activity[^>]*android:name="\.MainActivity"[\s\S]*?)(<\/activity>)/, '$1'+oauthIntentFilter+'\n        $2');
 }
 await writeFile(manifestFile,xml);
 
