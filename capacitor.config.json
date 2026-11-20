@@ -1,0 +1,10 @@
+{
+  "appId": "com.progressa.app",
+  "appName": "Progressa",
+  "webDir": "dist",
+  "backgroundColor": "#070709",
+  "android": {
+    "backgroundColor": "#070709",
+    "allowMixedContent": false
+  }
+}
