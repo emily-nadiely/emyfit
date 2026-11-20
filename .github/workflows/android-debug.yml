@@ -46,6 +46,12 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Generate Progressa native icon
+        run: |
+          mkdir -p resources
+          cp progressa-icon-v640-1024.png resources/icon.png
+          npx capacitor-assets generate --android --assetPath resources --iconBackgroundColor '#070709' --iconBackgroundColorDark '#070709' --splashBackgroundColor '#070709' --splashBackgroundColorDark '#070709'
+
       - name: Patch Health Connect manifest
         run: node tools/patch-health-manifest.mjs
 
