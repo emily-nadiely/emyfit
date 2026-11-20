@@ -1,3 +1,4 @@
+/* Progressa v7.2.2 */
 /* Progressa v7.2.0 — Health Connect */
 (function(){
   const HEALTH_KEY=()=>`progressa_health_${(typeof currentUser!=='undefined'&&currentUser?.id)||'local'}`;
