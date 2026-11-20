@@ -31,10 +31,3 @@ await writeFile(variablesFile,gradle);
 
 console.log('Health Connect: minSdk 26 e permissões nativas aplicadas.');
 
-
-const appGradle='android/app/build.gradle';
-let appBuild=await readFile(appGradle,'utf8');
-appBuild=appBuild.replace(/versionCode\s+\d+/,'versionCode 70203');
-appBuild=appBuild.replace(/versionName\s+"[^"]+"/,'versionName "7.2.3"');
-await writeFile(appGradle,appBuild);
-console.log('Progressa Android versionCode 70203 / versionName 7.2.3 aplicados.');
