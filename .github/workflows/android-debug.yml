@@ -8,6 +8,9 @@ on:
       - 'package.json'
       - 'capacitor.config.json'
       - 'tools/prepare-native.mjs'
+      - 'tools/patch-health-manifest.mjs'
+      - 'health-connect.js'
+      - 'privacypolicy.html'
       - '.github/workflows/android-debug.yml'
 
 permissions:
@@ -42,6 +45,9 @@ jobs:
 
       - name: Sync Capacitor
         run: npx cap sync android
+
+      - name: Patch Health Connect manifest
+        run: node tools/patch-health-manifest.mjs
 
       - name: Build debug APK
         working-directory: android
