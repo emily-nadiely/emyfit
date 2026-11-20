@@ -12,6 +12,16 @@ for(const name of permissions){
     xml=xml.replace(/<manifest([^>]*)>/, m=>m+'\n    <uses-permission android:name="'+name+'" />');
   }
 }
+const oauthIntentFilter=`
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.progressa.app" android:host="login-callback" />
+            </intent-filter>`;
+if(!xml.includes('android:scheme="com.progressa.app"')){
+  xml=xml.replace(/(<activity[^>]*android:name="\\.MainActivity"[\\s\\S]*?)(<\\/activity>)/, '$1'+oauthIntentFilter+'\n        $2');
+}
 await writeFile(manifestFile,xml);
 
 const variablesFile='android/variables.gradle';
@@ -24,7 +34,7 @@ console.log('Health Connect: minSdk 26 e permissões nativas aplicadas.');
 
 const appGradle='android/app/build.gradle';
 let appBuild=await readFile(appGradle,'utf8');
-appBuild=appBuild.replace(/versionCode\s+\d+/,'versionCode 70202');
-appBuild=appBuild.replace(/versionName\s+"[^"]+"/,'versionName "7.2.2"');
+appBuild=appBuild.replace(/versionCode\s+\d+/,'versionCode 70203');
+appBuild=appBuild.replace(/versionName\s+"[^"]+"/,'versionName "7.2.3"');
 await writeFile(appGradle,appBuild);
-console.log('Progressa Android versionCode 70202 / versionName 7.2.2 aplicados.');
+console.log('Progressa Android versionCode 70203 / versionName 7.2.3 aplicados.');
