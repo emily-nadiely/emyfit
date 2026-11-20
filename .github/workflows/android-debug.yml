@@ -59,6 +59,10 @@ jobs:
               -dname "CN=Progressa Debug,O=Progressa,C=BR"
           fi
 
+      - name: Show Android signing SHA-1
+        shell: bash
+        run: keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey | grep -E "SHA1:|SHA-1:" || true
+
       - name: Prepare web bundle
         run: npm run native:web
 
