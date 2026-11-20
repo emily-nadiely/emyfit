@@ -1,96 +1,68 @@
-/* Progressa v7.2.3 — Google OAuth mobile com retorno nativo ao APK */
+/* Progressa v7.2.4 — Google Sign-In nativo no Android */
 (function(){
-  const NATIVE_REDIRECT='com.progressa.app://login-callback';
+  const WEB_CLIENT_ID='677709943693-m19523hrbn2ebe6t66lb7gicpieeh8rb.apps.googleusercontent.com';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
 
-  async function finishNativeGoogleLogin(url){
-    try{
-      if(!url||!url.startsWith(NATIVE_REDIRECT))return;
-      const Browser=window.Capacitor?.Plugins?.Browser;
-      try{await Browser?.close?.()}catch{}
-      const parsed=new URL(url);
-      const hashParams=new URLSearchParams((parsed.hash||'').replace(/^#/,''));
-      const queryParams=parsed.searchParams;
-      const error=queryParams.get('error_description')||hashParams.get('error_description')||queryParams.get('error')||hashParams.get('error');
-      if(error)throw new Error(decodeURIComponent(error));
-
-      const accessToken=hashParams.get('access_token')||queryParams.get('access_token');
-      const refreshToken=hashParams.get('refresh_token')||queryParams.get('refresh_token');
-      const code=queryParams.get('code');
-
-      let result;
-      if(accessToken&&refreshToken){
-        result=await cloud.auth.setSession({access_token:accessToken,refresh_token:refreshToken});
-      }else if(code&&cloud.auth.exchangeCodeForSession){
-        result=await cloud.auth.exchangeCodeForSession(code);
-      }else{
-        throw new Error('O Google retornou ao Progressa sem os dados de sessão.');
-      }
-      if(result?.error)throw result.error;
-      const session=result?.data?.session;
-      currentUser=session?.user||result?.data?.user||null;
-      if(typeof setAuthBusy==='function')setAuthBusy(false);
-      if(typeof setAuthMessage==='function')setAuthMessage('Login Google concluído.','success');
-      if(currentUser){
-        try{loadLocal();await syncDown()}catch(syncError){console.warn('Login concluído; sincronização pendente',syncError)}
-        screen='home';
-        authMessage='';
-        renderRoot();
-      }
-    }catch(error){
-      console.warn('Falha ao concluir login Google nativo',error);
-      if(typeof setAuthBusy==='function')setAuthBusy(false);
-      if(typeof setAuthMessage==='function')setAuthMessage(
-        typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível concluir o login com Google.'),
-        'dangerbox'
-      );
+  function setBusy(v,label){
+    if(typeof setAuthBusy==='function')setAuthBusy(v,label);
+  }
+  function setMsg(msg,type){
+    if(typeof setAuthMessage==='function')setAuthMessage(msg,type);
+  }
+  async function sha256Hex(value){
+    const bytes=new TextEncoder().encode(value);
+    const hash=await crypto.subtle.digest('SHA-256',bytes);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function randomNonce(){
+    const bytes=crypto.getRandomValues(new Uint8Array(32));
+    let s=''; for(const b of bytes)s+=String.fromCharCode(b);
+    return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  async function finishSession(data){
+    currentUser=data?.session?.user||data?.user||null;
+    if(currentUser){
+      try{loadLocal();await syncDown()}catch(e){console.warn('Login concluído; sincronização pendente',e)}
+      screen='home'; authMessage=''; renderRoot();
     }
   }
-
-  function installNativeCallback(){
-    if(!isNative())return;
-    const App=window.Capacitor?.Plugins?.App;
-    if(!App?.addListener)return;
-    App.addListener('appUrlOpen',event=>finishNativeGoogleLogin(event?.url));
-    App.getLaunchUrl?.().then(result=>{if(result?.url)finishNativeGoogleLogin(result.url)}).catch(()=>{});
+  async function nativeGoogleLogin(){
+    const GoogleSignIn=window.Capacitor?.Plugins?.GoogleSignIn;
+    if(!GoogleSignIn)throw new Error('Google Sign-In nativo não foi carregado.');
+    await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
+    const rawNonce=randomNonce();
+    const hashedNonce=await sha256Hex(rawNonce);
+    const google=await GoogleSignIn.signIn({nonce:hashedNonce});
+    if(!google?.idToken)throw new Error('O Google não retornou um token de identidade.');
+    const result=await cloud.auth.signInWithIdToken({
+      provider:'google',
+      token:google.idToken,
+      nonce:rawNonce
+    });
+    if(result.error)throw result.error;
+    await finishSession(result.data);
   }
-
+  async function webGoogleLogin(){
+    const redirectTo=(location.origin+location.pathname).replace(/index\.html$/,'');
+    const result=await cloud.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
+    if(result.error)throw result.error;
+    if(result.data?.url)location.href=result.data.url;
+  }
   async function googleLogin(){
     if(typeof cloud==='undefined'||!cloud){
-      if(typeof setAuthMessage==='function')setAuthMessage('A nuvem não está configurada.','dangerbox');
-      return;
+      setMsg('A nuvem não está configurada.','dangerbox');return;
     }
     try{
-      if(typeof setAuthMessage==='function')setAuthMessage('Abrindo login seguro do Google…','notice');
-      if(typeof setAuthBusy==='function')setAuthBusy(true,'Conectando…');
-
-      if(isNative()){
-        const result=await cloud.auth.signInWithOAuth({
-          provider:'google',
-          options:{redirectTo:NATIVE_REDIRECT,skipBrowserRedirect:true}
-        });
-        if(result.error)throw result.error;
-        if(!result.data?.url)throw new Error('Não foi possível iniciar o login do Google.');
-        const Browser=window.Capacitor?.Plugins?.Browser;
-        if(Browser?.open)await Browser.open({url:result.data.url});
-        else location.href=result.data.url;
-        return;
-      }
-
-      const redirectTo=(location.origin+location.pathname).replace(/index\.html$/,'');
-      const result=await cloud.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
-      if(result.error)throw result.error;
-      if(result.data?.url)location.href=result.data.url;
+      setMsg(isNative()?'Abrindo sua conta Google…':'Abrindo login seguro do Google…','notice');
+      setBusy(true,'Conectando…');
+      if(isNative())await nativeGoogleLogin();
+      else await webGoogleLogin();
     }catch(error){
       console.warn('Falha no login Google',error);
-      if(typeof setAuthMessage==='function')setAuthMessage(
-        typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível entrar com Google.'),
-        'dangerbox'
-      );
-      if(typeof setAuthBusy==='function')setAuthBusy(false);
+      setMsg(typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível entrar com Google.'),'dangerbox');
+    }finally{
+      setBusy(false);
     }
   }
-
   window.signInWithGoogle=googleLogin;
-  installNativeCallback();
 })();
