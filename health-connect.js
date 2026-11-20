@@ -30,7 +30,7 @@
         </div>
         <p class="muted small" style="margin-top:10px">Última leitura: ${fmtSync(data.lastSync)}</p>
         <p class="muted small">Treinos concluídos no Progressa são enviados ao Health Connect automaticamente quando a permissão de escrita estiver ativa.</p>
-        <button class="btn primary block" onclick="syncHealthConnect()">Sincronizar agora</button>
+        <button class="btn primary block" onclick="syncHealthConnect()">Sincronizar agora</button>\n        <button class="btn secondary block" style="margin-top:8px" onclick="connectHealthConnect()">Atualizar permissões</button>
         ${Number.isFinite(+data.weight)?`<button class="btn secondary block" style="margin-top:8px" onclick="useHealthWeight()">Usar ${Number(data.weight).toFixed(1)} kg no Progressa</button>`:''}
         <button class="btn ghost block" style="margin-top:8px" onclick="openHealthConnectSettings()">Gerenciar permissões</button>`
         :`<button class="btn primary block" style="margin-top:14px" onclick="connectHealthConnect()">Conectar ao Health Connect</button>
