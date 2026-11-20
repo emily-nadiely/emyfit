@@ -4,6 +4,7 @@ const manifestFile='android/app/src/main/AndroidManifest.xml';
 let xml=await readFile(manifestFile,'utf8');
 const permissions=[
   'android.permission.health.READ_EXERCISE',
+  'android.permission.health.WRITE_EXERCISE',
   'android.permission.health.READ_HEALTH_DATA_HISTORY'
 ];
 for(const name of permissions){
