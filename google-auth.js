@@ -1,4 +1,4 @@
-/* Progressa v7.2.4 — Google Sign-In nativo no Android */
+/* Progressa v7.2.5 — Google Sign-In nativo com recuperação de reauth */
 (function(){
   const WEB_CLIENT_ID='677709943693-m19523hrbn2ebe6t66lb7gicpieeh8rb.apps.googleusercontent.com';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
@@ -32,7 +32,19 @@
     await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
     const rawNonce=randomNonce();
     const hashedNonce=await sha256Hex(rawNonce);
-    const google=await GoogleSignIn.signIn({nonce:hashedNonce});
+    let google;
+    try{
+      google=await GoogleSignIn.signIn({nonce:hashedNonce});
+    }catch(firstError){
+      const msg=String(firstError?.message||firstError||'');
+      if(msg.includes('[16]')||/reauth failed/i.test(msg)){
+        try{await GoogleSignIn.signOut();}catch{}
+        await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
+        google=await GoogleSignIn.signIn({nonce:hashedNonce});
+      }else{
+        throw firstError;
+      }
+    }
     if(!google?.idToken)throw new Error('O Google não retornou um token de identidade.');
     const result=await cloud.auth.signInWithIdToken({
       provider:'google',
@@ -59,7 +71,11 @@
       else await webGoogleLogin();
     }catch(error){
       console.warn('Falha no login Google',error);
-      setMsg(typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível entrar com Google.'),'dangerbox');
+      const raw=String(error?.message||error||'');
+      const friendly=/\[16\]|reauth failed/i.test(raw)
+        ? 'O Google não conseguiu validar esta instalação do Progressa. Atualize a autorização do app no Google e tente novamente.'
+        : (typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível entrar com Google.'));
+      setMsg(friendly,'dangerbox');
     }finally{
       setBusy(false);
     }
