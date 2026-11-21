@@ -44,7 +44,23 @@
   function installCard(){
     if(typeof window.profileScreen!=='function'||window.__progressaHealthWrapped)return;
     const base=window.profileScreen;
-    window.profileScreen=function(){return base()+healthConnectCard()};
+    window.profileScreen=function(){
+      const html=base();
+      try{
+        const host=document.createElement('div');
+        host.innerHTML=html;
+        const template=document.createElement('template');
+        template.innerHTML=healthConnectCard().trim();
+        const card=template.content.firstElementChild;
+        const hero=[...host.children].find(el=>el.matches?.('section.hero'));
+        if(hero)hero.insertAdjacentElement('afterend',card);
+        else host.prepend(card);
+        return host.innerHTML;
+      }catch(error){
+        console.warn('Falha ao posicionar Conexão Saúde no Perfil',error);
+        return html+healthConnectCard();
+      }
+    };
     window.__progressaHealthWrapped=true;
   }
 
