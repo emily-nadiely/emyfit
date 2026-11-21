@@ -1,8 +1,9 @@
-/* Progressa v7.3.1 — Google OAuth seguro com retorno direto ao APK */
+/* Progressa v7.3.2 — Supabase OAuth com retorno direto ao APK */
 (function(){
-  const CALLBACK_URL='https://progressa-livid.vercel.app/auth-callback.html';
-  const APP_CALLBACK_PREFIX='com.progressa.app://login-callback';
+  const APP_CALLBACK_URL='com.progressa.app://login-callback';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
+  let callbackInFlight=null;
+  let handledCallbackUrl='';
 
   function setBusy(v,label){ if(typeof setAuthBusy==='function')setAuthBusy(v,label); }
   function setMsg(msg,type){ if(typeof setAuthMessage==='function')setAuthMessage(msg,type); }
@@ -16,37 +17,38 @@
   }
 
   async function consumeCallback(url){
-    if(!url||!url.startsWith(APP_CALLBACK_PREFIX)||!cloud)return false;
-    try{
-      const u=new URL(url);
-      const query=new URLSearchParams(u.search||'');
-      const hash=new URLSearchParams((u.hash||'').replace(/^#/,''));
-      const error=query.get('error_description')||query.get('error')||hash.get('error_description')||hash.get('error');
-      if(error)throw new Error(decodeURIComponent(error));
+    if(!url||!cloud)return false;
+    let u;
+    try{u=new URL(url)}catch{return false}
+    if(u.protocol!=='com.progressa.app:'||u.host!=='login-callback')return false;
+    if(url===handledCallbackUrl)return true;
+    if(callbackInFlight)return callbackInFlight;
+    callbackInFlight=(async()=>{
+      try{
+        const query=new URLSearchParams(u.search||'');
+        const error=query.get('error_description')||query.get('error');
+        if(error)throw new Error(error);
 
-      const code=query.get('code');
-      if(code){
+        const code=query.get('code');
+        if(!code)throw new Error('O retorno do Google não trouxe o código de autenticação esperado.');
         const result=await cloud.auth.exchangeCodeForSession(code);
         if(result.error)throw result.error;
         await finishSession(result.data);
-      }else{
-        const accessToken=hash.get('access_token');
-        const refreshToken=hash.get('refresh_token');
-        if(!accessToken||!refreshToken)throw new Error('O retorno do Google não trouxe a sessão esperada.');
-        const result=await cloud.auth.setSession({access_token:accessToken,refresh_token:refreshToken});
-        if(result.error)throw result.error;
-        await finishSession(result.data);
-      }
 
-      try{await window.Capacitor?.Plugins?.Browser?.close?.()}catch{}
-      setBusy(false);
-      return true;
-    }catch(error){
-      console.warn('Falha ao concluir login Google',error);
-      setBusy(false);
-      setMsg(error?.message||'Não foi possível concluir o login Google.','dangerbox');
-      return false;
-    }
+        handledCallbackUrl=url;
+        try{await window.Capacitor?.Plugins?.Browser?.close?.()}catch{}
+        setBusy(false);
+        return true;
+      }catch(error){
+        console.warn('Falha ao concluir login Google',error);
+        setBusy(false);
+        setMsg(error?.message||'Não foi possível concluir o login Google.','dangerbox');
+        return false;
+      }finally{
+        callbackInFlight=null;
+      }
+    })();
+    return callbackInFlight;
   }
 
   async function installNativeCallbackHandler(){
@@ -69,7 +71,7 @@
     const result=await cloud.auth.signInWithOAuth({
       provider:'google',
       options:{
-        redirectTo:CALLBACK_URL,
+        redirectTo:APP_CALLBACK_URL,
         skipBrowserRedirect:true,
         queryParams:{prompt:'select_account'}
       }
@@ -77,10 +79,7 @@
     if(result.error)throw result.error;
     if(!result.data?.url)throw new Error('O Google não retornou a URL de autenticação.');
 
-    await Browser.open({
-      url:result.data.url,
-      presentationStyle:'popover'
-    });
+    await Browser.open({url:result.data.url,presentationStyle:'popover'});
   }
 
   async function webGoogleLogin(){
