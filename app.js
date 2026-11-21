@@ -159,10 +159,46 @@ function setAuthMessage(message='',type='notice'){authMessage=message;authMessag
 function setAuthBusy(busy,label='Entrando…'){authBusy=busy;const btn=document.getElementById('authSubmit');if(btn){btn.disabled=busy;btn.textContent=busy?label:(authMode==='login'?'Entrar':'Criar minha conta')}}
 function friendlyAuthError(error){const raw=String(error?.message||error||'').toLowerCase();if(raw.includes('invalid login credentials'))return 'E-mail ou senha incorretos.';if(raw.includes('email not confirmed'))return 'Confirme o e-mail da conta antes de entrar.';if(raw.includes('too many requests')||raw.includes('rate limit'))return 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';if(raw.includes('failed to fetch')||raw.includes('network')||raw.includes('load failed'))return 'Não foi possível conectar à nuvem. Verifique a internet e tente novamente.';return error?.message||'Não foi possível entrar. Tente novamente.'}
 function withTimeout(promise,ms){return Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Tempo limite de conexão excedido.')),ms))])}
-async function hydrateSession(session){currentUser=session?.user||null;if(currentUser){loadLocal();await syncDown();}else screen='home';renderRoot()}
+async function hydrateSession(session){
+  currentUser=session?.user||null;
+  if(currentUser){
+    loadLocal();
+    screen='home';
+    renderRoot();
+    syncDown().then(()=>{ if(currentUser) renderRoot(); }).catch(err=>console.warn('Sincronização pós-login pendente',err));
+  }else{
+    screen='home';
+    renderRoot();
+  }
+}
 function scheduleAuthHydration(session){clearTimeout(authHydrationTimer);authHydrationTimer=setTimeout(()=>{hydrateSession(session).catch(err=>{console.warn('Falha ao atualizar sessão',err);renderRoot()})},0)}
 
-async function boot(){installPersistenceGuards();const has=initCloud();if(has){try{const {data,error}=await cloud.auth.getSession();if(error)console.warn(error);currentUser=data?.session?.user||null;if(currentUser){loadLocal();await syncDown()}}catch(err){console.warn('Falha ao restaurar sessão',err)}cloud.auth.onAuthStateChange((event,session)=>{currentUser=session?.user||null;if(event==='SIGNED_IN'&&authBusy)return;if(event==='TOKEN_REFRESHED')return;scheduleAuthHydration(session)})}renderRoot();const nativeApp=!!window.Capacitor?.isNativePlatform?.();if(!nativeApp&&'serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js', {scope:'./', updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{})}
+async function boot(){
+  installPersistenceGuards();
+  const has=initCloud();
+  if(has){
+    try{
+      const {data,error}=await cloud.auth.getSession();
+      if(error)console.warn(error);
+      currentUser=data?.session?.user||null;
+      if(currentUser){
+        loadLocal();
+        screen='home';
+        renderRoot();
+        syncDown().then(()=>{ if(currentUser) renderRoot(); }).catch(err=>console.warn('Falha ao sincronizar sessão restaurada',err));
+      }
+    }catch(err){console.warn('Falha ao restaurar sessão',err)}
+    cloud.auth.onAuthStateChange((event,session)=>{
+      currentUser=session?.user||null;
+      if(event==='TOKEN_REFRESHED')return;
+      if(event==='SIGNED_IN'&&authBusy)return;
+      scheduleAuthHydration(session)
+    })
+  }
+  renderRoot();
+  const nativeApp=!!window.Capacitor?.isNativePlatform?.();
+  if(!nativeApp&&'serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js', {scope:'./', updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{})
+}
 function renderRoot(){if(!currentUser&&!localStorage.getItem('emyfit_demo'))renderAuth();else{loadLocal();if(!state.profile?.onboardingComplete)renderOnboarding();else{if(state.active)screen='workout';renderApp()}}}
 
 function renderAuth(){
@@ -196,7 +232,14 @@ if(authMode==='signup'&&!result.data.session){
   }
   setAuthMessage('Conta criada. Confira seu e-mail para confirmar o cadastro.','success');
   return
-}clearTimeout(authHydrationTimer);currentUser=result.data.session?.user||result.data.user||null;if(!currentUser){setAuthMessage('A conta foi validada, mas a sessão não foi criada. Tente entrar novamente.','dangerbox');return}loadLocal();setAuthMessage('Conta validada. Carregando seus dados…','success');try{await withTimeout(syncDown(),15000)}catch(syncError){console.warn('Login concluído, mas a sincronização demorou',syncError)}screen='home';authMessage='';renderRoot()}catch(error){console.warn('Falha de autenticação',error);setAuthMessage(friendlyAuthError(error),'dangerbox')}finally{setAuthBusy(false)}}
+}clearTimeout(authHydrationTimer);
+currentUser=result.data.session?.user||result.data.user||null;
+if(!currentUser){setAuthMessage('A conta foi validada, mas a sessão não foi criada. Tente entrar novamente.','dangerbox');return}
+loadLocal();
+screen='home';
+authMessage='';
+renderRoot();
+syncDown().then(()=>{ if(currentUser) renderRoot(); }).catch(syncError=>console.warn('Login concluído; sincronização pendente',syncError))}catch(error){console.warn('Falha de autenticação',error);setAuthMessage(friendlyAuthError(error),'dangerbox')}finally{setAuthBusy(false)}}
 async function forgotPassword(){if(!cloud){setAuthMessage('A nuvem não está configurada.','dangerbox');return}const email=$('#authEmail')?.value.trim();if(!email){setAuthMessage('Informe o e-mail para receber o link.','dangerbox');return}try{const {error}=await withTimeout(cloud.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}),20000);setAuthMessage(error?friendlyAuthError(error):'Link de recuperação enviado para o e-mail informado.',error?'dangerbox':'success')}catch(error){setAuthMessage(friendlyAuthError(error),'dangerbox')}}
 function startDemo(){localStorage.setItem('emyfit_demo','1');currentUser=null;loadLocal();renderRoot()}
 
