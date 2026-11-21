@@ -1,4 +1,4 @@
-/* Progressa v7.2.5 — Google Sign-In nativo com recuperação de reauth */
+/* Progressa v7.2.6 — limpa estado Google antes de cada login */
 (function(){
   const WEB_CLIENT_ID='677709943693-m19523hrbn2ebe6t66lb7gicpieeh8rb.apps.googleusercontent.com';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
@@ -30,6 +30,7 @@
     const GoogleSignIn=window.Capacitor?.Plugins?.GoogleSignIn;
     if(!GoogleSignIn)throw new Error('Google Sign-In nativo não foi carregado.');
     await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
+    try{ await GoogleSignIn.signOut(); }catch{}
     const rawNonce=randomNonce();
     const hashedNonce=await sha256Hex(rawNonce);
     let google;
