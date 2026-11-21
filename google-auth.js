@@ -1,7 +1,6 @@
 /* Progressa v7.3.2 — Supabase OAuth com retorno direto ao APK */
 (function(){
   const APP_CALLBACK_URL='com.progressa.app://login-callback';
-  const APP_CALLBACK_PREFIX=APP_CALLBACK_URL;
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
   let callbackInFlight=null;
   let handledCallbackUrl='';
@@ -18,30 +17,23 @@
   }
 
   async function consumeCallback(url){
-    if(!url||!url.startsWith(APP_CALLBACK_PREFIX)||!cloud)return false;
+    if(!url||!cloud)return false;
+    let u;
+    try{u=new URL(url)}catch{return false}
+    if(u.protocol!=='com.progressa.app:'||u.host!=='login-callback')return false;
     if(url===handledCallbackUrl)return true;
     if(callbackInFlight)return callbackInFlight;
     callbackInFlight=(async()=>{
       try{
-        const u=new URL(url);
         const query=new URLSearchParams(u.search||'');
-        const hash=new URLSearchParams((u.hash||'').replace(/^#/,'')); 
-        const error=query.get('error_description')||query.get('error')||hash.get('error_description')||hash.get('error');
+        const error=query.get('error_description')||query.get('error');
         if(error)throw new Error(error);
 
         const code=query.get('code');
-        if(code){
-          const result=await cloud.auth.exchangeCodeForSession(code);
-          if(result.error)throw result.error;
-          await finishSession(result.data);
-        }else{
-          const accessToken=hash.get('access_token');
-          const refreshToken=hash.get('refresh_token');
-          if(!accessToken||!refreshToken)throw new Error('O retorno do Google não trouxe a sessão esperada.');
-          const result=await cloud.auth.setSession({access_token:accessToken,refresh_token:refreshToken});
-          if(result.error)throw result.error;
-          await finishSession(result.data);
-        }
+        if(!code)throw new Error('O retorno do Google não trouxe o código de autenticação esperado.');
+        const result=await cloud.auth.exchangeCodeForSession(code);
+        if(result.error)throw result.error;
+        await finishSession(result.data);
 
         handledCallbackUrl=url;
         try{await window.Capacitor?.Plugins?.Browser?.close?.()}catch{}
@@ -91,7 +83,7 @@
   }
 
   async function webGoogleLogin(){
-    const redirectTo=(location.origin+location.pathname).replace(/index\\.html$/,'');
+    const redirectTo=(location.origin+location.pathname).replace(/index\.html$/,'');
     const result=await cloud.auth.signInWithOAuth({
       provider:'google',
       options:{redirectTo,queryParams:{prompt:'select_account'}}
