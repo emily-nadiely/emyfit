@@ -240,7 +240,24 @@ screen='home';
 authMessage='';
 renderRoot();
 syncDown().then(()=>{ if(currentUser) renderRoot(); }).catch(syncError=>console.warn('Login concluído; sincronização pendente',syncError))}catch(error){console.warn('Falha de autenticação',error);setAuthMessage(friendlyAuthError(error),'dangerbox')}finally{setAuthBusy(false)}}
-async function forgotPassword(){if(!cloud){setAuthMessage('A nuvem não está configurada.','dangerbox');return}const email=$('#authEmail')?.value.trim();if(!email){setAuthMessage('Informe o e-mail para receber o link.','dangerbox');return}try{const {error}=await withTimeout(cloud.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}),20000);setAuthMessage(error?friendlyAuthError(error):'Link de recuperação enviado para o e-mail informado.',error?'dangerbox':'success')}catch(error){setAuthMessage(friendlyAuthError(error),'dangerbox')}}
+async function forgotPassword(){
+  if(!cloud){setAuthMessage('A nuvem não está configurada.','dangerbox');return}
+  const email=$('#authEmail')?.value.trim();
+  if(!email){setAuthMessage('Informe o e-mail para receber o link.','dangerbox');return}
+  setAuthMessage('Enviando link de recuperação…','notice');
+  try{
+    const {error}=await withTimeout(
+      cloud.auth.resetPasswordForEmail(email,{redirectTo:'https://progressa-livid.vercel.app/reset-password.html'}),
+      20000
+    );
+    setAuthMessage(
+      error?friendlyAuthError(error):'Enviamos um link para redefinir sua senha. Abra o e-mail, crie uma nova senha e depois volte ao Progressa para entrar.',
+      error?'dangerbox':'success'
+    )
+  }catch(error){
+    setAuthMessage(friendlyAuthError(error),'dangerbox')
+  }
+}
 function startDemo(){localStorage.setItem('emyfit_demo','1');currentUser=null;loadLocal();renderRoot()}
 
 const wizard={basic:{},goal:'fatloss',focusAreas:['balanced'],days:4,duration:60,experience:'beginner',preference:'machines',cardio:'bike_h',limitations:[],screening:[],sleep:'7',stress:'medium'};
