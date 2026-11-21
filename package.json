@@ -1,6 +1,6 @@
 {
   "name": "progressa",
-  "version": "7.2.6",
+  "version": "7.2.7",
   "private": true,
   "description": "Progressa - treino, evolução e recuperação",
   "scripts": {
@@ -13,7 +13,7 @@
     "@capacitor/core": "^8.0.0",
     "@krzysztofkostecki/capacitor-health": "8.4.0",
     "@capacitor/browser": "^8.0.0",
-    "@capawesome/capacitor-google-sign-in": "^0.1.0"
+    "@capgo/capacitor-social-login": "8.7.13"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.0.0",
