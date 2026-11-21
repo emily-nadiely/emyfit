@@ -1,4 +1,4 @@
-/* Progressa v7.3.2 — Supabase OAuth com retorno direto ao APK */
+/* Progressa v7.3.3 — Supabase OAuth com retorno direto ao APK */
 (function(){
   const APP_CALLBACK_URL='com.progressa.app://login-callback';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
