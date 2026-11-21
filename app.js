@@ -150,7 +150,7 @@ function flushActiveWorkout(){if(!state.active)return;persistActiveFromDOM(false
 let persistenceGuardsInstalled=false;
 function installPersistenceGuards(){if(persistenceGuardsInstalled)return;persistenceGuardsInstalled=true;document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushActiveWorkout()});window.addEventListener('pagehide',flushActiveWorkout);window.addEventListener('beforeunload',flushActiveWorkout);window.addEventListener('freeze',flushActiveWorkout)}
 
-function initCloud(){if(C.supabaseUrl&&C.supabaseAnonKey&&window.supabase){cloud=window.supabase.createClient(C.supabaseUrl,C.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});return true}return false}
+function initCloud(){if(C.supabaseUrl&&C.supabaseAnonKey&&window.supabase){cloud=window.supabase.createClient(C.supabaseUrl,C.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});return true}return false}
 function toast(m){const t=$('#toast');if(!t)return; t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
 function modal(html){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="modal"><div class="modal-card"><button class="modal-close" onclick="closeModal()">×</button>${html}</div></div>`)}
 function closeModal(){$('#modal')?.remove()}
