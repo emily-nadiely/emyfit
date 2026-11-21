@@ -1,4 +1,4 @@
-/* Progressa v7.2.7 — Google Sign-In nativo com Capgo Social Login */
+/* Progressa v7.2.8 — Google Sign-In nativo sem AuthorizationClient extra */
 (function(){
   const WEB_CLIENT_ID='677709943693-m19523hrbn2ebe6t66lb7gicpieeh8rb.apps.googleusercontent.com';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
@@ -30,7 +30,8 @@
     await SocialLogin.initialize({
       google:{
         webClientId:WEB_CLIENT_ID,
-        mode:'online'
+        mode:'online',
+        skipAuthOnlyAuthorizationAfterSignIn:true
       }
     });
 
