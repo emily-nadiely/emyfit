@@ -21,7 +21,7 @@ const oauthIntentFilter=[
   '            </intent-filter>'
 ].join('\n');
 if(!xml.includes('android:scheme="com.progressa.app"')){
-  const activity=/(<activity[^>]*android:name="\\.MainActivity"[^>]*>)([\\s\\S]*?)(<\\/activity>)/;
+  const activity=/(<activity[^>]*android:name="\.MainActivity"[^>]*>)([\s\S]*?)(<\/activity>)/;
   if(!activity.test(xml)) throw new Error('Não localizei a MainActivity para registrar o deep link OAuth.');
   xml=xml.replace(activity,(_,open,body,close)=>open+body+oauthIntentFilter+'\n        '+close);
 }
@@ -32,10 +32,10 @@ await writeFile(manifestFile,xml);
 
 const variablesFile='android/variables.gradle';
 let gradle=await readFile(variablesFile,'utf8');
-if(!/minSdkVersion\\s*=\\s*26/.test(gradle)){
-  gradle=gradle.replace(/minSdkVersion\\s*=\\s*24/g,'minSdkVersion = 26');
+if(!/minSdkVersion\s*=\s*26/.test(gradle)){
+  gradle=gradle.replace(/minSdkVersion\s*=\s*24/g,'minSdkVersion = 26');
 }
-if(!/minSdkVersion\\s*=\\s*26/.test(gradle)) throw new Error('Não foi possível manter o minSdk 26 do Health Connect.');
+if(!/minSdkVersion\s*=\s*26/.test(gradle)) throw new Error('Não foi possível manter o minSdk 26 do Health Connect.');
 await writeFile(variablesFile,gradle);
 
 console.log('Health Connect e deep link OAuth verificados no AndroidManifest.');
