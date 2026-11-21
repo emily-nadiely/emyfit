@@ -10,6 +10,9 @@ on:
       - 'tools/prepare-native.mjs'
       - 'tools/patch-health-manifest.mjs'
       - 'health-connect.js'
+      - 'google-auth.js'
+      - 'auth-callback.html'
+      - 'index.html'
       - 'privacypolicy.html'
       - '.github/workflows/android-debug.yml'
 
