@@ -1,14 +1,10 @@
-/* Progressa v7.2.6 — limpa estado Google antes de cada login */
+/* Progressa v7.2.7 — Google Sign-In nativo com Capgo Social Login */
 (function(){
   const WEB_CLIENT_ID='677709943693-m19523hrbn2ebe6t66lb7gicpieeh8rb.apps.googleusercontent.com';
   const isNative=()=>!!window.Capacitor?.isNativePlatform?.();
 
-  function setBusy(v,label){
-    if(typeof setAuthBusy==='function')setAuthBusy(v,label);
-  }
-  function setMsg(msg,type){
-    if(typeof setAuthMessage==='function')setAuthMessage(msg,type);
-  }
+  function setBusy(v,label){ if(typeof setAuthBusy==='function')setAuthBusy(v,label); }
+  function setMsg(msg,type){ if(typeof setAuthMessage==='function')setAuthMessage(msg,type); }
   async function sha256Hex(value){
     const bytes=new TextEncoder().encode(value);
     const hash=await crypto.subtle.digest('SHA-256',bytes);
@@ -26,41 +22,49 @@
       screen='home'; authMessage=''; renderRoot();
     }
   }
+
   async function nativeGoogleLogin(){
-    const GoogleSignIn=window.Capacitor?.Plugins?.GoogleSignIn;
-    if(!GoogleSignIn)throw new Error('Google Sign-In nativo não foi carregado.');
-    await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
-    try{ await GoogleSignIn.signOut(); }catch{}
+    const SocialLogin=window.Capacitor?.Plugins?.SocialLogin;
+    if(!SocialLogin)throw new Error('Login Google nativo não foi carregado.');
+
+    await SocialLogin.initialize({
+      google:{
+        webClientId:WEB_CLIENT_ID,
+        mode:'online'
+      }
+    });
+
     const rawNonce=randomNonce();
     const hashedNonce=await sha256Hex(rawNonce);
-    let google;
-    try{
-      google=await GoogleSignIn.signIn({nonce:hashedNonce});
-    }catch(firstError){
-      const msg=String(firstError?.message||firstError||'');
-      if(msg.includes('[16]')||/reauth failed/i.test(msg)){
-        try{await GoogleSignIn.signOut();}catch{}
-        await GoogleSignIn.initialize({clientId:WEB_CLIENT_ID});
-        google=await GoogleSignIn.signIn({nonce:hashedNonce});
-      }else{
-        throw firstError;
+
+    const login=await SocialLogin.login({
+      provider:'google',
+      options:{
+        nonce:hashedNonce,
+        filterByAuthorizedAccounts:false,
+        autoSelectEnabled:false
       }
-    }
-    if(!google?.idToken)throw new Error('O Google não retornou um token de identidade.');
+    });
+
+    const idToken=login?.result?.idToken;
+    if(!idToken)throw new Error('O Google não retornou um token de identidade.');
+
     const result=await cloud.auth.signInWithIdToken({
       provider:'google',
-      token:google.idToken,
+      token:idToken,
       nonce:rawNonce
     });
     if(result.error)throw result.error;
     await finishSession(result.data);
   }
+
   async function webGoogleLogin(){
     const redirectTo=(location.origin+location.pathname).replace(/index\.html$/,'');
     const result=await cloud.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
     if(result.error)throw result.error;
     if(result.data?.url)location.href=result.data.url;
   }
+
   async function googleLogin(){
     if(typeof cloud==='undefined'||!cloud){
       setMsg('A nuvem não está configurada.','dangerbox');return;
@@ -74,12 +78,13 @@
       console.warn('Falha no login Google',error);
       const raw=String(error?.message||error||'');
       const friendly=/\[16\]|reauth failed/i.test(raw)
-        ? 'O Google não conseguiu validar esta instalação do Progressa. Atualize a autorização do app no Google e tente novamente.'
+        ? 'O Google recusou a autenticação desta conta neste aparelho. Tente novamente; o Progressa agora força um novo seletor de conta.'
         : (typeof friendlyAuthError==='function'?friendlyAuthError(error):(error.message||'Não foi possível entrar com Google.'));
       setMsg(friendly,'dangerbox');
     }finally{
       setBusy(false);
     }
   }
+
   window.signInWithGoogle=googleLogin;
 })();
