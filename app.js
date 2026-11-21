@@ -2,10 +2,10 @@
 const C=window.EMYFIT_CONFIG||{};
 let cloud=null,currentUser=null,screen='home',authMode='login',wizardStep=0,restTimer=null,restSeconds=0,installPrompt=null;
 let authBusy=false,authMessage='',authMessageType='notice',authHydrationTimer=null;
-const isNativeApp=()=>!!window.Capacitor?.isNativePlatform?.();
+const isNativeApp=()=>!!(window.Capacitor?.isNativePlatform?.()||window.Capacitor?.getPlatform?.()==='android'||location.protocol==='capacitor:'||location.hostname==='localhost');
 const isStandaloneApp=()=>window.matchMedia?.('(display-mode: standalone)')?.matches||window.navigator.standalone===true;
 const shouldShowInstallButton=()=>!isNativeApp()&&!isStandaloneApp()&&!!installPrompt;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;document.querySelectorAll('.install-app-btn').forEach(b=>b.classList.remove('hidden'))});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;document.querySelectorAll('.install-app-btn').forEach(b=>b.classList.toggle('hidden',isInstalledApp()))});
 window.addEventListener('appinstalled',()=>{installPrompt=null;document.querySelectorAll('.install-app-btn').forEach(b=>b.classList.add('hidden'));toast('Progressa instalado com sucesso.')});
 async function installApp(){if(installPrompt){installPrompt.prompt();const choice=await installPrompt.userChoice;if(choice.outcome==='accepted')toast('Instalação iniciada.');installPrompt=null}else{modal(`<span class="eyebrow">INSTALAR Progressa</span><h2>Instalar como aplicativo</h2><p>No Chrome, abra o menu de três pontos e escolha <b>Instalar app</b>.</p><div class="notice"><b>Não use apenas “Adicionar à tela inicial”</b> quando essa opção criar um atalho simples, pois o Android pode mostrar somente uma letra. Aguarde alguns segundos, recarregue a página e procure a opção <b>Instalar app</b>.</div>`)}}
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -282,7 +282,7 @@ function generatePlan(p){let days=clamp(+p.days||3,2,5),tpl=JSON.parse(JSON.stri
 function finishOnboarding(){state.profile={...wizard.basic,goal:wizard.goal,focusAreas:normalizedFocusAreas(wizard.focusAreas),days:wizard.days,duration:wizard.duration,experience:wizard.experience,preference:wizard.preference,limitations:wizard.limitations,screening:wizard.screening,sleep:wizard.sleep,onboardingComplete:true};state.plan=generatePlan({...state.profile});state.metrics.push({date:today(),weight:state.profile.weight});saveLocal();screen='home';renderApp();toast('Seu plano personalizado foi criado.')}
 
 
-function shell(content){return `<div class="app-shell"><header class="topbar"><div class="brand"><div class="logo premium-logo-small">${brandMark()}</div><div><b>Progressa</b><small>INDIVIDUAL • PLANO ADAPTATIVO</small></div></div><div class="row"><button class="install-mini install-app-btn" onclick="installApp()">Instalar</button><div class="avatar">${(state.profile?.name||'E').slice(0,1).toUpperCase()}</div></div></header><main class="main">${content}</main><nav class="bottomnav">${[['home','home','Início'],['workout','workout','Treino'],['coach','coach','Coach'],['reports','chart','Relatórios'],['profile','user','Perfil']].map(x=>`<button class="${screen===x[0]?'active':''}" onclick="setScreen('${x[0]}')">${icon(x[1])}${x[2]}</button>`).join('')}</nav></div>`}
+function shell(content){return `<div class="app-shell"><header class="topbar"><div class="brand"><div class="logo premium-logo-small">${brandMark()}</div><div><b>Progressa</b><small>INDIVIDUAL • PLANO ADAPTATIVO</small></div></div><div class="row"><button class="install-mini install-app-btn${isInstalledApp()?" hidden":""}" onclick="installApp()">Instalar</button><div class="avatar">${(state.profile?.name||'E').slice(0,1).toUpperCase()}</div></div></header><main class="main">${content}</main><nav class="bottomnav">${[['home','home','Início'],['workout','workout','Treino'],['coach','coach','Coach'],['reports','chart','Relatórios'],['profile','user','Perfil']].map(x=>`<button class="${screen===x[0]?'active':''}" onclick="setScreen('${x[0]}')">${icon(x[1])}${x[2]}</button>`).join('')}</nav></div>`}
 function renderApp(){const fn={home:homeScreen,workout:workoutScreen,coach:coachScreen,reports:reportsScreen,profile:profileScreen}[screen]||homeScreen;$('#app').innerHTML=shell(fn())}
 function weekSessions(){let d=new Date();d.setDate(d.getDate()-6);return state.sessions.filter(s=>new Date(s.date)>=d)}
 function nextDay(){return state.plan.days[state.sessions.length%state.plan.days.length]}
@@ -427,7 +427,7 @@ async function deleteAccount(){if(!cloud||!currentUser)return;const confirmation
 const Progressa_PATCH_VERSION='5.13.0';
 
 function isInstalledApp(){
- return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true||document.referrer.startsWith('android-app://');
+ return isNativeApp()||window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true||document.referrer.startsWith('android-app://');
 }
 function updateInstallButtons(){document.querySelectorAll('.install-app-btn').forEach(button=>button.classList.toggle('hidden',isInstalledApp()))}
 window.addEventListener('appinstalled',updateInstallButtons);
