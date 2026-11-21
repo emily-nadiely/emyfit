@@ -2,7 +2,7 @@
   "name": "progressa",
   "version": "7.2.7",
   "private": true,
-  "description": "Progressa - treino, evolução e recuperação",
+  "description": "Progressa - treino, evolução, recuperação e saúde",
   "scripts": {
     "native:web": "node tools/prepare-native.mjs",
     "native:android": "npm run native:web && npx cap sync android"
