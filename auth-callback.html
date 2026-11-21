@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltando ao Progressa…</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#08080b;color:#fff;font-family:system-ui,-apple-system,sans-serif}
+main{max-width:420px;padding:32px;text-align:center}
+.logo{width:76px;height:76px;border-radius:22px;margin-bottom:18px}
+p{color:#aaa;line-height:1.5}
+button{margin-top:16px;border:0;border-radius:14px;padding:14px 20px;background:#ff1738;color:#fff;font-weight:700;font-size:16px}
+</style>
+</head>
+<body>
+<main>
+<img class="logo" src="./progressa-icon-v640-512.png" alt="Progressa">
+<h1>Entrando no Progressa…</h1>
+<p>Autenticação concluída. Você será levado de volta ao aplicativo.</p>
+<button id="openBtn" type="button">Voltar ao Progressa</button>
+</main>
+<script>
+(function(){
+  const target='com.progressa.app://login-callback'+location.search+location.hash;
+  const open=()=>{ location.href=target; };
+  document.getElementById('openBtn').addEventListener('click',open);
+  setTimeout(open,250);
+})();
+</script>
+</body>
+</html>
