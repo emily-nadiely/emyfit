@@ -177,7 +177,26 @@ function renderAuth(){
  ${!cloud?`<button class="btn secondary block" style="margin-top:9px" onclick="startDemo()">Entrar em modo demonstração</button>`:''}
  <p class="small muted" style="margin-top:16px">Os dados de saúde e treino só devem ser usados para personalização e não substituem avaliação profissional.</p></div></div>`
 }
-async function submitAuth(event){event?.preventDefault();if(authBusy)return;if(!cloud){setAuthMessage('A nuvem não está configurada neste arquivo.','dangerbox');return}const email=$('#authEmail')?.value.trim(),password=$('#authPass')?.value||'';if(!email){setAuthMessage('Informe o e-mail.','dangerbox');return}if(!password){setAuthMessage('Informe a senha.','dangerbox');return}if(authMode==='signup'&&password.length<8){setAuthMessage('Para criar uma conta, use uma senha com pelo menos 8 caracteres.','dangerbox');return}setAuthMessage(authMode==='login'?'Validando sua conta…':'Criando sua conta…','notice');setAuthBusy(true,authMode==='login'?'Entrando…':'Criando conta…');try{const result=await withTimeout(authMode==='login'?cloud.auth.signInWithPassword({email,password}):cloud.auth.signUp({email,password}),20000);if(result.error){setAuthMessage(friendlyAuthError(result.error),'dangerbox');return}if(authMode==='signup'&&!result.data.session){setAuthMessage('Conta criada. Confira seu e-mail para confirmar o cadastro.','success');return}clearTimeout(authHydrationTimer);currentUser=result.data.session?.user||result.data.user||null;if(!currentUser){setAuthMessage('A conta foi validada, mas a sessão não foi criada. Tente entrar novamente.','dangerbox');return}loadLocal();setAuthMessage('Conta validada. Carregando seus dados…','success');try{await withTimeout(syncDown(),15000)}catch(syncError){console.warn('Login concluído, mas a sincronização demorou',syncError)}screen='home';authMessage='';renderRoot()}catch(error){console.warn('Falha de autenticação',error);setAuthMessage(friendlyAuthError(error),'dangerbox')}finally{setAuthBusy(false)}}
+async function submitAuth(event){event?.preventDefault();if(authBusy)return;if(!cloud){setAuthMessage('A nuvem não está configurada neste arquivo.','dangerbox');return}const email=$('#authEmail')?.value.trim(),password=$('#authPass')?.value||'';if(!email){setAuthMessage('Informe o e-mail.','dangerbox');return}if(!password){setAuthMessage('Informe a senha.','dangerbox');return}if(authMode==='signup'&&password.length<8){setAuthMessage('Para criar uma conta, use uma senha com pelo menos 8 caracteres.','dangerbox');return}setAuthMessage(authMode==='login'?'Validando sua conta…':'Criando sua conta…','notice');setAuthBusy(true,authMode==='login'?'Entrando…':'Criando conta…');try{const result=await withTimeout(authMode==='login'
+?cloud.auth.signInWithPassword({email,password})
+:cloud.auth.signUp({email,password,options:{emailRedirectTo:'https://progressa-livid.vercel.app'}}),20000);
+if(result.error){
+  const raw=String(result.error?.message||result.error||'').toLowerCase();
+  if(authMode==='signup'&&raw.includes('user already registered')){
+    setAuthMessage('Este e-mail já possui uma conta. Use Entrar ou Esqueci minha senha.','notice');
+    return;
+  }
+  setAuthMessage(friendlyAuthError(result.error),'dangerbox');return
+}
+if(authMode==='signup'&&!result.data.session){
+  const identities=result.data?.user?.identities;
+  if(Array.isArray(identities)&&identities.length===0){
+    setAuthMessage('Este e-mail já possui uma conta. Use Entrar ou Esqueci minha senha.','notice');
+    return;
+  }
+  setAuthMessage('Conta criada. Confira seu e-mail para confirmar o cadastro.','success');
+  return
+}clearTimeout(authHydrationTimer);currentUser=result.data.session?.user||result.data.user||null;if(!currentUser){setAuthMessage('A conta foi validada, mas a sessão não foi criada. Tente entrar novamente.','dangerbox');return}loadLocal();setAuthMessage('Conta validada. Carregando seus dados…','success');try{await withTimeout(syncDown(),15000)}catch(syncError){console.warn('Login concluído, mas a sincronização demorou',syncError)}screen='home';authMessage='';renderRoot()}catch(error){console.warn('Falha de autenticação',error);setAuthMessage(friendlyAuthError(error),'dangerbox')}finally{setAuthBusy(false)}}
 async function forgotPassword(){if(!cloud){setAuthMessage('A nuvem não está configurada.','dangerbox');return}const email=$('#authEmail')?.value.trim();if(!email){setAuthMessage('Informe o e-mail para receber o link.','dangerbox');return}try{const {error}=await withTimeout(cloud.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}),20000);setAuthMessage(error?friendlyAuthError(error):'Link de recuperação enviado para o e-mail informado.',error?'dangerbox':'success')}catch(error){setAuthMessage(friendlyAuthError(error),'dangerbox')}}
 function startDemo(){localStorage.setItem('emyfit_demo','1');currentUser=null;loadLocal();renderRoot()}
 
